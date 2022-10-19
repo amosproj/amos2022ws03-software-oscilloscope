@@ -18,9 +18,7 @@ assignees: ''
 - [ ]  ...
 
 ## Definition of done (DoD)
-* Added only after week 5
-* The same for all features
-* Here goes the project specific part
+Not available yet
 
 ## DoD general criteria
 * Feature has been fully implemented
