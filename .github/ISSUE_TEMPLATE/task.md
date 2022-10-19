@@ -1,8 +1,8 @@
 ---
-name: Task
-about: Suggest new feature (using user story)
+name: Feature request
+about: General tasks (No features, bugs)
 title: ''
-labels: ['user story']
+labels: ['orga']
 assignees: ''
 
 ---
@@ -13,9 +13,9 @@ assignees: ''
 3. So that {}
 
 ## Acceptance criteria
-* Criterion 1
-* Criterion 2
-* ...
+[ ] Criterion 1
+[ ] Criterion 2
+[ ] ...
 
 ## Definition of done (DoD)
 * Added only after week 5
