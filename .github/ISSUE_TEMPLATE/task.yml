@@ -1,0 +1,36 @@
+name: Task
+description: General tasks (No features, bugs)
+title: '[TASK]: '
+labels: ['orga']
+assignees: ['']
+
+body:
+- type: textarea
+  id: description
+  attributes:
+    label: Description
+    description: What has to be done?
+    placeholder: Enter description...
+- type: textarea
+  id: acceptance-criteria
+  attributes:
+    label: Acceptence Criteria
+    description: What are the acceptance criteria?
+    value: |
+      - [ ] Deliverable uploaded to _Deliverables/<current_sprint>/<artifact_name>
+      - [ ] ...
+- type: textarea
+  attributes:
+    label: Defintion of Done (DoD)
+    value: |
+        Not available yet...
+- type: textarea
+  attributes:
+    label: DoD General Criteria
+    value: |
+        * Task has been fully implemented
+        * Task has been merged into the mainline
+        * All acceptance criteria were met
+        * Product owner approved features
+        * All tests are passing
+        * Developers agreed to release
