@@ -5,7 +5,7 @@ FROM node:14-alpine AS build
 WORKDIR /usr/src/app
 
 # Copy package.json and package.lock.json into docker container
-COPY package*.json .
+COPY package*.json ./
 
 # Install node modules in docker container
 RUN npm install
