@@ -7,7 +7,6 @@ WORKDIR /usr/src/generator
 
 # Copy source code onto docker image
 COPY . .
-COPY ../../listener.rs .
 
 # Build 
 RUN cargo build
