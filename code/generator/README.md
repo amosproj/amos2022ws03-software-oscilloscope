@@ -1,6 +1,29 @@
 # Generator
 
-## Run
+## Run Dockerized
+
+### Prerequisites
+
+Have [Docker Desktop](https://www.docker.com/get-started/) installed and running.
+
+### Build Image
+
+From inside the directory code/generator/generator run:
+
+```cmd
+docker build -t generator .
+```
+
+### Run Image
+
+Possibilites:
+* Use Docker Desktop App
+* Run from terminal: (add -d to run in background)
+```cmd
+docker run generator
+```
+
+## Run directly
 
 Build without run:
 
