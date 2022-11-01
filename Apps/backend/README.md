@@ -6,6 +6,16 @@
 
 Have [Docker Desktop](https://www.docker.com/get-started/) installed and running.
 
+### Use docker-compose
+
+From inside the directory Apps/backend run:
+
+```cmd
+docker-compose up
+```
+
+This will build the latest image and start the container with published port 9000.
+
 ### Build Image
 
 From inside the directory code/generator/generator run:
