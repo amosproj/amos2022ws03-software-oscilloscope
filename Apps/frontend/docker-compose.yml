@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  backend:
+    image: sosci/frontend
+    build: 
+      context: ./
+      dockerfile: ./Dockerfile
+    
+    container_name: "sosci-frontend"
+    restart: always
+
+    ports:
+      - 5000:80
