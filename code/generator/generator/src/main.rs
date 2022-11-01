@@ -9,7 +9,7 @@ async fn main() {
     let mut target: &str = "127.0.0.1:34255";
     let mut frequency: f64 = 1.0;
 
-    // pargs command line args
+    // parse command line args
     let args: Vec<String> = env::args().collect();
     if args.len() == 4 {
         println!("Using command line arguments:");
@@ -24,18 +24,25 @@ async fn main() {
     println!("Target: {target}");
     println!("Frequency: {:?} [Hz]", frequency);
     
+    println!("Setting up UDP socket");
+    let socket: net::UdpSocket = net::UdpSocket::bind(host).expect("couldn't bind to address.");
+    socket.connect(target).expect("connect function failed");
+
     println!("Beginning to send ...");
-    run(host, target, frequency);
+    run(&socket, frequency).await;
 }
 
-async fn run(host: &str, target: &str, frequency: f64) {
+async fn run(socket: &net::UdpSocket, frequency: f64) {
     let mut interval = time::interval(Duration::from_nanos((1.0 / frequency * 1_000_000_000.0) as u64));
     loop {
         // generate data
         let data: &[u8] = &sample_data();
 
         // send packet
-        send(host, target, data);
+        match socket.send(&data) {
+            Ok(n) => println!("sent {n} bytes: {:?}", &data[..n]),
+            Err(e) => println!("failed sending: {e:?}."),
+        }
 
         // wait to match desired frequency
         interval.tick().await;
@@ -49,13 +56,4 @@ fn sample_data() -> [u8;10] {
     // https://doc.rust-lang.org/std/primitive.f64.html#method.sin
 
     data
-}
-
-fn send(host: &str, target: &str, buffer: &[u8]) {
-    let socket: net::UdpSocket = net::UdpSocket::bind(host).expect("couldn't bind to address.");
-    socket.connect(target).expect("connect function failed");
-    match socket.send(&buffer) {
-        Ok(n) => println!("sent {n} bytes: {:?}", &buffer[..n]),
-        Err(e) => println!("failed sending: {e:?}."),
-    }
 }
