@@ -1,12 +1,13 @@
-use std::{thread, time, net, env};
+use std::{net, env};
+use tokio::time::{self, Duration};
 
-
-fn main() {
+#[tokio::main]
+async fn main() {
     
     // default parameters
     let mut host: &str = "127.0.0.1:34254";
     let mut target: &str = "127.0.0.1:34255";
-    let mut frequency: f64 = 1.0;//10_000.0
+    let mut frequency: f64 = 1.0;
 
     // pargs command line args
     let args: Vec<String> = env::args().collect();
@@ -27,7 +28,8 @@ fn main() {
     run(host, target, frequency);
 }
 
-fn run(host: &str, target: &str, f: f64) {
+async fn run(host: &str, target: &str, frequency: f64) {
+    let mut interval = time::interval(Duration::from_nanos((1.0 / frequency * 1_000_000_000.0) as u64));
     loop {
         // generate data
         let data: &[u8] = &sample_data();
@@ -36,8 +38,7 @@ fn run(host: &str, target: &str, f: f64) {
         send(host, target, data);
 
         // wait to match desired frequency
-        let duration: time::Duration = time::Duration::from_nanos(((1 as f64 / f) * 1_000_000_000 as f64) as u64);
-        thread::sleep(duration);
+        interval.tick().await;
     }
 }
 
