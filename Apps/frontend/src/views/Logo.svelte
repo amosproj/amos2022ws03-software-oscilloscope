@@ -1,5 +1,5 @@
 <script>
-  import logo from "../assets/sosci-logo.svg";
+  import logo from "../assets/sosci-logo.png";
 </script>
 
 <div>
@@ -12,11 +12,5 @@
   }
   img {
     width: 15rem;
-    filter: invert(100%);
-  }
-  @media (prefers-color-scheme: light) {
-    img {
-      filter: none;
-    }
   }
 </style>
