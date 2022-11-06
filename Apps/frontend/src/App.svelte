@@ -1,9 +1,10 @@
 <script>
-  import HelloWorld from './views/HelloWorld.svelte'
+  import HelloWorld from "./views/HelloWorld.svelte";
+  import Logo from "./views/Logo.svelte";
 </script>
 
 <main>
-  <h1>Hello World</h1>
+  <Logo />
   <HelloWorld />
 </main>
 
