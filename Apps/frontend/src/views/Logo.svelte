@@ -3,7 +3,7 @@
 </script>
 
 <div>
-  <img src={logo} alt="SOSCI" />
+  <img src={logo} alt="SOSCI text in front of sine wave" />
 </div>
 
 <style>
