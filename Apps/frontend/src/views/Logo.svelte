@@ -2,15 +2,12 @@
   import logo from "../assets/sosci-logo.png";
 </script>
 
-<div>
-  <img src={logo} alt="SOSCI text in front of sine wave" />
-</div>
+<img src={logo} alt="SOSCI text in front of sine wave" />
 
 <style>
-  div {
-    width: 100%;
-  }
   img {
-    width: 15rem;
+    width: 10rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 </style>

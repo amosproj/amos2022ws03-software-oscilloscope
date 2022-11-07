@@ -1,174 +1,50 @@
-<div>
-  <canvas id="my_canvas" style="width: 100%;"></canvas>
-</div>
-
-
 <script>
-    import {ColorRGBA, WebglLine, WebglPlot} from "webgl-plot";
-    import {beforeUpdate, onMount} from 'svelte';
+  import { beforeUpdate, onMount } from "svelte";
+  import { ColorRGBA, WebglLine, WebglPlot } from "webgl-plot";
 
-    const freq = 0.001;
-    const amp = 0.5;
-    const noise = 0.1;
+  export let canvasHeight;
+  export let canvasWidth;
+  export let scaleY;
+  export let numIntervalsY;
 
-    let wglp;
-    let line;
+  const lineColor = new ColorRGBA(0, 255, 0, 1);
 
+  let canvasElement;
 
-    onMount(() => {
-        const canvas = document.getElementById("my_canvas");
-        console.log(canvas);
-        const devicePixelRatio = window.devicePixelRatio || 1;
-        canvas.width = canvas.clientWidth * devicePixelRatio;
-        canvas.height = canvas.clientHeight * devicePixelRatio;
+  let webGLPlot;
+  let webGLLine;
 
-        const numX = canvas.width;
-        const color = new ColorRGBA(Math.random(), Math.random(), Math.random(), 1);
-        line = new WebglLine(color, numX);
-        wglp = new WebglPlot(canvas);
+  export function updatePoint(index, value) {
+    webGLLine.setY(index % canvasWidth, value);
+  }
 
-        line.arrangeX();
-        wglp.addLine(line);
+  function resizeCanvas() {
+    canvasElement.width = canvasWidth;
+    canvasElement.height = canvasHeight;
+  }
 
+  function initializePlot() {
+    const numPoints = canvasElement.width;
+    webGLLine = new WebglLine(lineColor, numPoints);
+    webGLPlot = new WebglPlot(canvasElement);
+    webGLLine.arrangeX();
+    webGLLine.scaleY = 1 / ((numIntervalsY / 2) * scaleY);
+    webGLPlot.addLine(webGLLine);
+  }
 
-        for (let i = 0; i < line.numPoints; i++) {
-            const ySin = Math.sin(Math.PI * i * freq * Math.PI * 2);
-            const yNoise = Math.random() - 0.5;
-            line.setY(i, ySin * amp + yNoise * noise);
-        }
-    });
+  onMount(() => {
+    resizeCanvas();
+    initializePlot();
+  });
 
-    beforeUpdate(() => {
-        console.log("beforeUpdate");
-        window.requestAnimationFrame(newFrame);
-    });
+  beforeUpdate(() => {
+    window.requestAnimationFrame(newFrame);
+  });
 
-    function newFrame() {
-        update();
-        wglp.update();
-        window.requestAnimationFrame(newFrame);
-    }
-
-    function update() {
-        const freq = 0.001;
-        const amp = 0.5;
-        const noise = 0.1;
-
-        for (let i = 0; i < line.numPoints; i++) {
-            const ySin = Math.sin(Math.PI * i * freq * Math.PI * 2);
-            const yNoise = Math.random() - 0.5;
-            line.setY(i, ySin * amp + yNoise * noise);
-        }
-
-
-    }
+  function newFrame() {
+    webGLPlot.update();
+    window.requestAnimationFrame(newFrame);
+  }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<canvas bind:this={canvasElement} />
