@@ -1,11 +1,11 @@
 <script>
-    import Canvas from "./views/SineWave.svelte";
+  import Canvas from "./views/SineWave.svelte";
+  import Logo from "./views/Logo.svelte";
 </script>
 
 <main>
-  <h1>Hello World</h1>
-  <Canvas/>
-  <!--  <HelloWorld />-->
+  <Logo />
+  <Canvas />
 </main>
 
 <style>
