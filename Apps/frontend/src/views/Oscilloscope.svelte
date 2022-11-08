@@ -1,23 +1,23 @@
 <script>
-  import { onMount } from "svelte";
-  import CoordinateSystem from "./CoordinateSystem.svelte";
-  import SineWave from "./SineWave.svelte";
+    import {onMount} from "svelte";
+    import CoordinateSystem from "./CoordinateSystem.svelte";
+    import SineWave from "./SineWave.svelte";
 
-  const canvasWidth = 1000;
-  const canvasHeight = 500;
-  const numIntervalsX = 20;
-  const numIntervalsY = 10;
+    const canvasWidth = 1000;
+    const canvasHeight = 500;
+    const numIntervalsX = 20;
+    const numIntervalsY = 10;
 
-  let waveElement;
+    let waveElement;
 
-  let scaleY = 1; // 1V per horizontal line
+    let scaleY = 1; // 1V per horizontal line
 
   onMount(() => {
     let i = 0;
     setInterval(() => {
       const nextValue = Math.sin(i / 10);
-      waveElement.updatePoint(i, nextValue);
-      i++;
+        waveElement.updatePoint(i, nextValue);
+        i = (i + 1) % canvasWidth;
     }, 0.1);
   });
 </script>
