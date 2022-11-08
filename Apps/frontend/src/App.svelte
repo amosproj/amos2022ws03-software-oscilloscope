@@ -1,6 +1,4 @@
 <script>
-<<<<<<< HEAD
-  import HelloWorld from "./views/HelloWorld.svelte";
   import Logo from "./views/Logo.svelte";
   import OnOffButton from "./views/OnOffButton.svelte";
   import Oscilloscope from "./views/Oscilloscope.svelte";
