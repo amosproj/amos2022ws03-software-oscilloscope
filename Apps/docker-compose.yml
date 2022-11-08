@@ -37,8 +37,6 @@ services:
     networks:
       - internal
       - web
-    expose:
-      - 34255
 
     ports:
       - 5000:80

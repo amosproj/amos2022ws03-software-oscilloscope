@@ -17,12 +17,15 @@ COPY . ./
 RUN npm run build
 
 # Use nginx for serving build
-FROM node:14-alpine AS serve
-
+FROM nginx:1.19-alpine
 # Copy app from build container to nginx container
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
+RUN apk add nodejs-current --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community && \
+    apk add npm --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+RUN node --version && npm --version
+
 COPY . ./
-# Start NodeJS Server
-CMD ["node", "server/main.js"]
+RUN chmod +x ./start.sh
+ENTRYPOINT ["./start.sh"]
 

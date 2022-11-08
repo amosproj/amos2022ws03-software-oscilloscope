@@ -44,7 +44,7 @@ async fn run(socket: &UdpSocket, frequency: f64) {
 fn sample_data_chanel() -> [u8;30] {
 
     let mut data = Array2::<u8>::zeros((10, 3));
-    for (i, mut row) in data.axis_iter_mut(Axis(0)).enumerate() {
+    for (_, mut row) in data.axis_iter_mut(Axis(0)).enumerate() {
         // Perform calculations and assign to `row`; this is a trivial example:
         row.fill(1);
     }
