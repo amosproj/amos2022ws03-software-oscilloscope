@@ -1,6 +1,7 @@
 use std::{env};
-use std::net::{UdpSocket, IpAddr};
+use std::net::{UdpSocket};
 use tokio::time::{self, Duration};
+use ndarray::{Array2, Axis};
 
 #[tokio::main]
 async fn main() {
@@ -27,7 +28,7 @@ async fn run(socket: &UdpSocket, frequency: f64) {
     let mut interval = time::interval(Duration::from_nanos((1.0 / frequency * 1_000_000_000.0) as u64));
     loop {
         // generate data
-        let data: &[u8] = &sample_data();
+        let data: &[u8] = &sample_data_chanel();
 
         // send packet
         match socket.send(&data) {
@@ -40,11 +41,14 @@ async fn run(socket: &UdpSocket, frequency: f64) {
     }
 }
 
-fn sample_data() -> [u8;10] {
-    let data: [u8;10] = [0;10];
-    
-    // claculate realistic data
-    // https://doc.rust-lang.org/std/primitive.f64.html#method.sin
+fn sample_data_chanel() -> [u8;30] {
 
-    data
+    let mut data = Array2::<u8>::zeros((10, 3));
+    for (i, mut row) in data.axis_iter_mut(Axis(0)).enumerate() {
+        // Perform calculations and assign to `row`; this is a trivial example:
+        row.fill(1);
+    }
+    let flat = data.into_shape(30).unwrap();
+    let bytearray = flat.as_slice().expect("oops");
+    bytearray.try_into().expect("ooops")
 }
