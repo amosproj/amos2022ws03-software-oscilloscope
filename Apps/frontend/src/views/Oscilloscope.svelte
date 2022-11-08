@@ -17,7 +17,7 @@
     setInterval(() => {
       const nextValue = Math.sin(i / 10);
       waveElement.updatePoint(i, nextValue);
-      i = i + 1;
+      i++;
     }, 0.1);
   });
 </script>
