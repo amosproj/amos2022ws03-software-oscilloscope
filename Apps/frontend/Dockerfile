@@ -17,8 +17,12 @@ COPY . ./
 RUN npm run build
 
 # Use nginx for serving build
-FROM nginx:1.19-alpine
+FROM node:14-alpine AS serve
 
 # Copy app from build container to nginx container
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+
+COPY . ./
+# Start NodeJS Server
+CMD ["node", "server/main.js"]
 

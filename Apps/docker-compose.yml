@@ -13,7 +13,7 @@ services:
 
     environment:
       - HOST=0.0.0.0:34254
-      - TARGET=frontend:9022
+      - TARGET=frontend:34255
       - FREQUENCY=1.0
     networks:
       - internal
@@ -26,15 +26,19 @@ services:
     build: 
       context: ./frontend
       dockerfile: ./Dockerfile
-    
+    environment:
+      - HOST_PORT=34255
+      - HOST_ADDRESS=0.0.0.0
+
     container_name: frontend
-    hostname: frontend
     restart: always
+
+
     networks:
       - internal
       - web
     expose:
-      - 9022
+      - 34255
 
     ports:
       - 5000:80
