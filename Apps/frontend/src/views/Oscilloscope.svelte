@@ -1,60 +1,91 @@
 <script>
-  import { onMount } from "svelte";
-  import CoordinateSystem from "./CoordinateSystem.svelte";
-  import SineWave from "./SineWave.svelte";
+    import { onMount } from 'svelte';
 
-  const canvasWidth = 1000;
-  const canvasHeight = 500;
-  const numIntervalsX = 20;
-  const numIntervalsY = 10;
+    import { osciData } from '../stores';
+    import { NR_SHOWN_DATAPOINTS } from '../const';
+    import { normalizeForCanvas } from '../helper';
+    
 
-  let waveElement;
+    const DEBUG_NR_DATA_POINTS = 10000
 
-  let scaleY = 1; // 1V per horizontal line
+    let boundCanvas;
+    osciData.subscribe(value => {
+		inputData = value;
+	});
+    
+    const main = (boundCanvas) => {
+        /*================Creating a canvas=================*/
+        const canvas = boundCanvas;
+        /** @type {WebGLRenderingContext} */
+        let gl =  canvas.getContext('webgl');      
+        
+        if (!gl) {
+            gl = canvas.getContext('experimental-webgl');
+        }
 
-  onMount(() => {
-    let i = 0;
-    setInterval(() => {
-      const nextValue = Math.sin(i / 10);
-      waveElement.updatePoint(i, nextValue);
-      i = i + 1;
-    }, 0.1);
-  });
+        /* Debugging Start */
+        let inputMatrix = [];
+        let count = 0;
+        // NR -> 0 to fill up right to left
+        for (let i=0; i < NR_SHOWN_DATAPOINTS-1; ++i) {
+            const xIndex = normalizeForCanvas(i);
+            const yIndex = count - 1; //for debugging purposes
+            const zIndex = 1; //always same z-position so it looks like 2D
+
+            inputMatrix[i] = [xIndex, yIndex, zIndex];
+            
+            count = (count + 1) % 3;
+        }
+
+        const vertexData = inputMatrix.flat();
+
+        console.log("OsciData: ", osciData);
+        /* Debugging End */
+
+
+        const buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexData), gl.DYNAMIC_DRAW);
+
+        const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+
+        gl.shaderSource(vertexShader, `
+            attribute vec3 position;
+
+            void main() {
+                gl_Position = vec4(position, 1);
+            }
+        `);
+        gl.compileShader(vertexShader);
+
+        const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+
+        // specifies color of lines
+        gl.shaderSource(fragmentShader, `
+            void main() {
+                gl_FragColor = vec4(0.8, 0.8, 0, 1);
+            }
+        `);
+        gl.compileShader(fragmentShader);
+
+        const program = gl.createProgram();
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+
+        const positionLocation = gl.getAttribLocation(program, `position`);
+        gl.enableVertexAttribArray(positionLocation);
+        gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
+
+        gl.useProgram(program);
+        gl.drawArrays(gl.LINE_STRIP, 0, NR_SHOWN_DATAPOINTS);
+    }
+
+    onMount(() => {
+        main(boundCanvas);
+	});
 </script>
-
-<div class="wrapper">
-  <div class="stack coordinate-system">
-    <CoordinateSystem
-      {canvasWidth}
-      {canvasHeight}
-      {numIntervalsX}
-      {numIntervalsY}
-      yScale={scaleY}
-    />
-  </div>
-  <div class="stack wave">
-    <SineWave
-      bind:this={waveElement}
-      {canvasWidth}
-      {canvasHeight}
-      {numIntervalsY}
-      {scaleY}
-    />
-  </div>
-</div>
-
-<style>
-  .wrapper {
-    position: relative;
-  }
-  .stack {
-    position: absolute;
-    inset: 0;
-  }
-  .coordinate-system {
-    z-index: 0;
-  }
-  .wave {
-    z-index: 1;
-  }
-</style>
+  
+<div>
+    <canvas bind:this={boundCanvas} id="glCanvas" width="400" height="200" style="background-color: #000;"></canvas>
+</div>  
