@@ -1,0 +1,1 @@
+export const NR_SHOWN_DATAPOINTS = 1000;

@@ -1,5 +1,5 @@
 [package]
-name = "generator"
+name = "remote_listener"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,4 +7,3 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1.21.2", features = ["full"] }
-ndarray = "0.15.6"
