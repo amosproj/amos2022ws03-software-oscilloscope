@@ -1,0 +1,48 @@
+# This is a basic workflow which creates release-candidate and release tags upon pull requests
+
+name: CI
+
+on:
+  # Triggers the workflow on merges pull requests
+  pull_request:
+    types: ["closed"]
+
+jobs:
+  pre-release:
+    # Tag & release a release-candidate
+    if: contains( github.event.pull_request.labels.*.name, 'release-candidate')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        with:
+          tag_name: ${{ github.event.pull_request.title }}
+          release_name: ${{ github.event.pull_request.title }}
+          body: ${{ github.event.pull_request.body }}
+          draft: false
+          prerelease: true
+  release:
+    # Tag & release a release
+    if: contains( github.event.pull_request.labels.*.name, 'candidate')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        with:
+          tag_name: ${{ github.event.pull_request.title }}
+          release_name: ${{ github.event.pull_request.title }}
+          body: ${{ github.event.pull_request.body }}
+          draft: false
+          prerelease: false
