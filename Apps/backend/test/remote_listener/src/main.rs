@@ -2,7 +2,7 @@ use std::net::UdpSocket;
 
 
 fn main() {
-    listen("127.0.0.1:34255");
+    listen("0.0.0.0:34255");
 }
 
 fn listen(address: &str) {

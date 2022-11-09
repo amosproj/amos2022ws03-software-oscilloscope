@@ -3,43 +3,40 @@ version: '3'
 services:
   backend:
     depends_on:
-      - frontend
+      - remote_listener
     image: sosci/backend
     build: 
-      context: ./backend
+      context: ../../Apps/backend
       dockerfile: ./Dockerfile
     
     restart: always
 
     environment:
       - HOST=0.0.0.0:34254
-      - TARGET=frontend:34255
+      - TARGET=remote_listener:34255
       - FREQUENCY=1.0
     networks:
       - internal
 
     expose:
       - 34254
+    ports:
+      - 9000:34254
 
-  frontend:
-    image: sosci/frontend
+  remote_listener:
+    image: sosci/backend/remote_listener
     build: 
-      context: ./frontend
+      context: ../../Apps/backend/test/remote_listener/
       dockerfile: ./Dockerfile
-    environment:
-      - HOST_PORT=34255
-      - HOST_ADDRESS=0.0.0.0
-
-    container_name: frontend
+    
+    container_name: remote_listener
     restart: always
-
-
     networks:
       - internal
-      - web
 
-    ports:
-      - 5000:80
+    expose:
+      - 34255
+
 
 networks:
   internal:

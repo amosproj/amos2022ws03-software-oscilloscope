@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  backend:
+    image: sosci/backend/remote_listener
+    build: 
+      context: ./
+      dockerfile: ./Dockerfile
+    
+    container_name: "sosci-remote-listener"
+    restart: always
+    expose:
+      - 34255

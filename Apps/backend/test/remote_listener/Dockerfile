@@ -4,14 +4,9 @@ FROM rust:latest
 RUN apt-get update
 RUN apt-get install -y iputils-ping
 
-#Setting default parameters as cargo build requires env vars to be set
-ENV HOST=127.0.0.1:34254
-ENV TARGET=combined-app_sosci-frontend:9022
-ENV FREQUENCY=1.0
-
 # Create folder structur for code
-RUN mkdir -p /usr/src/generator
-WORKDIR /usr/src/generator
+RUN mkdir -p /usr/src/remote_listener
+WORKDIR /usr/src/remote_listener
 
 # Copy source code onto docker image
 COPY . .
