@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  backend:
+  generator:
     depends_on:
       - frontend
-    image: sosci/backend
+    image: sosci/generator
     build: 
-      context: ./backend
+      context: ./generator
       dockerfile: ./Dockerfile
     
     restart: always
@@ -32,7 +32,6 @@ services:
 
     container_name: frontend
     restart: always
-
 
     networks:
       - internal
