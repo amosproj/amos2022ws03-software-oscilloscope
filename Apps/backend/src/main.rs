@@ -43,6 +43,8 @@ async fn run(socket: &UdpSocket, frequency: f64) {
         match sig {
             "sin" => { v = a * (pi * 2.0 * f * t).sin(); },
             "cos" => { v = a * (pi * 2.0 * f * t).cos(); },
+            "saw" => { v = a * ((t / dur) * 2.0 - 1.0) },
+            "stp" => { if (t - (dur / 2.0) >= 0.0) { v = -a; } else { v = a; } },
             _ => { v = 0.0; }
         }
         let data: [u8; 8] = v.to_ne_bytes();
