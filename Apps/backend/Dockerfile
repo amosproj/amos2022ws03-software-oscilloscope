@@ -9,6 +9,10 @@ ENV HOST=127.0.0.1:34254
 ENV TARGET=combined-app_sosci-frontend:9022
 ENV FREQUENCY=1.0
 
+ENV SIGNAL_TYPE=sin
+ENV SIGNAL_FREQUENCY=1.0
+ENV SIGNAL_AMPLITUDE=1.0
+
 # Create folder structur for code
 RUN mkdir -p /usr/src/generator
 WORKDIR /usr/src/generator
