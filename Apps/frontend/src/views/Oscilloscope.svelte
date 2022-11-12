@@ -22,7 +22,7 @@
   });
 </script>
 
-<div class="wrapper">
+<div class="wrapper" data-cy="oscilloscope">
   <div class="stack coordinate-system">
     <CoordinateSystem
       {canvasWidth}
