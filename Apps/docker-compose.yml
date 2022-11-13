@@ -11,17 +11,25 @@ services:
       - HOST=0.0.0.0:34254
       - TARGET=backend:34255
       - FREQUENCY=1.0
-    expose:
-      - 34254
+    ports:
+      - 34254:34254
+    networks:
+      - internal
+
   frontend:
     image: sosci/frontend
+    depends_on:
+      - backend
     build: 
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: frontend
     restart: always
     ports:
       - 5000:80
+    networks:
+      - internal
+      - web
+
   backend:
     image: sosci/backend
     build:
@@ -30,5 +38,14 @@ services:
     environment:
       - HOST_PORT=34255
       - HOST_ADDRESS=0.0.0.0
-    expose: 
-      - 34255
+    ports: 
+      - 34255:34255
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  web:
+    driver: bridge
