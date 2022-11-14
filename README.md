@@ -1,4 +1,6 @@
-# AMOS Project 3 - Software Oscilloscope (AMOS SS 2022)
+# Software Oscilloscope (AMOS WS 2022)
+
+![SOSCI](https://github.com/amosproj/amos2022ws03-software-oscilloscope/blob/main/Deliverables/sprint-01/sosci-teamlogo-black-example.png)
 
 [Feature board](https://github.com/users/dev3225/projects/1/views/1)
 
