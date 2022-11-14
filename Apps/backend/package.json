@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "type":"module",
+  "type": "module",
   "version": "0.0.0",
   "main": "src/main.js",
   "description": "",
@@ -13,5 +13,8 @@
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "ws": "^8.11.0"
   }
 }

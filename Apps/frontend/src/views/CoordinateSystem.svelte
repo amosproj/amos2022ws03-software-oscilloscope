@@ -1,45 +1,44 @@
 <script>
   import { onMount } from "svelte";
-  export let canvasHeight;
-  export let canvasWidth;
-  export let numIntervalsY;
-  export let numIntervalsX;
+  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_INTERVALS_X, NUM_INTERVALS_Y } from "../const";
+
+
   export let yScale;
 
   const lineColor = "#FFFFFF80";
 
   let canvasElement;
 
-  function resizeCanvas() {
-    canvasElement.width = canvasWidth;
-    canvasElement.height = canvasHeight;
+  const resizeCanvas = () => {
+    canvasElement.width = CANVAS_WIDTH;
+    canvasElement.height = CANVAS_HEIGHT;
   }
 
-  function drawCoordinateSystem() {
+  const drawCoordinateSystem = () => {
     const context = canvasElement.getContext("2d");
     context.lineWidth = 1;
     context.strokeStyle = lineColor;
 
     // X lines
-    for (let x = 0; x < numIntervalsY; x++) {
-      let xPos = (canvasHeight / numIntervalsY) * x;
+    for (let x = 0; x < NUM_INTERVALS_Y; x++) {
+      let xPos = (CANVAS_HEIGHT / NUM_INTERVALS_Y) * x;
       context.beginPath();
       context.moveTo(0, xPos);
-      context.lineTo(canvasWidth, xPos);
+      context.lineTo(CANVAS_WIDTH, xPos);
       context.stroke();
     }
 
     // Y lines
-    for (let y = 0; y < numIntervalsX; y++) {
-      let yPos = (canvasWidth / numIntervalsX) * y;
+    for (let y = 0; y < NUM_INTERVALS_X; y++) {
+      let yPos = (CANVAS_WIDTH / NUM_INTERVALS_X) * y;
       context.beginPath();
       context.moveTo(yPos, 0);
-      context.lineTo(yPos, canvasHeight);
+      context.lineTo(yPos, CANVAS_HEIGHT);
       context.stroke();
     }
   }
 
-  function drawYScale() {
+  const drawYScale = () => {
     const context = canvasElement.getContext("2d");
     context.font = "20px Arial";
     context.fillStyle = "white";

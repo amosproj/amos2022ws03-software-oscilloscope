@@ -1,11 +1,11 @@
 # Use official rust:slim as base
-FROM rust:latest
+FROM rust:slim
 
 RUN apt-get update
 RUN apt-get install -y iputils-ping
 
 #Setting default parameters as cargo build requires env vars to be set
-ENV HOST=127.0.0.1:34254
+ENV HOST=0.0.0.0:34254
 ENV TARGET=frontend:9022
 ENV FREQUENCY=1.0
 
