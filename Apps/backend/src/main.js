@@ -1,7 +1,6 @@
 import dgram from "node:dgram";
 import WebSocket, {WebSocketServer} from 'ws';
 
-
 const server = dgram.createSocket("udp4");
 const socket = new WebSocketServer({
   port: 9000,
@@ -31,9 +30,6 @@ server.on("message", (msg, rinfo) => {
     const chunk = raw_data.slice(i, i + chunk_size);
     data.push(chunk);
   }
-
-  // console.log(`Received from ${rinfo.address}:${rinfo.port}: [${data.join("][")}]`);
-
 
   if (client !== undefined && client !== null) {
     client.send(Math.sin(counter))

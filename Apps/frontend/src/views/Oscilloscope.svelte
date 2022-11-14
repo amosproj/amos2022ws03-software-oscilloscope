@@ -27,6 +27,10 @@
   onDestroy(() => {
     socket.close();
   });
+
+  onDestroy(() => {
+    socket.close();
+  }) 
 </script>
 
 <div class="wrapper">
