@@ -1,5 +1,6 @@
 import dgram from "node:dgram";
-import WebSocket, {WebSocketServer} from 'ws' 
+import WebSocket, {WebSocketServer} from 'ws';
+
 
 const server = dgram.createSocket("udp4");
 const socket = new WebSocketServer({
@@ -31,9 +32,7 @@ server.on("message", (msg, rinfo) => {
     data.push(chunk);
   }
 
-  console.log(
-    `Received from ${rinfo.address}:${rinfo.port}: [${data.join("][")}]`
-  );
+  // console.log(`Received from ${rinfo.address}:${rinfo.port}: [${data.join("][")}]`);
 
 
   if (client !== undefined && client !== null) {
