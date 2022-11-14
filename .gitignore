@@ -36,4 +36,4 @@ bin/
 .DS_Store
 
 
-Apps/backend/target
+Apps/generator/target
