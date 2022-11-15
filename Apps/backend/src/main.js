@@ -17,23 +17,14 @@ socket.on('connection', (clientSocket) => {
 
 server.on("error", (err) => {
   console.log(`Server error:\n${err.stack}`);
-  server.close();
+  server.close(package_recieved);
 });
 
-let counter = 0
 server.on("message", (msg, rinfo) => {
-  let raw_data = Array.apply([], msg);
-  let data = [];
-  const chunk_size = 3;
-
-  for (let i = 0; i < raw_data.length; i += chunk_size) {
-    const chunk = raw_data.slice(i, i + chunk_size);
-    data.push(chunk);
-  }
+  let samples = new Float64Array(msg.buffer);
 
   if (client !== undefined && client !== null) {
-    client.send(Math.sin(counter))
-    counter += 0.1
+    client.send(samples)
   }
 });
 

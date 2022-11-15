@@ -16,16 +16,11 @@
       console.log("Socket opened");
     };
 
-    let index = 0;
-
     socket.onmessage = (message) => {
-      waveElement.updatePoint(index++, parseFloat(message.data));
-      index = index % CANVAS_WIDTH;
-    };
-  });
+      let samples = new Float64Array(message.data);
 
-  onDestroy(() => {
-    socket.close();
+      waveElement.updateBuffer(samples);
+    };
   });
 
   onDestroy(() => {
