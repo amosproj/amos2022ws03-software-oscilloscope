@@ -1,33 +1,51 @@
 use std::{env};
 use std::net::{UdpSocket};
 use tokio::time::{self, Duration};
-//use ndarray::{Array2};
+use dasp_signal::{self as signal, Signal};
 
 #[tokio::main]
 async fn main() {
     
     // parse environment variables
-    let host_: String;
-    let target_: String;
+    let host: String;
+    let target: String;
+    let pps: f64;
+
+    let signal: String;
     let frequency: f64;
+    let amplitude: f64;
+
     match env::var("HOST") {
-        Ok(v) => { host_ = v; },
-        Err(_e) => { host_ = "127.0.0.1:34254".to_owned(); }
+        Ok(v) => { host = v; },
+        Err(_e) => { host = "127.0.0.1:34254".to_owned(); }
     }
-    let host: &str = &host_[..];
     match env::var("TARGET") {
-        Ok(v) => { target_ = v; },
-        Err(_e) => { target_ = "127.0.0.1:34255".to_owned(); }
+        Ok(v) => { target = v; },
+        Err(_e) => { target = "127.0.0.1:34255".to_owned(); }
     }
-    let target: &str = &target_[..];
-    match env::var("FREQUENCY") {
+    match env::var("PPS") {
+        Ok(v) => { pps = v.parse::<f64>().unwrap(); },
+        Err(_e) => { pps = 100.0; }
+    }
+    match env::var("SIG_TYP") {
+        Ok(v) => { signal = v; },
+        Err(_e) => { signal = "sin".to_owned(); }
+    }
+    match env::var("SIG_FREQ") {
         Ok(v) => { frequency = v.parse::<f64>().unwrap(); },
         Err(_e) => { frequency = 1.0; }
+    }
+    match env::var("SIG_AMP") {
+        Ok(v) => { amplitude = v.parse::<f64>().unwrap(); },
+        Err(_e) => { amplitude = 1.0; }
     }
 
     println!("Host: {host}");
     println!("Target: {target}");
-    println!("Frequency: {:?} [Hz]", frequency);
+    println!("PPS: {:?} [Hz]", pps);
+    println!("Signal: {:?}", signal);
+    println!("Frequency: {:?}", frequency);
+    println!("Applitude: {:?}", amplitude);
     
     println!("Setting up UDP socket");
     let socket: UdpSocket = UdpSocket::bind(host).expect("couldn't bind to address.");
@@ -35,123 +53,43 @@ async fn main() {
     socket.connect(target).expect("connect function failed");
 
     println!("Beginning to send ...");
-    run(&socket, frequency).await;
+    run(&socket, pps, &signal, frequency, amplitude).await;
 }
 
-async fn run(socket: &UdpSocket, frequency: f64) {
-    let mut interval = time::interval(Duration::from_nanos((1.0 / frequency * 1_000_000_000.0) as u64));
+fn bytes_from_samples(samples: &Vec<f64>) -> Vec<u8> {
+    let mut data: Vec<u8> = Vec::new();
 
-    let step: f64 = 1.0 / frequency;
-    let mut t: f64 = 0.0;
-
-    let pi: f64 = std::f64::consts::PI;
-
-    loop {
-
-        //let mut data = Array2::<u8>::zeros((10, 8));
-
-        let mut count: u8 = 0;
-        //while count < 10 {
-
-        // parse environment variables
-        let sig: String;
-        match env::var(format!("SIG_TYP_{}", count)) {
-            Ok(v) => { sig = v; },
-            Err(_e) => { sig = "sin".to_owned(); }
+    for sample in samples {
+        let bytes : [u8; 8] = sample.to_ne_bytes();
+        for byte in bytes {
+            data.push(byte)
         }
-        let f: f64;
-        match env::var(format!("SIG_FREQ_{}", count)) {
-            Ok(v) => { f = v.parse::<f64>().unwrap(); },
-            Err(_e) => { f = 1.0; }
-        }
-        let dur: f64 = 1.0 / f;
-        let a: f64;
-        match env::var(format!("SIG_AMP_{}", count)) {
-            Ok(v) => { a = v.parse::<f64>().unwrap(); },
-            Err(_e) => { a = 1.0; }
-        }
-
-        // generate data
-        let v: f64;
-        match &sig[..] {
-            "sin" => { v = a * (pi * 2.0 * f * t).sin(); },
-            "cos" => { v = a * (pi * 2.0 * f * t).cos(); },
-            "saw" => { v = a * ((t / dur) * 2.0 - 1.0) },
-            "stp" => { if t - (dur / 2.0) >= 0.0 { v = -a; } else { v = a; } },
-            _ => { v = 0.0; }
-        }
-        let bytes: [u8; 8] = v.to_ne_bytes();
-        t += step;
-        while t >= dur { t -= dur; }
-
-        //let mut c: u8 = 0;
-        //while c < 8 {
-        //    data[[count as usize, c as usize]] = bytes[c as usize];
-        //    c += 1;
-        //}
-
-        //    count += 1;
-        //}
-
-        //let bytearray: [u8; 80] = data.into_shape(80).unwrap().as_slice().expect("oops").try_into().expect("ooops");
-
-        // send packet
-        socket.send(&bytes);
-        /*match socket.send(&bytes) {
-            Ok(n) => println!("sent values as {n} bytes: {:?}", &bytes),
-            Err(e) => println!("failed sending: {e:?}.")
-        }*/
-
-        // wait to match desired frequency
-        interval.tick().await;
     }
+    data
 }
 
-// async fn run(socket: &UdpSocket, frequency: f64) {
-//     let mut interval = time::interval(Duration::from_nanos((1.0 / frequency * 1_000_000_000.0) as u64));
+async fn run(socket: &UdpSocket, packages_per_second: f64, sig : &String,  frequency: f64, amplitude: f64 ) {
+    let mut interval = time::interval(Duration::from_nanos((1.0 / packages_per_second * 1_000_000_000.0) as u64));
 
-//     let f: f64 = env!("SIGNAL_FREQUENCY").parse::<f64>().unwrap();
-//     let dur: f64 = 1.0 / f;
-//     let a: f64 = env!("SIGNAL_AMPLITUDE").parse::<f64>().unwrap();
-//     let sig: &str = &env!("SIGNAL_TYPE").to_lowercase();
+        let sampling_rate: f64 = packages_per_second;
 
-//     let step: f64 = 1.0 / frequency;
-//     let mut t: f64 = 0.0;
+        let mut sine_signal = signal::rate(sampling_rate).const_hz(frequency).sine();
+        let mut saw_signal = signal::rate(sampling_rate).const_hz(frequency).saw();
+        let mut square_signal = signal::rate(sampling_rate).const_hz(frequency).square();
+        let noise = rng.gen_range(0.0..10.0)
+        loop {
+            let mut samples: Vec<f64> = Vec::new();
+            samples.push(square_signal.next());
+            samples.push(saw_signal.next());
+            samples.push(sine_signal.next());
+            let samples: Vec<u8> = bytes_from_samples(&samples);
 
-//     let pi: f64 = std::f64::consts::PI;
+            match socket.send(&samples) {
+                Ok(n) => (),
+                Err(e) => println!("failed sending: {e:?}.")
+            }
 
-//     loop {
-//         // generate data
-//         let mut v: f64;
-//         match sig {
-//             "sin" => { v = a * (pi * 2.0 * f * t).sin(); },
-//             "cos" => { v = a * (pi * 2.0 * f * t).cos(); },
-//             "saw" => { v = a * ((t / dur) * 2.0 - 1.0) },
-//             "stp" => { if t - (dur / 2.0) >= 0.0 { v = -a; } else { v = a; } },
-//             _ => { v = 0.0; }
-//         }
-//         let data: [u8; 8] = v.to_ne_bytes();
-//         t += step;
-//         while t >= dur { t -= dur; }
-
-//         // send packet
-//         match socket.send(&data) {
-//             Ok(n) => println!("sent value {:.4} as {n} bytes: {:?}", v, &data),
-//             Err(e) => println!("failed sending: {e:?}.")
-//         }
-
-//         // wait to match desired frequency
-//         interval.tick().await;
-//     }
-// }
-
-// fn sample_data_channel() -> [u8;30] {
-//     let mut data = Array2::<u8>::zeros((10, 3));
-//     for (_, mut row) in data.axis_iter_mut(Axis(0)).enumerate() {
-//         // Perform calculations and assign to `row`; this is a trivial example:
-//         row.fill(1);
-//     }
-//     let flat = data.into_shape(30).unwrap();
-//     let bytearray = flat.as_slice().expect("oops");
-//     bytearray.try_into().expect("ooops")
-// }
+            //wait to match desired packages per second
+            interval.tick().await;
+        }
+}
