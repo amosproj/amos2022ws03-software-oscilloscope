@@ -1,16 +1,23 @@
-# Use Node v14 for building
-FROM node:14-alpine AS build
+# Use official rust:slim as base
+FROM rust:latest
 
-# Set workdir inside docker container
-WORKDIR /usr/src/app
+RUN apt-get update
+RUN apt-get install -y iputils-ping
 
-# Copy package.json and package.lock.json into docker container
-COPY package*.json ./
+#Setting default parameters as cargo build requires env vars to be set
+ENV HOST=127.0.0.1:34254
+ENV TARGET=combined-app_sosci-frontend:9022
+ENV FREQUENCY=1.0
 
-# Install node modules in docker container
-RUN npm install
+# Create folder structur for code
+RUN mkdir -p /usr/src/generator
+WORKDIR /usr/src/generator
 
-# Copy source code into docker container
-COPY . ./
+# Copy source code onto docker image
+COPY . .
 
-CMD [ "npm", "start" ] 
+# Build
+RUN cargo build
+
+# Run on container start
+CMD ["cargo", "run"]

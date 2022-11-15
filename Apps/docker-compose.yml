@@ -1,47 +1,45 @@
 version: '3'
 
 services:
-  generator:
-    image: sosci/generator
+  backend:
+    depends_on:
+      - frontend
+    image: sosci/backend
     build: 
-      context: ./generator
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: ./Dockerfile
+    
     restart: always
+
     environment:
       - HOST=0.0.0.0:34254
-      - TARGET=backend:34255
+      - TARGET=frontend:34255
       - FREQUENCY=1.0
-    ports:
-      - 34254:34254
     networks:
       - internal
 
+    expose:
+      - 34254
+
   frontend:
     image: sosci/frontend
-    depends_on:
-      - backend
     build: 
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
+    environment:
+      - HOST_PORT=34255
+      - HOST_ADDRESS=0.0.0.0
+
+    container_name: frontend
     restart: always
-    ports:
-      - 5000:80
+
+
     networks:
       - internal
       - web
 
-  backend:
-    image: sosci/backend
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    environment:
-      - HOST_PORT=34255
-      - HOST_ADDRESS=0.0.0.0
-    ports: 
-      - 34255:34255
-    networks:
-      - internal
+    ports:
+      - 5000:80
 
 networks:
   internal:
@@ -49,3 +47,4 @@ networks:
     internal: true
   web:
     driver: bridge
+
