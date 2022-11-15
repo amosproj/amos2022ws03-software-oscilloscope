@@ -7,23 +7,20 @@ use ndarray::{Array2};
 async fn main() {
     
     // parse environment variables
-    let host_: String;
-    let target_: String;
-    let frequency: f64;
-    match env::var("HOST") {
-        Ok(v) => { host_ = v; },
-        Err(_e) => { host_ = "127.0.0.1:34254".to_owned(); }
-    }
+    let host_: String = match env::var("HOST") {
+        Ok(v) => { v },
+        Err(_e) => { "127.0.0.1:34254".to_owned() }
+    };
     let host: &str = &host_[..];
-    match env::var("TARGET") {
-        Ok(v) => { target_ = v; },
-        Err(_e) => { target_ = "127.0.0.1:34255".to_owned(); }
-    }
+    let target_: String = match env::var("TARGET") {
+        Ok(v) => { v },
+        Err(_e) => { "127.0.0.1:34255".to_owned() }
+    };
     let target: &str = &target_[..];
-    match env::var("FREQUENCY") {
-        Ok(v) => { frequency = v.parse::<f64>().unwrap(); },
-        Err(_e) => { frequency = 1.0; }
-    }
+    let frequency: f64 = match env::var("FREQUENCY") {
+        Ok(v) => { v.parse::<f64>().unwrap() },
+        Err(_e) => { 1.0 }
+    };
 
     println!("Host: {host}");
     println!("Target: {target}");
@@ -54,27 +51,24 @@ async fn run(socket: &UdpSocket, frequency: f64) {
         while count < 10 {
 
             // parse environment variables
-            let sig: String;
-            match env::var(format!("SIG_TYP_{}", count)) {
-                Ok(v) => { sig = v; },
-                Err(_e) => { sig = "sin".to_owned(); }
-            }
-            let f: f64;
-            match env::var(format!("SIG_FREQ_{}", count)) {
-                Ok(v) => { f = v.parse::<f64>().unwrap(); },
-                Err(_e) => { f = 1.0; }
-            }
+            let sig: String = match env::var(format!("SIG_TYP_{}", count)) {
+                Ok(v) => { v },
+                Err(_e) => { "sin".to_owned() }
+            };
+            let f: f64 = match env::var(format!("SIG_FREQ_{}", count)) {
+                Ok(v) => { v.parse::<f64>().unwrap() },
+                Err(_e) => { 1.0 }
+            };
             let dur: f64 = 1.0 / f;
-            let a: f64;
-            match env::var(format!("SIG_AMP_{}", count)) {
-                Ok(v) => { a = v.parse::<f64>().unwrap(); },
-                Err(_e) => { a = 1.0; }
-            }
+            let a: f64 = match env::var(format!("SIG_AMP_{}", count)) {
+                Ok(v) => { v.parse::<f64>().unwrap() },
+                Err(_e) => { 1.0 }
+            };
 
             // generate data
             let v: f64;
             match &sig[..] {
-                "sin" => { v = a * (pi * 2.0 * f * t).sin(); },
+                "sin" => { v =  a * (pi * 2.0 * f * t).sin(); },
                 "cos" => { v = a * (pi * 2.0 * f * t).cos(); },
                 "saw" => { v = a * ((t / dur) * 2.0 - 1.0) },
                 "stp" => { if t - (dur / 2.0) >= 0.0 { v = -a; } else { v = a; } },
