@@ -1,8 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
   import Logo from "./views/Logo.svelte";
-  import OnOffButton from './views/OnOffButton.svelte';
-  import Oscilloscope from './views/Oscilloscope.svelte';
+  import OnOffButton from "./views/OnOffButton.svelte";
+  import Oscilloscope from "./views/Oscilloscope.svelte";
 </script>
 
 <main>
@@ -13,7 +13,6 @@
     <Oscilloscope />
   </div>
   <OnOffButton on:switch-plot-enabled={async (event)  => {console.log('Turned ' + (event.detail.enabled ? 'on' : 'off') +'...')}} />
-  <Oscilloscope />
 </main>
 
 <style>
