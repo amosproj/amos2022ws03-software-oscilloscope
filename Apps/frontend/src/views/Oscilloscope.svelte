@@ -1,45 +1,39 @@
 <script>
-    import {onMount} from "svelte";
-    import CoordinateSystem from "./CoordinateSystem.svelte";
-    import SineWave from "./SineWave.svelte";
+  import { onMount, onDestroy } from "svelte";
+  import CoordinateSystem from "./CoordinateSystem.svelte";
+  import SineWave from "./SineWave.svelte";
+  import { CANVAS_WIDTH } from "../const";
 
-    const canvasWidth = 1000;
-    const canvasHeight = 500;
-    const numIntervalsX = 20;
-    const numIntervalsY = 10;
-
-    let waveElement;
-
-    let scaleY = 1; // 1V per horizontal line
+  let waveElement;
+  let scaleY = 1; // 1V per horizontal line
+  let socket;
 
   onMount(() => {
-    let i = 0;
-    setInterval(() => {
-      const nextValue = Math.sin(i / 10);
-        waveElement.updatePoint(i, nextValue);
-        i = (i + 1) % canvasWidth;
-    }, 0.1);
+    socket = new WebSocket("ws://localhost:9000");
+    socket.binaryType = "arraybuffer";
+
+    socket.onopen = () => {
+      console.log("Socket opened");
+    };
+
+    socket.onmessage = (message) => {
+      let samples = new Float64Array(message.data);
+
+      waveElement.updateBuffer(samples);
+    };
   });
+
+  onDestroy(() => {
+    socket.close();
+  }) 
 </script>
 
 <div class="wrapper" data-cy="oscilloscope">
   <div class="stack coordinate-system">
-    <CoordinateSystem
-      {canvasWidth}
-      {canvasHeight}
-      {numIntervalsX}
-      {numIntervalsY}
-      yScale={scaleY}
-    />
+    <CoordinateSystem yScale={scaleY} />
   </div>
   <div class="stack wave">
-    <SineWave
-      bind:this={waveElement}
-      {canvasWidth}
-      {canvasHeight}
-      {numIntervalsY}
-      {scaleY}
-    />
+    <SineWave bind:this={waveElement} {scaleY} />
   </div>
 </div>
 
