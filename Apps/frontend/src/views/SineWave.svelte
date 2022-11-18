@@ -53,7 +53,12 @@
 
   const initializeLines = () => {
     for (let i = 0; i < numberOfChannels; i++) {
-      const color = LINE_COLORS[i];
+      const color = new ColorRGBA(
+        LINE_COLORS[i][0] / 255,
+        LINE_COLORS[i][1] / 255,
+        LINE_COLORS[i][2] / 255,
+        1
+      );
       let line = new WebglLine(color, CANVAS_WIDTH);
       line.arrangeX();
       line.scaleY = 1 / ((NUM_INTERVALS_Y / 2) * scaleY);

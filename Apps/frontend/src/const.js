@@ -6,6 +6,10 @@ export const CANVAS_WIDTH = 1000;
 export const CANVAS_HEIGHT = 500;
 export const NUM_INTERVALS_X = 20;
 export const NUM_INTERVALS_Y = 10;
+export const INDICATOR_HEIGHT = 15;
+export const INDICATOR_WIDTH = 30;
+export const INDICATOR_FONT_SIZE = INDICATOR_HEIGHT;
+export const INDICATOR_DECIMAL_PLACES = 3;
 
 export const LINE_COLORS = [
   [230, 0, 73],
