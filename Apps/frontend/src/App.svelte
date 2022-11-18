@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from "svelte";
   import Logo from "./views/Logo.svelte";
   import OnOffButton from "./views/OnOffButton.svelte";
   import Oscilloscope from "./views/Oscilloscope.svelte";

@@ -1,14 +1,14 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
   import { ColorRGBA, WebglLine, WebglPlot } from "webgl-plot";
-  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_INTERVALS_Y } from "../const";
+  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_CHANNELS, NUM_INTERVALS_Y } from "../const";
 
-  export let scaleY;
+  export let scalesY;
+  export let offsetsY;
 
   let canvasElement;
   let webGLPlot;
-  let numberOfChannels = 10;
-  let channel_samples = Array.from(Array(numberOfChannels), () => new Array(CANVAS_WIDTH).fill(0.0))
+  let channel_samples = Array.from(Array(NUM_CHANNELS), () => new Array(CANVAS_WIDTH).fill(0.0))
   let lines = []
 
   let x = 0
@@ -21,11 +21,12 @@
     x = x % CANVAS_WIDTH;
   }
 
-  export const update = () => {
+  const update = () => {
     for (let i = 0; i < channel_samples.length; i++)
     {
       for (let x = 0; x < CANVAS_WIDTH; x++) {
         lines[i].setY(x, channel_samples[i][x]);
+        lines[i].offsetY = offsetsY[i];
       }
     }
   }
@@ -40,16 +41,16 @@
     initializeLines();
     console.log(`lines: ${lines.length}`)
     console.log(`channels: ${channel_samples.length}`)
-
   }
   
   const initializeLines = () => {
-    for (let i = 0; i < numberOfChannels; i++)
+    for (let i = 0; i < NUM_CHANNELS; i++)
     {
       const color = new ColorRGBA(Math.random(), Math.random(), Math.random(), 1);
       let line = new WebglLine(color, CANVAS_WIDTH);
       line.arrangeX();
-      line.scaleY = 1 / ((NUM_INTERVALS_Y / 2) * scaleY);
+      line.scaleY = (1 / ((NUM_INTERVALS_Y / 2)) * scalesY[i]);
+      line.offsetY = offsetsY[i];
       webGLPlot.addLine(line);
       lines.push(line)
     }

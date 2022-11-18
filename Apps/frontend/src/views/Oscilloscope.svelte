@@ -1,12 +1,20 @@
 <script>
   import { onMount, onDestroy } from "svelte";
+  import TextField from "@smui/textfield"
   import CoordinateSystem from "./CoordinateSystem.svelte";
-  import SineWave from "./SineWave.svelte";
-  import { CANVAS_WIDTH } from "../const";
+  import Waves from "../views/Waves.svelte";
+  import { NUM_CHANNELS } from "../const";
+
 
   let waveElement;
-  let scaleY = 1; // 1V per horizontal line
+  let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
+  let offsetsY = Array(NUM_CHANNELS).fill(0);
   let socket;
+
+  /* DEBUG START */
+  scalesY[0] = 2;
+  offsetsY[0] = 0;
+  /* DEBUG END */
 
   onMount(() => {
     socket = new WebSocket("ws://localhost:9000");
@@ -19,7 +27,7 @@
     socket.onmessage = (message) => {
       let samples = new Float64Array(message.data);
 
-      waveElement.updateBuffer(samples);
+      waveElement.updateBuffer(samples, );
     };
   });
 
@@ -28,12 +36,19 @@
   }) 
 </script>
 
-<div class="wrapper" data-cy="oscilloscope">
-  <div class="stack coordinate-system">
-    <CoordinateSystem yScale={scaleY} />
+<div>
+  <div class="wrapper" data-cy="oscilloscope">
+    <div class="stack coordinate-system">
+      <CoordinateSystem scaleY={Math.max(...scalesY)} />
+    </div>
+    <div class="stack wave">
+      <Waves bind:this={waveElement} {scalesY} {offsetsY}/>
+    </div>
   </div>
-  <div class="stack wave">
-    <SineWave bind:this={waveElement} {scaleY} />
+  <div style="float:right">
+    {#each offsetsY as offsetY}
+      <TextField bind:value={offsetY} label="Offset of y-axis" type="float" />
+    {/each}
   </div>
 </div>
 
