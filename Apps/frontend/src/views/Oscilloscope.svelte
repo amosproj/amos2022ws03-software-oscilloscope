@@ -2,11 +2,14 @@
   import { onMount, onDestroy } from "svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import SineWave from "./SineWave.svelte";
+  import OnOffButton from "./OnOffButton.svelte";
   import { CANVAS_WIDTH } from "../const";
 
   let waveElement;
   let scaleY = 1; // 1V per horizontal line
   let socket;
+
+  let isEnabled = false;
 
   onMount(() => {
     socket = new WebSocket("ws://localhost:9000");
@@ -18,7 +21,7 @@
 
     socket.onmessage = (message) => {
       let samples = new Float64Array(message.data);
-
+      if (!isEnabled) { return; }
       waveElement.updateBuffer(samples);
     };
   });
@@ -31,6 +34,7 @@
 <div class="wrapper" data-cy="oscilloscope">
   <div class="stack coordinate-system">
     <CoordinateSystem yScale={scaleY} />
+    <OnOffButton on:switch-plot-enabled={(e) => {isEnabled = e.detail.enabled;}} />
   </div>
   <div class="stack wave">
     <SineWave bind:this={waveElement} {scaleY} />
