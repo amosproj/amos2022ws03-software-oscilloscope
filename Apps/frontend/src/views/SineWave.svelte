@@ -1,7 +1,8 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
   import { ColorRGBA, WebglLine, WebglPlot } from "webgl-plot";
-  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_INTERVALS_Y } from "../const";
+  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_INTERVALS_Y, MAX_SWEEP, NUM_CHANNELS } from "../const";
+  import { timeSweep } from "../stores";
 
   export let scaleY;
 
@@ -11,14 +12,22 @@
   let channel_samples = Array.from(Array(numberOfChannels), () => new Array(CANVAS_WIDTH).fill(0.0))
   let lines = []
 
-  let x = 0
+  let xArr = new Array(NUM_CHANNELS).fill(0.0);
+  let xLast = new Array(NUM_CHANNELS).fill(0);
   export const updateBuffer = (samples) => {
     for (let channelIndex = 0; channelIndex < channel_samples.length; channelIndex++)
     {
-      channel_samples[channelIndex][x] = samples[channelIndex]
+      let xCurr = xArr[channelIndex];
+      let xNew = Math.round(xCurr);
+      for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
+        channel_samples[channelIndex][x] = samples[channelIndex]
+      }
+      xLast[channelIndex] = xNew;
+
+      let sweep = $timeSweep[channelIndex] / 5.0;
+      xArr[channelIndex] = xCurr + sweep;
+      while (xArr[channelIndex] >= CANVAS_WIDTH) {xArr[channelIndex] -= CANVAS_WIDTH;}
     }
-    x++;
-    x = x % CANVAS_WIDTH;
   }
 
   const update = () => {

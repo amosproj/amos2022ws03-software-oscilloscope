@@ -3,7 +3,8 @@
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import SineWave from "./SineWave.svelte";
   import OnOffButton from "./OnOffButton.svelte";
-  import { CANVAS_WIDTH } from "../const";
+  import TimeSweepSlider from "./TimeSweepSlider.svelte";
+  import { NUM_CHANNELS } from "../const";
 
   let waveElement;
   let scaleY = 1; // 1V per horizontal line
@@ -44,6 +45,11 @@
   <div id="btn-on-off">
     <OnOffButton on:switch-plot-enabled={(e) => {isEnabled = e.detail.enabled;}} />
   </div>
+  <div id="slider-container">
+    {#each Array(NUM_CHANNELS) as _, i}
+      <div class="slider"><TimeSweepSlider channel={i} /></div>
+    {/each}
+  </div>
 </div>
 
 <style>
@@ -62,5 +68,11 @@
   }
   #control-panel {
     top: 500px;
+  }
+  #slider-container {
+    display: table;
+  }
+  .slider {
+    display: table-cell;
   }
 </style>
