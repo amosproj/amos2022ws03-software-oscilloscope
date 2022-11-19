@@ -107,7 +107,7 @@
   });
 </script>
 
-<canvas bind:this={canvasElement} />
+<canvas data-cy="indicators" bind:this={canvasElement} />
 
 <style>
 </style>
