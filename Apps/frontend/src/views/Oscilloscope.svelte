@@ -21,7 +21,7 @@
 
     socket.onmessage = (message) => {
       let samples = new Float64Array(message.data);
-      if (!isEnabled) { return; }
+      if (!isEnabled) return;
       waveElement.updateBuffer(samples);
     };
   });
@@ -34,11 +34,14 @@
 <div class="wrapper" data-cy="oscilloscope">
   <div class="stack coordinate-system">
     <CoordinateSystem yScale={scaleY} />
-    <OnOffButton on:switch-plot-enabled={(e) => {isEnabled = e.detail.enabled;}} />
   </div>
   <div class="stack wave">
     <SineWave bind:this={waveElement} {scaleY} />
   </div>
+</div>
+
+<div class="wrapper" id="control-panel">
+  <OnOffButton on:switch-plot-enabled={(e) => {isEnabled = e.detail.enabled;}} />
 </div>
 
 <style>
@@ -54,5 +57,8 @@
   }
   .wave {
     z-index: 1;
+  }
+  #control-panel {
+    top: 500px;
   }
 </style>
