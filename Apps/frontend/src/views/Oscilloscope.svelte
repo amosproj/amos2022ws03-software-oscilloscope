@@ -41,7 +41,9 @@
 </div>
 
 <div class="wrapper" id="control-panel">
-  <OnOffButton on:switch-plot-enabled={(e) => {isEnabled = e.detail.enabled;}} />
+  <div id="btn-on-off">
+    <OnOffButton on:switch-plot-enabled={(e) => {isEnabled = e.detail.enabled;}} />
+  </div>
 </div>
 
 <style>
