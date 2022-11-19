@@ -1,4 +1,5 @@
 import { ColorRGBA } from "webgl-plot";
+import { rgbArrayToRGBAString } from "./helper";
 
 export const NR_SHOWN_DATAPOINTS = 1000;
 
@@ -11,6 +12,7 @@ export const INDICATOR_WIDTH = 8;
 export const INDICATOR_FONT_SIZE = 16;
 export const INDICATOR_DECIMAL_PLACES = 3;
 export const INDICATOR_SECTION_WIDTH = 235;
+export const INDICATOR_ZERO_LINE_COLOR = "#ffffff80";
 
 export const LINE_COLORS = [
   [230, 0, 73],
@@ -24,3 +26,5 @@ export const LINE_COLORS = [
   [0, 191, 160],
   [128, 143, 128],
 ];
+
+export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);

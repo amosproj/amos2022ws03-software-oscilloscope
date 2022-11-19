@@ -2,13 +2,13 @@
   import { onMount } from "svelte";
   import {
     CANVAS_HEIGHT,
-    CANVAS_WIDTH,
     INDICATOR_DECIMAL_PLACES,
     INDICATOR_FONT_SIZE,
     INDICATOR_MARGIN,
     INDICATOR_SECTION_WIDTH,
     INDICATOR_WIDTH,
-    LINE_COLORS,
+    INDICATOR_ZERO_LINE_COLOR,
+    LINE_COLORS_RGBA,
     NUM_INTERVALS_Y,
   } from "../const";
 
@@ -19,55 +19,56 @@
 
   export let scaleY;
   export function update(samples) {
+    clearCanvas();
+    drawZeroLine();
+    for (let i = 0; i < samples.length; i++) {
+      updateMinMax(samples[i], i);
+      drawIndicator(i, samples[i], LINE_COLORS_RGBA[i]);
+      drawMinMaxLines(i, LINE_COLORS_RGBA[i]);
+    }
+  }
+
+  const updateMinMax = (sample, i) => {
+    if (sample < min[i]) {
+      min[i] = sample;
+    }
+    if (sample > max[i]) {
+      max[i] = sample;
+    }
+  };
+
+  const clearCanvas = () => {
     canvasContext.clearRect(
       -canvasElement.width,
       -(canvasElement.height / 2),
       canvasElement.width,
       canvasElement.height
     );
-    for (let i = 0; i < samples.length; i++) {
-      if (samples[i] < min[i]) {
-        min[i] = samples[i];
-      }
-      if (samples[i] > max[i]) {
-        max[i] = samples[i];
-      }
-      drawZeroLine();
-      drawIndicator(
-        i,
-        samples[i],
-        `rgba(${LINE_COLORS[i][0]}, ${LINE_COLORS[i][1]}, ${LINE_COLORS[i][2]}, 1)`
-      );
-      drawMinMaxLine(
-        i,
-        `rgba(${LINE_COLORS[i][0]}, ${LINE_COLORS[i][1]}, ${LINE_COLORS[i][2]}, 1)`
-      );
-    }
-  }
+  };
 
-  const initializeCanvas = () => {
+  const resizeCanvas = () => {
     canvasElement.width = INDICATOR_SECTION_WIDTH;
     canvasElement.height = CANVAS_HEIGHT;
     canvasContext = canvasElement.getContext("2d");
+    // Translate coordinates to have zero point at the right center
     canvasContext.translate(canvasElement.width, canvasElement.height / 2);
   };
 
   const drawZeroLine = () => {
     canvasContext.beginPath();
-    canvasContext.strokeStyle = "#ffffff20";
-    canvasContext.fillStyle = "#ffffff20";
+    canvasContext.strokeStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.moveTo(0, 0);
     canvasContext.lineTo(-canvasElement.width, 0);
     canvasContext.stroke();
     canvasContext.font = `${INDICATOR_FONT_SIZE}px Arial`;
-    canvasContext.textColor = "#ffffff80";
+    canvasContext.textColor = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.textAlign = "left";
     canvasContext.fillText("0", -canvasElement.width, INDICATOR_FONT_SIZE);
   };
 
   const drawIndicator = (channel, voltage, color) => {
-    const y = -(voltage * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_Y);
     const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
+    const y = -(voltage * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_Y);
 
     const roundedVoltage =
       Math.trunc(voltage * 10 ** INDICATOR_DECIMAL_PLACES) /
@@ -86,7 +87,7 @@
     );
   };
 
-  const drawMinMaxLine = (channel, color) => {
+  const drawMinMaxLines = (channel, color) => {
     const minY = -(min[channel] * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_Y);
     const maxY = -(max[channel] * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_Y);
     const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
@@ -102,7 +103,7 @@
   };
 
   onMount(() => {
-    initializeCanvas();
+    resizeCanvas();
   });
 </script>
 
