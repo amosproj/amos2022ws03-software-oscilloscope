@@ -1,15 +1,14 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
   import { ColorRGBA, WebglLine, WebglPlot } from "webgl-plot";
-  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_INTERVALS_Y, MAX_SWEEP, NUM_CHANNELS } from "../const";
+  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_INTERVALS_Y, NUM_CHANNELS, MIN_SWEEP, MAX_SWEEP } from "../const";
   import { timeSweep } from "../stores";
 
   export let scaleY;
 
   let canvasElement;
   let webGLPlot;
-  let numberOfChannels = 10;
-  let channel_samples = Array.from(Array(numberOfChannels), () => new Array(CANVAS_WIDTH).fill(0.0))
+  let channel_samples = Array.from(Array(NUM_CHANNELS), () => new Array(CANVAS_WIDTH).fill(0.0))
   let lines = []
 
   let xArr = new Array(NUM_CHANNELS).fill(0.0);
@@ -20,13 +19,16 @@
       let xCurr = xArr[channelIndex];
       let xNew = Math.round(xCurr);
       for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
-        channel_samples[channelIndex][x] = samples[channelIndex]
+        channel_samples[channelIndex][x] = samples[channelIndex];
       }
       xLast[channelIndex] = xNew;
 
-      let sweep = $timeSweep[channelIndex] / 5.0;
-      xArr[channelIndex] = xCurr + sweep;
-      while (xArr[channelIndex] >= CANVAS_WIDTH) {xArr[channelIndex] -= CANVAS_WIDTH;}
+      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0;
+      let fac = sweep < 0 ? MIN_SWEEP : MAX_SWEEP;
+      let delta = fac * sweep + 1.0;
+
+      xArr[channelIndex] = xCurr + delta;
+      while (xArr[channelIndex] >= CANVAS_WIDTH) { xArr[channelIndex] -= CANVAS_WIDTH; }
     }
   }
 
@@ -53,7 +55,7 @@
   }
   
   const initializeLines = () => {
-    for (let i = 0; i < numberOfChannels; i++)
+    for (let i = 0; i < NUM_CHANNELS; i++)
     {
       const color = new ColorRGBA(Math.random(), Math.random(), Math.random(), 1);
       let line = new WebglLine(color, CANVAS_WIDTH);
