@@ -3,6 +3,7 @@
   import { ColorRGBA, WebglLine, WebglPlot } from "webgl-plot";
   import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_CHANNELS, NUM_INTERVALS_Y } from "../const";
 
+  
   export let scalesY;
   export let offsetsY;
 
@@ -24,9 +25,9 @@
   const update = () => {
     for (let i = 0; i < channel_samples.length; i++)
     {
-      for (let x = 0; x < CANVAS_WIDTH; x++) {
-        lines[i].setY(x, channel_samples[i][x]);
+      for (let x = 0; x < CANVAS_WIDTH; ++x) {
         lines[i].offsetY = offsetsY[i];
+        lines[i].setY(x, channel_samples[i][x]);
       }
     }
   }

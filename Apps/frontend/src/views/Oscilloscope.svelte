@@ -1,6 +1,5 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-  import TextField from "@smui/textfield"
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import Waves from "../views/Waves.svelte";
   import { NUM_CHANNELS } from "../const";
@@ -10,11 +9,6 @@
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let offsetsY = Array(NUM_CHANNELS).fill(0);
   let socket;
-
-  /* DEBUG START */
-  scalesY[0] = 2;
-  offsetsY[0] = 0;
-  /* DEBUG END */
 
   onMount(() => {
     socket = new WebSocket("ws://localhost:9000");
@@ -27,7 +21,7 @@
     socket.onmessage = (message) => {
       let samples = new Float64Array(message.data);
 
-      waveElement.updateBuffer(samples, );
+      waveElement.updateBuffer(samples);
     };
   });
 
@@ -45,9 +39,16 @@
       <Waves bind:this={waveElement} {scalesY} {offsetsY}/>
     </div>
   </div>
-  <div style="float:right">
+  <div class="sliders-wrapper">
     {#each offsetsY as offsetY}
-      <TextField bind:value={offsetY} label="Offset of y-axis" type="float" />
+      <div>
+        <input type="range"
+          bind:value={offsetY}
+          min="-1.4"
+          max="1.4"
+          step="0.2"
+        />
+      </div>
     {/each}
   </div>
 </div>
@@ -55,6 +56,10 @@
 <style>
   .wrapper {
     position: relative;
+    width: 10vw;
+    height: 10vh;
+    display: flex;
+    margin: 0 2rem;
   }
   .stack {
     position: absolute;
@@ -65,5 +70,9 @@
   }
   .wave {
     z-index: 1;
+  }
+  .sliders-wrapper {
+    float:right;
+    margin-right: 2rem;
   }
 </style>
