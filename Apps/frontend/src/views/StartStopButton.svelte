@@ -3,17 +3,14 @@
 
 	const dispatch = createEventDispatcher()
 
-	let play = "▶";
-	let stop = "■";
+	let play = "Start ▶";
+	let stop = "Stop ■";
 	let symbol = stop;
 	let hasStarted = true;
 
 	const handleStartStop = async () => {
 		hasStarted = !hasStarted;
-		hasStarted ? symbol = stop : symbol = play;
-	
-		//console.log("hasStarted:" + hasStarted)
-		
+		hasStarted ? symbol = stop : symbol = play;	
 		dispatch('startStop', {buttonValue: hasStarted})
 	}
 	

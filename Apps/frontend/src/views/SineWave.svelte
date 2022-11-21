@@ -2,7 +2,6 @@
   import { beforeUpdate, onMount } from "svelte";
   import { ColorRGBA, WebglLine, WebglPlot } from "webgl-plot";
   import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_INTERVALS_Y } from "../const";
-  import StartStopButton from "./StartStopButton.svelte";
 
   export let scaleY;
 
@@ -11,8 +10,6 @@
   let numberOfChannels = 10;
   let channel_samples = Array.from(Array(numberOfChannels), () => new Array(CANVAS_WIDTH).fill(0.0))
   let lines = []
-
-  let hasStarted = true
 
   let x = 0
   export const updateBuffer = (samples) => {
@@ -25,10 +22,6 @@
   }
 
   const update = () => {
-    if(!hasStarted) {
-      //console.log("reached stop")
-      return
-    } 
     
     for (let i = 0; i < channel_samples.length; i++)
     {      
@@ -44,7 +37,7 @@
     canvasElement.height = CANVAS_HEIGHT;
   }
 
-  const initializePlot = () => {
+  export const initializePlot = () => {
     webGLPlot = new WebglPlot(canvasElement);
     initializeLines();
     console.log(`lines: ${lines.length}`)
@@ -81,4 +74,4 @@
 </script>
 
 <canvas bind:this={canvasElement} />
-<StartStopButton on:startStop={async (event)=> {hasStarted = event.detail.buttonValue}} />
+

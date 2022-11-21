@@ -3,10 +3,13 @@
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import SineWave from "./SineWave.svelte";
   import { CANVAS_WIDTH } from "../const";
+  import StartStopButton from "./StartStopButton.svelte";
 
   let waveElement;
   let scaleY = 1; // 1V per horizontal line
   let socket;
+
+  let hasStarted = true
 
   onMount(() => {
     socket = new WebSocket("ws://localhost:9000");
@@ -17,9 +20,16 @@
     };
 
     socket.onmessage = (message) => {
-      let samples = new Float64Array(message.data);
 
-      waveElement.updateBuffer(samples);
+      if(hasStarted){
+        let samples = new Float64Array(message.data);
+        waveElement.updateBuffer(samples);
+
+      }else{
+        
+      }
+      
+
     };
   });
 
@@ -34,6 +44,7 @@
   </div>
   <div class="stack wave">
     <SineWave bind:this={waveElement} {scaleY} />
+    <StartStopButton on:startStop={async (event)=> {hasStarted = event.detail.buttonValue}} />
   </div>
 </div>
 
