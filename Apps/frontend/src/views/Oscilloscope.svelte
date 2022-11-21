@@ -3,11 +3,10 @@
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import Waves from "../views/Waves.svelte";
   import { NUM_CHANNELS } from "../const";
-
+  import OffsetSlider from "./OffsetSlider.svelte";
 
   let waveElement;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
-  let offsetsY = Array(NUM_CHANNELS).fill(0);
   let socket;
 
   onMount(() => {
@@ -27,7 +26,7 @@
 
   onDestroy(() => {
     socket.close();
-  }) 
+  });
 </script>
 
 <div>
@@ -36,19 +35,12 @@
       <CoordinateSystem scaleY={Math.max(...scalesY)} />
     </div>
     <div class="stack wave">
-      <Waves bind:this={waveElement} {scalesY} {offsetsY}/>
+      <Waves bind:this={waveElement} {scalesY} />
     </div>
   </div>
   <div class="sliders-wrapper">
-    {#each offsetsY as offsetY}
-      <div>
-        <input type="range"
-          bind:value={offsetY}
-          min="-1.4"
-          max="1.4"
-          step="0.2"
-        />
-      </div>
+    {#each { length: NUM_CHANNELS } as _, index}
+      <OffsetSlider />
     {/each}
   </div>
 </div>
@@ -72,7 +64,7 @@
     z-index: 1;
   }
   .sliders-wrapper {
-    float:right;
+    float: right;
     margin-right: 2rem;
   }
 </style>
