@@ -37,4 +37,7 @@ jobs:
         with:        
           working-directory: ./Apps/frontend
           start: npm run cypress:release
+          wait-on: '127.0.0.1:5173'
+          wait-on-timeout: 120
           browser: chrome
+          record: false
