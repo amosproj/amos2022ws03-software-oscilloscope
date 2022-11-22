@@ -60,7 +60,7 @@ services:
       # Remove path prefix
       - "traefik.http.middlewares.sosci-backend-stripprefix.stripprefix.prefixes=/dev/api"
         # Main
-      - "traefik.http.routers.sosci-dev-backend.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/api`)"
       - "traefik.http.routers.sosci-dev-backend.entrypoints=websecure"
       - "traefik.http.routers.sosci-dev-backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-dev-backend.service=sosci-dev-backend"
