@@ -5,6 +5,11 @@ on:
     paths:
       - 'Apps/generator/**.*'
       - '.github/workflows/test-generator-automation.yml'
+  pull_request:
+    branches: 
+      - "dev"
+      - "int"
+      - "main"
 
 jobs:
   cargo-test:
