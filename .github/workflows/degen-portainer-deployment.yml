@@ -1,4 +1,4 @@
-name: CI Deployment Trigger
+name: CI Degen Deployment Trigger
 
 on:
   pull_requests:
