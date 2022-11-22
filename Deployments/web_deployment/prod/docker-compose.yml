@@ -7,11 +7,11 @@ services:
     restart: unless-stopped
     environment:
       - HOST=0.0.0.0:34254
-      - TARGET=backend:34255
+      - TARGET=backend:34259
       - PPS=100.0
       - SIG_FREQ=1.0
     ports:
-      - 34254:34254
+      - 34258:34254
     networks:
       - internal
 
@@ -50,7 +50,7 @@ services:
       - HOST_PORT=34255
       - HOST_ADDRESS=0.0.0.0
     ports: 
-      - 34255:34255
+      - 34259:34255
     networks:
       - internal
       - web

@@ -7,11 +7,11 @@ services:
     restart: unless-stopped
     environment:
       - HOST=0.0.0.0:34254
-      - TARGET=backend:34255
+      - TARGET=backend:34257
       - PPS=100.0
       - SIG_FREQ=1.0
     ports:
-      - 34254:34254
+      - 34256:34254
     networks:
       - internal
 
@@ -20,8 +20,6 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-    environment:
-      - HOST_BACKEND=amos-sosci.die-degens.eu/int/api
     networks:
       - internal
       - web
@@ -50,7 +48,7 @@ services:
       - HOST_PORT=34255
       - HOST_ADDRESS=0.0.0.0
     ports: 
-      - 34255:34255
+      - 34257:34255
     networks:
       - internal
       - web
