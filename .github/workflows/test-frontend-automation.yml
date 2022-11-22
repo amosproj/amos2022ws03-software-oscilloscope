@@ -19,7 +19,6 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,7 +32,7 @@ jobs:
           runTests: false
           build: npm run build
       
-      - name: Cypress run
+      - name: Cypress Run
         uses: cypress-io/github-action@v4
         with:        
           working-directory: ./Apps/frontend
