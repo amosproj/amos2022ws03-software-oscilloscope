@@ -9,6 +9,8 @@ on:
       - "dev"
       - "int"
       - "main"
+    paths:
+      - 'Apps/backend/*'
 
 jobs:
   docker:
