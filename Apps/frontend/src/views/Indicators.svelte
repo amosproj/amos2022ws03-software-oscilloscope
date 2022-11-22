@@ -11,6 +11,7 @@
     LINE_COLORS_RGBA,
     NUM_INTERVALS_Y,
   } from "../const";
+  import { roundVoltage } from "../helper";
 
   let canvasElement;
   let canvasContext;
@@ -25,6 +26,7 @@
       updateMinMax(samples[i], i);
       drawIndicator(i, samples[i], LINE_COLORS_RGBA[i]);
       drawMinMaxLines(i, LINE_COLORS_RGBA[i]);
+      writeText(i);
     }
   }
 
@@ -70,21 +72,10 @@
     const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
     const y = -(voltage * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_Y);
 
-    const roundedVoltage =
-      Math.trunc(voltage * 10 ** INDICATOR_DECIMAL_PLACES) /
-      10 ** INDICATOR_DECIMAL_PLACES;
-
     canvasContext.fillStyle = color;
     canvasContext.beginPath();
     canvasContext.arc(x, y, INDICATOR_WIDTH / 2, 0, 2 * Math.PI);
     canvasContext.fill();
-    // Draw text
-    canvasContext.font = `${INDICATOR_FONT_SIZE}px monospace`;
-    canvasContext.fillText(
-      `${channel}:${roundedVoltage} V`,
-      -INDICATOR_SECTION_WIDTH + 8,
-      -(CANVAS_HEIGHT / 2) + (channel + 1) * INDICATOR_FONT_SIZE
-    );
   };
 
   const drawMinMaxLines = (channel, color) => {
@@ -100,6 +91,22 @@
     canvasContext.moveTo(x - 4, maxY);
     canvasContext.lineTo(x + 4, maxY);
     canvasContext.stroke();
+  };
+
+  const writeText = (channel) => {
+    const roundedMin = roundVoltage(min[channel]);
+    const roundedMax = roundVoltage(max[channel]);
+    canvasContext.font = `${INDICATOR_FONT_SIZE}px monospace`;
+    canvasContext.fillText(
+      `[${channel}] Min:${roundedMin} V`,
+      -INDICATOR_SECTION_WIDTH,
+      -(CANVAS_HEIGHT / 2) + (channel + 1) * 2 * INDICATOR_FONT_SIZE
+    );
+    canvasContext.fillText(
+      `    Max:${roundedMax} V`,
+      -INDICATOR_SECTION_WIDTH,
+      -(CANVAS_HEIGHT / 2) + (channel + 1.5) * 2 * INDICATOR_FONT_SIZE
+    );
   };
 
   onMount(() => {
