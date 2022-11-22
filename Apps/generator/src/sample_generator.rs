@@ -89,7 +89,7 @@ mod tests {
         let mut generator =
             TenChannelSampleGenerator::new(SAMPLING_RATE, FREQUENCY, AMPLITUDE, false);
 
-        for i in 0..50 {
+        for _ in 0..50 {
             let samples: Vec<f64> = generator.next();
 
             for s in samples {

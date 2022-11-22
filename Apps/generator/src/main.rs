@@ -36,7 +36,7 @@ async fn run(socket: &UdpSocket, config: &Config) {
         let data: Vec<u8> = bytes_from_samples(&samples);
 
         match socket.send(&data) {
-            Ok(n) => (),
+            Ok(_) => (),
             Err(e) => println!("failed sending: {e:?}."),
         }
 
