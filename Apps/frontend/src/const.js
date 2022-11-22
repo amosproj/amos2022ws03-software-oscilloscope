@@ -1,4 +1,3 @@
-import { ColorRGBA } from "webgl-plot";
 import { rgbArrayToRGBAString } from "./helper";
 
 export const NR_SHOWN_DATAPOINTS = 1000;
@@ -7,6 +6,7 @@ export const CANVAS_WIDTH = 1000;
 export const CANVAS_HEIGHT = 500;
 export const NUM_INTERVALS_X = 20;
 export const NUM_INTERVALS_Y = 10;
+
 export const INDICATOR_MARGIN = 4;
 export const INDICATOR_WIDTH = 8;
 export const INDICATOR_FONT_SIZE = 11;
@@ -28,3 +28,7 @@ export const LINE_COLORS = [
 ];
 
 export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
+
+export const NUM_CHANNELS = 10;
+export const MIN_SWEEP = 0.5; // <= 1
+export const MAX_SWEEP = 2.0; // >= 1
