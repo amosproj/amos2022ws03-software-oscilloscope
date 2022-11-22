@@ -3,6 +3,7 @@ version: '3'
 services:
   generator:
     image: sosci/generator:${VERSION_TAG:-latest}
+    pull_policy: always
     hostname: generator
     restart: unless-stopped
     environment:
@@ -17,6 +18,7 @@ services:
 
   frontend:
     image: sosci/frontend:${VERSION_TAG:-latest}
+    pull_policy: always
     depends_on:
       - backend
     restart: unless-stopped
@@ -43,6 +45,7 @@ services:
 
   backend:
     image: sosci/backend:${VERSION_TAG:-latest}
+    pull_policy: always
     hostname: backend
     environment:
       - HOST_PORT=34255
