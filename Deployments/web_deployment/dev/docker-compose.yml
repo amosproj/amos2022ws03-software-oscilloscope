@@ -55,18 +55,12 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-        # Redirect HTTP
-      - "traefik.http.routers.sosci-dev-backend-web.service=sosci-dev-backend-websecure"
-      - "traefik.http.middlewares.sosci-dev-backend-websecure.redirectscheme.scheme=https"
-      - "traefik.http.routers.sosci-dev-backend-web.middlewares=sosci-dev-backend-websecure"
-      - "traefik.http.routers.sosci-dev-backend-web.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/api`)"
-      - "traefik.http.routers.sosci-dev-backend-web.entrypoints=web"
         # Main
-      - "traefik.http.routers.sosci-dev-backend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/api`)"
-      - "traefik.http.routers.sosci-dev-backend-websecure.entrypoints=websecure"
-      - "traefik.http.routers.sosci-dev-backend-websecure.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.sosci-dev-backend-websecure.service=sosci-dev-backend-websecure"
-      - "traefik.http.services.sosci-dev-backend-websecure.loadbalancer.server.port=9000"
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/api`)"
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.entrypoints=websecure"
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.tls.certresolver=letsencrypt"
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.service=sosci-dev-backend-websecure"
+      - "traefik.tcp.services.sosci-dev-backend-websecure.loadbalancer.server.port=9000"
 
 networks:
   internal:
