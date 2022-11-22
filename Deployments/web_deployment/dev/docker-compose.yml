@@ -34,10 +34,10 @@ services:
       - "traefik.http.routers.sosci-dev-frontend-web.service=sosci-dev-frontend-websecure"
       - "traefik.http.middlewares.sosci-dev-frontend-websecure.redirectscheme.scheme=https"
       - "traefik.http.routers.sosci-dev-frontend-web.middlewares=sosci-dev-frontend-websecure,sosci-stripprefix"
-      - "traefik.http.routers.sosci-dev-frontend-web.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/ui`)"
+      - "traefik.http.routers.sosci-dev-frontend-web.rule=Host(`amos-sosci.die-degens.eu`)"
       - "traefik.http.routers.sosci-dev-frontend-web.entrypoints=web"
         # HTTPS
-      - "traefik.http.routers.sosci-dev-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/ui`)"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`)"
       - "traefik.http.routers.sosci-dev-frontend-websecure.entrypoints=websecure"
       - "traefik.http.routers.sosci-dev-frontend-websecure.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-dev-frontend-websecure.service=sosci-dev-frontend-websecure"
