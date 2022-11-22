@@ -1,8 +1,12 @@
-use generator::bytes_from_samples;
-use generator::create_udp_socket;
-use generator::{Config, TenChannelSampleGenerator};
 use std::net::UdpSocket;
 use tokio::time::{self, Duration};
+use crate::config::Config;
+use crate::sample_generator::TenChannelSampleGenerator;
+use crate::helper::{bytes_from_samples, create_udp_socket};
+
+mod config;
+mod sample_generator;
+mod helper;
 
 #[tokio::main]
 async fn main() {
