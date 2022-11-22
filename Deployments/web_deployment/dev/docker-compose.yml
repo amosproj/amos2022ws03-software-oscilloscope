@@ -28,10 +28,12 @@ services:
       - web
     labels:
       - "traefik.enable=true"
+      # Remove path prefix
+      - "traefik.http.middlewares.sosci-stripprefix.stripprefix.prefixes=/dev/ui"
         # Redirect HTTP
       - "traefik.http.routers.sosci-dev-frontend-web.service=sosci-dev-frontend-websecure"
       - "traefik.http.middlewares.sosci-dev-frontend-websecure.redirectscheme.scheme=https"
-      - "traefik.http.routers.sosci-dev-frontend-web.middlewares=sosci-dev-frontend-websecure"
+      - "traefik.http.routers.sosci-dev-frontend-web.middlewares=sosci-dev-frontend-websecure,sosci-stripprefix"
       - "traefik.http.routers.sosci-dev-frontend-web.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/ui`)"
       - "traefik.http.routers.sosci-dev-frontend-web.entrypoints=web"
         # Main
