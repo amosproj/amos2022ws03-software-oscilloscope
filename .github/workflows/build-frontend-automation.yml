@@ -42,6 +42,8 @@ jobs:
         with:
           context: ./Apps/frontend
           platforms: linux/amd64
+          build-args: |
+            MODE=develop
           push: true
           tags: |
             sosci/frontend:nightly
@@ -52,6 +54,8 @@ jobs:
         with:
           context: ./Apps/frontend
           platforms: linux/amd64
+          build-args: |
+            MODE=develop
           push: true
           tags: |
             sosci/frontend:nightly
@@ -62,6 +66,8 @@ jobs:
         with:
           context: ./Apps/frontend
           platforms: linux/amd64
+          build-args: |
+            MODE=integration
           push: true
           tags: |
             sosci/frontend:${{ github.event.pull_request.title }}
@@ -72,6 +78,8 @@ jobs:
         with:
           context: ./Apps/frontend
           platforms: linux/amd64,linux/arm64
+          build-args: |
+            MODE=production
           push: true
           tags: |
             sosci/frontend:${{ github.event.pull_request.title }}
