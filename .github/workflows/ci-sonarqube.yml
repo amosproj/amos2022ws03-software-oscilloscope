@@ -1,3 +1,5 @@
+name: CI Sonarqube Analysis
+
 on:
   # Trigger analysis when pushing in master or pull requests, and when creating
   # a pull request. 
@@ -20,8 +22,8 @@ jobs:
       uses: sonarsource/sonarqube-scan-action@master
       with:
         args: >
-        -Dsonar.projectKey=sosci
-        -Dsonar.projectName=SOSCI
+          -Dsonar.projectKey=sosci
+          -Dsonar.projectName=SOSCI
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
