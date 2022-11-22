@@ -1,0 +1,30 @@
+name: CI Test Docker Generator
+
+on:
+  push:
+    branches:
+      - "feature/#40-setting-up-cicd"
+    paths:
+      - 'Apps/generator/**.*'
+      - '.github/workflows/test-generator-automation.yml'
+  pull_request:
+    branches: 
+      - "dev"
+      - "int"
+      - "main"
+    paths:
+      - 'Apps/generator/**.*'
+      - '.github/workflows/test-generator-automation.yml'
+
+jobs:
+  cargo-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
