@@ -17,7 +17,7 @@ on:
       - '.github/workflows/build-backend-automation.yml'
 
 jobs:
-  docker:
+  docker-build:
     runs-on: ubuntu-latest
     steps:
       -
@@ -42,7 +42,7 @@ jobs:
         with:
           context: ./Apps/backend
           platforms: linux/amd64
-          push: true
+          push: false
           tags: |
             sosci/backend:nightly
       -
@@ -52,7 +52,7 @@ jobs:
         with:
           context: ./Apps/backend
           platforms: linux/amd64
-          push: true
+          push: false
           tags: |
             sosci/backend:nightly
       -
@@ -62,7 +62,7 @@ jobs:
         with:
           context: ./Apps/backend
           platforms: linux/amd64
-          push: true
+          push: false
           tags: |
             sosci/backend:${{ github.event.pull_request.title }}
       -
@@ -72,7 +72,7 @@ jobs:
         with:
           context: ./Apps/backend
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: false
           tags: |
             sosci/backend:${{ github.event.pull_request.title }}
             sosci/backend:latest
