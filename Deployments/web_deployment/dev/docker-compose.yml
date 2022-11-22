@@ -56,9 +56,9 @@ services:
     labels:
       - "traefik.enable=true"
         # Main
-      - "traefik.tcp.routers.sosci-dev-backend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/api`)"
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.rule=HostSNI(`amos-sosci.die-degens.eu`)"
       - "traefik.tcp.routers.sosci-dev-backend-websecure.entrypoints=websecure"
-      - "traefik.tcp.routers.sosci-dev-backend-websecure.tls.certresolver=letsencrypt"
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.tls.=true"
       - "traefik.tcp.routers.sosci-dev-backend-websecure.service=sosci-dev-backend-websecure"
       - "traefik.tcp.services.sosci-dev-backend-websecure.loadbalancer.server.port=9000"
 
