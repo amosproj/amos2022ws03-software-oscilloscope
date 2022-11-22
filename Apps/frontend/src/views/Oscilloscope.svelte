@@ -40,7 +40,11 @@
   </div>
   <div class="sliders-wrapper">
     {#each { length: NUM_CHANNELS } as _, index}
-      <OffsetSlider />
+      <OffsetSlider
+        onInput={(offsetY) => {
+          waveElement.updateChannelOffsetY(index, offsetY);
+        }
+      } />
     {/each}
   </div>
 </div>
