@@ -9,7 +9,7 @@
   let socket;
 
   onMount(() => {
-    socket = new WebSocket("wss://sosci-dev-backend-1:9000");
+    socket = new WebSocket("wss://amos-sosci.die-degens.eu:443");
     socket.binaryType = "arraybuffer";
 
     socket.onopen = () => {
