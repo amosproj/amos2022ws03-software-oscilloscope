@@ -38,10 +38,10 @@ mod tests {
         let result = bytes_from_samples(&samples);
 
         assert!(samples.last().is_some());
-        assert_eq!(samples.first().unwrap().to_ne_bytes(), &result[0..7]);
+        assert_eq!(samples.first().unwrap().to_ne_bytes(), &result[0..8]);
 
         assert!(samples.last().is_some());
-        assert_eq!(samples.last().unwrap().to_ne_bytes(), &result[8..15]);
+        assert_eq!(samples.last().unwrap().to_ne_bytes(), &result[8..16]);
     }
     #[test]
     fn test_bytes_from_samples_empty_input() {
