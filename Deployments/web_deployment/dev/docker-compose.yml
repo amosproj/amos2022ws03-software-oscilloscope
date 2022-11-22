@@ -22,7 +22,7 @@ services:
       - backend
     restart: unless-stopped
     environment:
-      - HOST_BACKEND=sosci.dev.die-degens.eu/dev/api
+      - HOST_BACKEND=amos-sosci.die-degens.eu/dev/api
     networks:
       - internal
       - web
@@ -32,10 +32,10 @@ services:
       - "traefik.http.routers.sosci-dev-frontend-web.service=sosci-dev-frontend-websecure"
       - "traefik.http.middlewares.sosci-dev-frontend-websecure.redirectscheme.scheme=https"
       - "traefik.http.routers.sosci-dev-frontend-web.middlewares=sosci-dev-frontend-websecure"
-      - "traefik.http.routers.sosci-dev-frontend-web.rule=Host(`sosci.dev.die-degens.eu`) && Path(`/dev/ui`)"
+      - "traefik.http.routers.sosci-dev-frontend-web.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/ui`)"
       - "traefik.http.routers.sosci-dev-frontend-web.entrypoints=web"
         # Main
-      - "traefik.http.routers.sosci-dev-frontend-websecure.rule=Host(`sosci.dev.die-degens.eu`) && Path(`/dev/ui`)"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/ui`)"
       - "traefik.http.routers.sosci-dev-frontend-websecure.entrypoints=websecure"
       - "traefik.http.routers.sosci-dev-frontend-websecure.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-dev-frontend-websecure.service=sosci-dev-frontend-websecure"
@@ -59,10 +59,10 @@ services:
       - "traefik.http.routers.sosci-dev-backend-web.service=sosci-dev-backend-websecure"
       - "traefik.http.middlewares.sosci-dev-backend-websecure.redirectscheme.scheme=https"
       - "traefik.http.routers.sosci-dev-backend-web.middlewares=sosci-dev-backend-websecure"
-      - "traefik.http.routers.sosci-dev-backend-web.rule=Host(`sosci.dev.die-degens.eu`) && Path(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend-web.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/api`)"
       - "traefik.http.routers.sosci-dev-backend-web.entrypoints=web"
         # Main
-      - "traefik.http.routers.sosci-dev-backend-websecure.rule=Host(`sosci.dev.die-degens.eu`) && Path(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/api`)"
       - "traefik.http.routers.sosci-dev-backend-websecure.entrypoints=websecure"
       - "traefik.http.routers.sosci-dev-backend-websecure.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-dev-backend-websecure.service=sosci-dev-backend-websecure"
