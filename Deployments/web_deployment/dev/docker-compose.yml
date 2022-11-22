@@ -21,8 +21,8 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-    ports:
-      - 9001:9000
+    environment:
+      - HOST_BACKEND=sosci.dev.die-degens.eu/dev/api
     networks:
       - internal
       - web
@@ -49,11 +49,24 @@ services:
       - HOST_ADDRESS=0.0.0.0
     ports: 
       - 34255:34255
-      - 9000:9000
     networks:
       - internal
       - web
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+        # Redirect HTTP
+      - "traefik.http.routers.sosci-dev-backend-web.service=sosci-dev-backend-websecure"
+      - "traefik.http.middlewares.sosci-dev-backend-websecure.redirectscheme.scheme=https"
+      - "traefik.http.routers.sosci-dev-backend-web.middlewares=sosci-dev-backend-websecure"
+      - "traefik.http.routers.sosci-dev-backend-web.rule=Host(`sosci.dev.die-degens.eu`) && Path(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend-web.entrypoints=web"
+        # Main
+      - "traefik.http.routers.sosci-dev-backend-websecure.rule=Host(`sosci.dev.die-degens.eu`) && Path(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend-websecure.entrypoints=websecure"
+      - "traefik.http.routers.sosci-dev-backend-websecure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-dev-backend-websecure.service=sosci-dev-backend-websecure"
+      - "traefik.http.services.sosci-dev-backend-websecure.loadbalancer.server.port=9000"
 
 networks:
   internal:
