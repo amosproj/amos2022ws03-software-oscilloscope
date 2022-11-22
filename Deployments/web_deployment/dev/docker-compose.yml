@@ -74,3 +74,4 @@ networks:
     internal: true
   web:
     driver: bridge
+    external: true
