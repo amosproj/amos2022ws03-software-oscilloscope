@@ -24,6 +24,7 @@ async fn run(socket: &UdpSocket, config: &Config) {
         config.pps,
         config.signal_frequency,
         config.signal_amplitude,
+        true
     );
 
     let mut interval = time::interval(Duration::from_nanos(
