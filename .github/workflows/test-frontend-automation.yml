@@ -27,6 +27,7 @@ jobs:
       - name: Cypress Install
         uses: cypress-io/github-action@v4
         with:
+          project: ./Apps/frontend
           # Disable running of tests within install job
           runTests: false
           build: npm run build
@@ -34,4 +35,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
+          project: ./Apps/frontend
           start: npm run cypress:release
