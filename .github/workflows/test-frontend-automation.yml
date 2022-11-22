@@ -27,7 +27,7 @@ jobs:
           runTests: false
           build: npm run build
       
-      - name: Cypress Run
+      - name: Cypress Test Execution
         uses: cypress-io/github-action@v4
         with:        
           working-directory: ./Apps/frontend
