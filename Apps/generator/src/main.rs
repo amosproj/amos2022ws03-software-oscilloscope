@@ -1,12 +1,12 @@
+use crate::config::Config;
+use crate::helper::{bytes_from_samples, create_udp_socket};
+use crate::sample_generator::TenChannelSampleGenerator;
 use std::net::UdpSocket;
 use tokio::time::{self, Duration};
-use crate::config::Config;
-use crate::sample_generator::TenChannelSampleGenerator;
-use crate::helper::{bytes_from_samples, create_udp_socket};
 
 mod config;
-mod sample_generator;
 mod helper;
+mod sample_generator;
 
 #[tokio::main]
 async fn main() {
@@ -24,7 +24,7 @@ async fn run(socket: &UdpSocket, config: &Config) {
         config.pps,
         config.signal_frequency,
         config.signal_amplitude,
-        true
+        true,
     );
 
     let mut interval = time::interval(Duration::from_nanos(

@@ -66,7 +66,13 @@ mod tests {
         assert_eq!(default_config.host, Config::DEFAULT_HOST);
         assert_eq!(default_config.target, Config::DEFAULT_TARGET);
         assert_eq!(default_config.pps, Config::DEFAULT_PPS);
-        assert_eq!(default_config.signal_frequency, Config::DEFAULT_SIGNAL_FREQUENCY);
-        assert_eq!(default_config.signal_amplitude, Config::DEFAULT_SIGNAL_AMPLITUDE);
+        assert_eq!(
+            default_config.signal_frequency,
+            Config::DEFAULT_SIGNAL_FREQUENCY
+        );
+        assert_eq!(
+            default_config.signal_amplitude,
+            Config::DEFAULT_SIGNAL_AMPLITUDE
+        );
     }
 }
