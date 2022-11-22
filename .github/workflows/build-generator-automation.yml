@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_SECRET }}
       -
-        if: ${{ github.event.pull_request.base.ref == "feature/#40-setting-up-cicd" }}
+        if: github.event.pull_request.base.ref == 'feature/#40-setting-up-cicd'
         name: Build and push from feature branch
         uses: docker/build-push-action@v3
         with:
@@ -40,7 +40,7 @@ jobs:
           tags: |
             sosci/generator:nightly
       -
-        if: ${{ github.event.pull_request.base.ref == "dev" }}
+        if: github.event.pull_request.base.ref == 'dev'
         name: Build and push from dev
         uses: docker/build-push-action@v3
         with:
@@ -50,7 +50,7 @@ jobs:
           tags: |
             sosci/generator:nightly
       -
-        if: ${{ github.event.pull_request.base.ref == "int" }}
+        if: github.event.pull_request.base.ref == 'int'
         name: Build and push from int
         uses: docker/build-push-action@v3
         with:
@@ -58,9 +58,9 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            sosci/generator:${{ github.event.pull_request.title }}
+            sosci/generator:${{ github.event.pull_request.title
       -
-        if: ${{ github.event.pull_request.base.ref == "main" }}
+        if: github.event.pull_request.base.ref == 'main'
         name: Build and push from main
         uses: docker/build-push-action@v3
         with:
