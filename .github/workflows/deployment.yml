@@ -1,0 +1,33 @@
+name: CI Deployment Trigger
+
+on:
+  pull_requests:
+    types:
+      - "completed"
+jobs:
+  trigger_dev_deployment:
+    runs-on: ubuntu-latest
+    needs:
+      - "CI Push Docker Backend"
+      - "CI Push Docker Frontend"
+      - "CI Push Docker Generator"
+
+    steps:
+      - 
+        if: github.event.pull_request.base.ref == 'dev'
+        name: Invoke deployment hook
+        uses: distributhor/workflow-webhook@v2
+        env:
+          webhook_url: ${{ secrets.WEBHOOK_URL_DEV }}
+      - 
+        if: github.event.pull_request.base.ref == 'int'
+        name: Invoke deployment hook
+        uses: distributhor/workflow-webhook@v2
+        env:
+          webhook_url: ${{ secrets.WEBHOOK_URL_INT }}
+      - 
+        if: github.event.pull_request.base.ref == 'main'
+        name: Invoke deployment hook
+        uses: distributhor/workflow-webhook@v2
+        env:
+          webhook_url: ${{ secrets.WEBHOOK_URL_PROD }}
