@@ -43,3 +43,58 @@ impl TenChannelSampleGenerator {
         samples
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_next_ten_channels() {
+        const EXPECTED_NUMBER_OF_SAMPLES: usize = 10;
+        let mut generator = TenChannelSampleGenerator::new(1.0, 1.0, 1.0);
+
+        assert_eq!(generator.next().len(), EXPECTED_NUMBER_OF_SAMPLES);
+    }
+
+    #[test]
+    fn test_next_changing_samples() {
+        const SAMPLING_RATE: f64 = 50.0;
+        const FREQUENCY: f64 = 1.0;
+        let mut generator = TenChannelSampleGenerator::new(SAMPLING_RATE, FREQUENCY, 1.0);
+        let first: Vec<f64> = generator.next();
+        let second: Vec<f64> = generator.next();
+        assert_ne!(first, second)
+    }
+
+    #[test]
+    fn test_next_samples_bound_by_amplitude() {
+        const SAMPLING_RATE: f64 = 50.0;
+        const FREQUENCY: f64 = 1.0;
+        const AMPLITUDE: f64 = 10.0;
+
+        let mut generator = TenChannelSampleGenerator::new(SAMPLING_RATE, FREQUENCY, AMPLITUDE);
+
+        for i in 0..50 {
+            let samples: Vec<f64> = generator.next();
+
+            for s in samples {
+                assert!(s.abs() <= AMPLITUDE)
+            }
+        }
+    }
+
+    #[test]
+    fn test_next_sampling_rate_equals_frequency() {
+        const SAMPLING_RATE: f64 = 1.0;
+        const FREQUENCY: f64 = 1.0;
+
+        let mut generator = TenChannelSampleGenerator::new(SAMPLING_RATE, FREQUENCY, 1.0);
+
+        let first: Vec<f64> = generator.next();
+        let second: Vec<f64> = generator.next();
+        let third: Vec<f64> = generator.next();
+
+        assert_eq!(first, second);
+        assert_eq!(second, third);
+    }
+}
