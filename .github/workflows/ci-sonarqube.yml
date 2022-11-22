@@ -1,8 +1,6 @@
 name: CI Sonarqube Analysis
 
 on:
-  # Trigger analysis when pushing in master or pull requests, and when creating
-  # a pull request. 
   push:
     branches:
       - dev
