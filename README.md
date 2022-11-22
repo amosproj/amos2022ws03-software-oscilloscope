@@ -4,6 +4,15 @@
 
 [Impediments backlog](https://github.com/users/rbalink/projects/1/views/1)
 
+# About The Project
+This project - SOSCI is a software developed based on an oscilloscopes and its features.
+
+### Product Vision
+The objective of SOSCI is to enable users of oscilloscope a way to gain access to all the features and possibilities through a software that can be done through a hardware oscilloscope and beyond. Our vision is to create a method that would better everyday life of engineers. 
+
+### Product Mission
+To organize features of an oscilloscope and processing of information and make it possible for the user to access it through a webpage. To continuously raise the level of experience of the customer with use of current technologies and maximize the output of our customer. Using SOSCI application for displaying sensor data on the frontend. 
+
 # Docker
 
 ## How to run docker containers

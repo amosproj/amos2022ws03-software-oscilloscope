@@ -2,12 +2,14 @@
   import { onMount, onDestroy } from "svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import SineWave from "./SineWave.svelte";
+  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_CHANNELS } from "../const";
+  import Indicators from "./Indicators.svelte";
   import OnOffButton from "./OnOffButton.svelte";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
-  import { NUM_CHANNELS } from "../const";
 
   let waveElement;
-  let scaleY = 1; // 1V per horizontal line
+  let indicatorElement;
+  let scaleY = 0.5; // 1V per horizontal line
   let socket;
 
   let isEnabled = false;
@@ -24,15 +26,23 @@
       let samples = new Float64Array(message.data);
       if (!isEnabled) return;
       waveElement.updateBuffer(samples);
+      indicatorElement.update(samples);
     };
   });
 
   onDestroy(() => {
     socket.close();
-  }) 
+  });
 </script>
 
-<div class="wrapper" data-cy="oscilloscope">
+<div
+  class="wrapper"
+  style="--canvas-width: {CANVAS_WIDTH}px; --canvas-height: {CANVAS_HEIGHT}px"
+  data-cy="oscilloscope"
+>
+  <div class="indicators">
+    <Indicators bind:this={indicatorElement} {scaleY} />
+  </div>
   <div class="stack coordinate-system">
     <CoordinateSystem yScale={scaleY} />
   </div>
@@ -43,7 +53,11 @@
 
 <div class="wrapper" id="control-panel">
   <div id="btn-on-off">
-    <OnOffButton on:switch-plot-enabled={(e) => {isEnabled = e.detail.enabled;}} />
+    <OnOffButton
+      on:switch-plot-enabled={(e) => {
+        isEnabled = e.detail.enabled;
+      }}
+    />
   </div>
   <div id="slider-container">
     {#each Array(NUM_CHANNELS) as _, i}
@@ -55,6 +69,15 @@
 <style>
   .wrapper {
     position: relative;
+    width: var(--canvas-width);
+    height: var(--canvas-height);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .indicators {
+    position: absolute;
+    left: 0;
+    transform: translateX(-100%);
   }
   .stack {
     position: absolute;
