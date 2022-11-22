@@ -5,14 +5,16 @@ on:
     branches:
       - "feature/#40-setting-up-cicd"
     paths:
-      - 'Apps/generator/*'
+      - 'Apps/generator/**.*'
+      - '.github/workflows/build-generator-automation.yml'
   pull_request:
     branches: 
       - "dev"
       - "int"
       - "main"
     paths:
-      - 'Apps/generator/*'
+      - 'Apps/generator/**.*'
+      - '.github/workflows/build-generator-automation.yml'
 
 jobs:
   docker:

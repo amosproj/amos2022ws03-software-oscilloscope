@@ -5,14 +5,16 @@ on:
     branches:
       - "feature/#40-setting-up-cicd"
     paths:
-      - 'Apps/backend/*'
+      - 'Apps/backend/**.*'
+      - '.github/workflows/build-backend-automation.yml'
   pull_request:
     branches: 
       - "dev"
       - "int"
       - "main"
     paths:
-      - 'Apps/backend/*'
+      - 'Apps/backend/**.*'
+      - '.github/workflows/build-backend-automation.yml'
 
 jobs:
   docker:

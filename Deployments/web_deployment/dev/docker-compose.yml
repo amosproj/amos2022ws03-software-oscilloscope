@@ -17,7 +17,6 @@ services:
 
   frontend:
     image: sosci/frontend:nightly
-    hostname: frontend
     depends_on:
       - backend
     restart: unless-stopped
@@ -51,11 +50,18 @@ services:
       - HOST_PORT=34255
       - HOST_ADDRESS=0.0.0.0
     ports: 
-      - 9000:9000
       - 34255:34255
     networks:
       - internal
+      - web
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+        # Main
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.rule=HostSNI(`amos-sosci.die-degens.eu`)"
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.entrypoints=websecure"
+      - "traefik.tcp.routers.sosci-dev-backend-websecure.service=sosci-dev-backend-websecure"
+      - "traefik.tcp.services.sosci-dev-backend-websecure.loadbalancer.server.port=9000"
 
 networks:
   internal:
