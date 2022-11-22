@@ -17,7 +17,7 @@ on:
       - '.github/workflows/build-generator-automation.yml'
 
 jobs:
-  docker:
+  docker-build:
     runs-on: ubuntu-latest
     steps:
       -
@@ -37,7 +37,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_SECRET }}
       -
         if: github.ref_name== 'feature/#40-setting-up-cicd'
-        name: Build and push from feature branch
+        name: Build from feature branch
         uses: docker/build-push-action@v3
         with:
           context: ./Apps/generator
@@ -47,7 +47,7 @@ jobs:
             sosci/generator:nightly
       -
         if: github.event.pull_request.base.ref == 'dev'
-        name: Build and push from dev
+        name: Build from dev
         uses: docker/build-push-action@v3
         with:
           context: ./Apps/generator
@@ -57,7 +57,7 @@ jobs:
             sosci/generator:nightly
       -
         if: github.event.pull_request.base.ref == 'int'
-        name: Build and push from int
+        name: Build from int
         uses: docker/build-push-action@v3
         with:
           context: ./Apps/generator
@@ -67,7 +67,7 @@ jobs:
             sosci/generator:${{ github.event.pull_request.title }}
       -
         if: github.event.pull_request.base.ref == 'main'
-        name: Build and push from main
+        name: Build from main
         uses: docker/build-push-action@v3
         with:
           context: ./Apps/generator

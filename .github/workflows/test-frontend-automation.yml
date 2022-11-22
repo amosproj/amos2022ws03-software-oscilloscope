@@ -11,7 +11,7 @@ on:
       - '.github/workflows/test-frontend-automation.yml'
 
 jobs:
-  cypress-run:
+  cypress-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

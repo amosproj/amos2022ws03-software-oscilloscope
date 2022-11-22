@@ -13,7 +13,7 @@ on:
       - '.github/workflows/build-backend-automation.yml'
 
 jobs:
-  docker-build:
+  build-push:
     runs-on: ubuntu-latest
     steps:
       -
@@ -31,16 +31,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_SECRET }}
-      -
-        if: github.ref_name== 'feature/#40-setting-up-cicd'
-        name: Build and push from feature branch
-        uses: docker/build-push-action@v3
-        with:
-          context: ./Apps/backend
-          platforms: linux/amd64
-          push: true
-          tags: |
-            sosci/backend:nightly
       -
         if: github.event.pull_request.base.ref == 'dev'
         name: Build and push from dev
