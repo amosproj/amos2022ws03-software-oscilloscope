@@ -57,11 +57,15 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      # Remove path prefix
+      - "traefik.http.middlewares.sosci-stripprefix.stripprefix.prefixes=/dev/api"
         # Main
-      - "traefik.tcp.routers.sosci-dev-backend-websecure.rule=HostSNI(`amos-sosci.die-degens.eu`)"
-      - "traefik.tcp.routers.sosci-dev-backend-websecure.entrypoints=websecure"
-      - "traefik.tcp.routers.sosci-dev-backend-websecure.service=sosci-dev-backend-websecure"
-      - "traefik.tcp.services.sosci-dev-backend-websecure.loadbalancer.server.port=9000"
+      - "traefik.http.routers.sosci-dev-backend.rule=Host(`amos-sosci.die-degens.eu`) && Path(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend.entrypoints=websecure"
+      - "traefik.http.routers.sosci-dev-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-dev-backend.service=sosci-dev-backend"
+      - "traefik.http.services.sosci-dev-backend.loadbalancer.server.port=9000"
+      - "traefik.http.routers.sosci-dev-backend.middlewares=sosci-stripprefix"
 
 networks:
   internal:
