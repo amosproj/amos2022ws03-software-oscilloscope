@@ -7,7 +7,7 @@ on:
     branches:
       - dev
   pull_request:
-      types: [opened, synchronize, reopened]
+      branches: [ "dev" ]
 
 jobs:
   sonarqube-analysis:
