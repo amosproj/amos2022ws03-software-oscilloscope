@@ -1,12 +1,6 @@
 name: CI Test Docker Frontend
 
 on:
-  push:
-    branches:
-      - "feature/#40-setting-up-cicd"
-    paths:
-      - 'Apps/frontend/**.*'
-      - '.github/workflows/test-frontend-automation.yml'
   pull_request:
     branches: 
       - "dev"

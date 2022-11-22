@@ -1,12 +1,6 @@
 name: CI Test Docker Generator
 
 on:
-  push:
-    branches:
-      - "feature/#40-setting-up-cicd"
-    paths:
-      - 'Apps/generator/**.*'
-      - '.github/workflows/test-generator-automation.yml'
   pull_request:
     branches: 
       - "dev"
@@ -27,5 +21,5 @@ jobs:
       # and run all Cypress tests
       - name: Cargo test
         run: |
-          cd .Apps/generator
+          cd ./Apps/generator
           cargo test

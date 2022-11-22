@@ -1,12 +1,6 @@
 name: CI Push Docker Frontend
 
 on:
-  push:
-    branches:
-      - "feature/#40-setting-up-cicd"
-    paths:
-      - 'Apps/frontend/**.*'
-      - '.github/workflows/build-frontend-automation.yml'
   pull_request:
     types:
       - "completed"

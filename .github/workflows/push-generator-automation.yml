@@ -1,12 +1,6 @@
 name: CI Push Docker Generator
 
 on:
-  push:
-    branches:
-      - "feature/#40-setting-up-cicd"
-    paths:
-      - 'Apps/generator/**.*'
-      - '.github/workflows/build-generator-automation.yml'
   pull_request:
     types:
       - "completed"
