@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "feature/#40-setting-up-cicd"
+    paths:
+      - 'Apps/frontend/*'
   pull_request:
     branches: 
       - "dev"

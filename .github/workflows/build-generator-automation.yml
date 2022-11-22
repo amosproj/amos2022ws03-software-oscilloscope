@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "feature/#40-setting-up-cicd"
+    paths:
+      - 'Apps/generator/*'
   pull_request:
     branches: 
       - "dev"
