@@ -19,13 +19,13 @@ on:
 jobs:
   cargo-test:
     runs-on: ubuntu-latest
+    container: rust:slim
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          working-directory: ./Apps/generator
-          command: test
+        run: \
+          cd .Apps/generator
+          cargo test
