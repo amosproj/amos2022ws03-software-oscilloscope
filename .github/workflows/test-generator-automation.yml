@@ -1,11 +1,7 @@
 name: CI Test Docker Generator
 
 on:
-  pull_request:
-    branches: 
-      - "dev"
-      - "int"
-      - "main"
+  push:
     paths:
       - 'Apps/generator/**.*'
       - '.github/workflows/test-generator-automation.yml'
