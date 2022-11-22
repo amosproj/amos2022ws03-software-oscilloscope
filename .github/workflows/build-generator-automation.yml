@@ -58,7 +58,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            sosci/generator:${{ github.event.pull_request.title
+            sosci/generator:${{ github.event.pull_request.title }}
       -
         if: github.event.pull_request.base.ref == 'main'
         name: Build and push from main
