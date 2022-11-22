@@ -26,6 +26,6 @@ jobs:
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cargo test
-        run: \
+        run: |
           cd .Apps/generator
           cargo test
