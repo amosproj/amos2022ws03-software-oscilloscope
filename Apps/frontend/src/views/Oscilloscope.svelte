@@ -2,11 +2,15 @@
   import { onMount, onDestroy } from "svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import SineWave from "./SineWave.svelte";
-  import { CANVAS_WIDTH } from "../const";
+  import OnOffButton from "./OnOffButton.svelte";
+  import TimeSweepSlider from "./TimeSweepSlider.svelte";
+  import { NUM_CHANNELS } from "../const";
 
   let waveElement;
   let scaleY = 1; // 1V per horizontal line
   let socket;
+
+  let isEnabled = false;
 
   onMount(() => {
     socket = new WebSocket("ws://localhost:9000");
@@ -18,7 +22,7 @@
 
     socket.onmessage = (message) => {
       let samples = new Float64Array(message.data);
-
+      if (!isEnabled) return;
       waveElement.updateBuffer(samples);
     };
   });
@@ -37,6 +41,17 @@
   </div>
 </div>
 
+<div class="wrapper" id="control-panel">
+  <div id="btn-on-off">
+    <OnOffButton on:switch-plot-enabled={(e) => {isEnabled = e.detail.enabled;}} />
+  </div>
+  <div id="slider-container">
+    {#each Array(NUM_CHANNELS) as _, i}
+      <div class="slider"><TimeSweepSlider channel={i} /></div>
+    {/each}
+  </div>
+</div>
+
 <style>
   .wrapper {
     position: relative;
@@ -50,5 +65,14 @@
   }
   .wave {
     z-index: 1;
+  }
+  #control-panel {
+    top: 500px;
+  }
+  #slider-container {
+    display: table;
+  }
+  .slider {
+    display: table-cell;
   }
 </style>
