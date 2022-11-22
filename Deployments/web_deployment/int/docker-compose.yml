@@ -2,7 +2,7 @@ version: '3'
 
 services:
   generator:
-    image: sosci/generator:${VERSION_TAG}
+    image: sosci/generator:${VERSION_TAG:-latest}
     hostname: generator
     restart: unless-stopped
     environment:
@@ -16,7 +16,7 @@ services:
       - internal
 
   frontend:
-    image: sosci/frontend:${VERSION_TAG}
+    image: sosci/frontend:${VERSION_TAG:-latest}
     depends_on:
       - backend
     restart: unless-stopped
@@ -42,7 +42,7 @@ services:
       - "traefik.http.routers.sosci-int-frontend-websecure.middlewares=sosci-frontend-stripprefix-int"
 
   backend:
-    image: sosci/backend:${VERSION_TAG}
+    image: sosci/backend:${VERSION_TAG:-latest}
     hostname: backend
     environment:
       - HOST_PORT=34255
