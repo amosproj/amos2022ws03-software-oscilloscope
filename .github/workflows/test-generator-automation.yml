@@ -27,4 +27,5 @@ jobs:
       - name: Cargo test
         uses: actions-rs/cargo@v1
         with:
+          working-directory: ./Apps/generator
           command: test
