@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  generator:
+    image: sosci/generator:nightly
+    hostname: generator
+    restart: unless-stopped
+    environment:
+      - HOST=0.0.0.0:34254
+      - TARGET=backend:34255
+      - PPS=100.0
+      - SIG_FREQ=1.0
+    ports:
+      - 34254:34254
+    networks:
+      - internal
+
+  frontend:
+    image: sosci/frontend:nightly
+    hostname: frontend
+    depends_on:
+      - backend
+    restart: unless-stopped
+      - 9001:9000
+    networks:
+      - internal
+      - web
+    labels:
+      - "traefik.enable=true"
+        # Redirect HTTP
+      - "traefik.http.routers.sosci-dev-frontend-web.service=sosci-dev-frontend-websecure"
+      - "traefik.http.middlewares.sosci-dev-frontend-websecure.redirectscheme.scheme=https"
+      - "traefik.http.routers.sosci-dev-frontend-web.middlewares=sosci-dev-frontend-websecure"
+      - "traefik.http.routers.sosci-dev-frontend-web.rule=Host(`$sosci.dev.die-degens.eu`) && Path(`/dev/ui`)"
+      - "traefik.http.routers.sosci-dev-frontend-web.entrypoints=web"
+        # Main
+      - "traefik.http.routers.sosci-dev-frontend-websecure.rule=Host(`$sosci.dev.die-degens.eu`) && Path(`/dev/ui`)"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.entrypoints=websecure"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.service=sosci-dev-frontend-websecure"
+      - "traefik.http.services.sosci-dev-frontend-websecure.loadbalancer.server.port=80"
+
+  backend:
+    image: sosci/backend:nightly
+    hostname: backend
+    environment:
+      - HOST_PORT=34255
+      - HOST_ADDRESS=0.0.0.0
+    ports: 
+      - 34255:34255
+      - 9000:9000
+    networks:
+      - internal
+      - web
+    restart: unless-stopped
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  web:
+    driver: bridge
