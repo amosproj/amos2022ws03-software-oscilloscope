@@ -18,7 +18,20 @@ assignees: ''
 - [ ]  ...
 
 ## Definition of done (DoD)
-Not available yet
+- [ ]  Feature/Bug/Change has been implemented
+- [ ]  Application compiles successfully
+- [ ]  Code is documented
+
+- [ ]  Feature/Bug/Change is tested by at least one unit or e2e test
+- [ ]  Tests have been passed without warnings (except "deprecated" warnings)
+
+- [ ]  Changes have been reviewed
+- [ ]  PR has been merged to dev branch
+
+- [ ]  New dependencies have been added to bill of materials
+- [ ]  Software archticture diagram has been updated
+- [ ]  All acceptance criteria are fullfilled
+- [ ]  Screenshot is attached to issue
 
 ## DoD general criteria
 * Feature has been fully implemented
