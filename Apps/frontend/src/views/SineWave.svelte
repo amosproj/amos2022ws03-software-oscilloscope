@@ -22,13 +22,11 @@
   }
 
   const update = () => {
-
     for (let i = 0; i < channel_samples.length; i++)
     {
       for (let x = 0; x < CANVAS_WIDTH; x++) {
         lines[i].setY(x, channel_samples[i][x]);
       }
-
     }
   }
 
@@ -42,7 +40,6 @@
     initializeLines();
     console.log(`lines: ${lines.length}`)
     console.log(`channels: ${channel_samples.length}`)
-
   }
 
   const initializeLines = () => {
@@ -67,9 +64,9 @@
   });
 
   const newFrame = () => {
-      update();
-      webGLPlot.update();
-      window.requestAnimationFrame(newFrame);
+    update();
+    webGLPlot.update();
+    window.requestAnimationFrame(newFrame);
   }
 </script>
 
