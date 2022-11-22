@@ -1,7 +1,6 @@
 use dasp_signal::{self as signal, Signal};
 use rand::Rng;
 use std::{env, fmt, net::UdpSocket};
-
 pub struct Config {
     pub host: String,
     pub target: String,
@@ -119,4 +118,36 @@ pub fn bytes_from_samples(samples: &Vec<f64>) -> Vec<u8> {
         }
     }
     data
+}
+#[cfg(test)]
+mod tests {
+    use std::mem;
+
+    use super::*;
+
+    #[test]
+    fn test_bytes_from_samples_number_bytes() {
+        let samples = Vec::from([0.0, 0.0, 0.0, 0.0]);
+        let result = bytes_from_samples(&samples);
+
+        assert_eq!(result.len(), mem::size_of::<f64>() * samples.len());
+    }
+    #[test]
+    fn test_bytes_from_samples_correct_bytes() {
+        let samples = Vec::from([-0.1, 0.2]);
+        let result = bytes_from_samples(&samples);
+
+        assert!(samples.last().is_some());
+        assert_eq!(samples.first().unwrap().to_ne_bytes(), &result[0..7]);
+
+        assert!(samples.last().is_some());
+        assert_eq!(samples.last().unwrap().to_ne_bytes(), &result[8..15]);
+    }
+    #[test]
+    fn test_bytes_from_samples_empty_input() {
+        let samples = Vec::from([]);
+        let result = bytes_from_samples(&samples);
+
+        assert!(result.is_empty());
+    }
 }
