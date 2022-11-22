@@ -20,16 +20,10 @@
     };
 
     socket.onmessage = (message) => {
-
       if(hasStarted){
         let samples = new Float64Array(message.data);
         waveElement.updateBuffer(samples);
-
-      }else{
-        
-      }
-      
-
+      }  
     };
   });
 

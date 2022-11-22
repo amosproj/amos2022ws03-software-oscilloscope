@@ -22,13 +22,13 @@
   }
 
   const update = () => {
-    
+
     for (let i = 0; i < channel_samples.length; i++)
-    {      
+    {
       for (let x = 0; x < CANVAS_WIDTH; x++) {
         lines[i].setY(x, channel_samples[i][x]);
-      }  
-      
+      }
+
     }
   }
 
@@ -37,14 +37,14 @@
     canvasElement.height = CANVAS_HEIGHT;
   }
 
-  export const initializePlot = () => {
+  const initializePlot = () => {
     webGLPlot = new WebglPlot(canvasElement);
     initializeLines();
     console.log(`lines: ${lines.length}`)
     console.log(`channels: ${channel_samples.length}`)
 
   }
-  
+
   const initializeLines = () => {
     for (let i = 0; i < numberOfChannels; i++)
     {
