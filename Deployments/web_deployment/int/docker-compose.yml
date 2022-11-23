@@ -4,7 +4,6 @@ services:
   generator:
     image: sosci/generator:${VERSION_TAG:-latest}
     pull_policy: always
-    hostname: generator
     restart: unless-stopped
     environment:
       - HOST=0.0.0.0:34254
@@ -46,7 +45,6 @@ services:
   backend:
     image: sosci/backend:${VERSION_TAG:-latest}
     pull_policy: always
-    hostname: backend
     environment:
       - HOST_PORT=34255
       - HOST_ADDRESS=0.0.0.0
