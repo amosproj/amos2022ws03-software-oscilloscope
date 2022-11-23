@@ -7,16 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "node server/main.js",
     "cypress:open": "cypress open",
     "cypress:release": "cypress run"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.1.0",
-    "@types/three": "^0.144.0",
     "cypress": "^10.11.0",
     "svelte": "^3.52.0",
-    "three": "^0.146.0",
     "vite": "^3.2.0"
   },
   "dependencies": {

@@ -1,0 +1,26 @@
+name: CI Test Docker Generator
+
+on:
+  push:
+    paths:
+      - 'Apps/generator/**.*'
+      - '.github/workflows/test-generator-automation.yml'
+  pull_request:
+    branches: 
+      - "dev"
+      - "int"
+      - "main"
+
+jobs:
+  cargo-test:
+    runs-on: ubuntu-latest
+    container: rust:slim
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cargo test
+        run: |
+          cd ./Apps/generator
+          cargo test
