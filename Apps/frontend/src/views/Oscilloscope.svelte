@@ -99,6 +99,9 @@
   .wave {
     z-index: 1;
   }
+  #control-panel {
+    top: 500px;
+  }
   .sliders-wrapper {
     float: right;
     margin-right: 2rem;
