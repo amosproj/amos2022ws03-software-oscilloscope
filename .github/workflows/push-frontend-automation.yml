@@ -8,13 +8,13 @@ on:
       - "dev"
       - "int"
       - "main"
+      - "dev_clone"
     paths:
       - 'Apps/frontend/**.*'
       - '.github/workflows/build-frontend-automation.yml'
 
 jobs:
   build-push:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       -

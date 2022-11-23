@@ -8,13 +8,13 @@ on:
       - "dev"
       - "int"
       - "main"
+      - "dev_clone"
     paths:
       - 'Apps/generator/**.*'
       - '.github/workflows/build-generator-automation.yml'
 
 jobs:
   build-push:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       -
