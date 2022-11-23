@@ -4,14 +4,6 @@ on:
   pull_request:
     types:
       - "closed"
-    branches: 
-      - "dev"
-      - "int"
-      - "main"
-      - "dev_clone"
-    paths:
-      - 'Apps/generator/**.*'
-      - '.github/workflows/build-generator-automation.yml'
 
 jobs:
   build-push:
