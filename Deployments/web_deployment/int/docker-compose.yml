@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  generator:
+    image: sosci/generator:${VERSION_TAG:-latest}
+    pull_policy: always
+    hostname: generator
+    restart: unless-stopped
+    environment:
+      - HOST=0.0.0.0:34254
+      - TARGET=backend:34257
+      - PPS=100.0
+      - SIG_FREQ=1.0
+    ports:
+      - 34256:34254
+    networks:
+      - internal
+
+  frontend:
+    image: sosci/frontend:${VERSION_TAG:-latest}
+    pull_policy: always
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - internal
+      - web
+    labels:
+      - "traefik.enable=true"
+      # Remove path prefix
+      - "traefik.http.middlewares.sosci-frontend-stripprefix-int.stripprefix.prefixes=/int/ui"
+        # Redirect HTTP
+      - "traefik.http.routers.sosci-int-frontend-web.service=sosci-int-frontend-websecure"
+      - "traefik.http.middlewares.sosci-int-frontend-websecure.redirectscheme.scheme=https"
+      - "traefik.http.routers.sosci-int-frontend-web.middlewares=sosci-int-frontend-websecure,sosci-frontend-stripprefix-int"
+      - "traefik.http.routers.sosci-int-frontend-web.rule=Host(`amos-sosci.die-degens.eu`)"
+      - "traefik.http.routers.sosci-int-frontend-web.entrypoints=web"
+        # HTTPS
+      - "traefik.http.routers.sosci-int-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`)"
+      - "traefik.http.routers.sosci-int-frontend-websecure.entrypoints=websecure"
+      - "traefik.http.routers.sosci-int-frontend-websecure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-int-frontend-websecure.service=sosci-int-frontend-websecure"
+      - "traefik.http.services.sosci-int-frontend-websecure.loadbalancer.server.port=80"
+      - "traefik.http.routers.sosci-int-frontend-websecure.middlewares=sosci-frontend-stripprefix-int"
+
+  backend:
+    image: sosci/backend:${VERSION_TAG:-latest}
+    pull_policy: always
+    hostname: backend
+    environment:
+      - HOST_PORT=34255
+      - HOST_ADDRESS=0.0.0.0
+    ports: 
+      - 34257:34255
+    networks:
+      - internal
+      - web
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      # Remove path prefix
+      - "traefik.http.middlewares.sosci-backend-stripprefix-int.stripprefix.prefixes=/int/api"
+        # Main
+      - "traefik.http.routers.sosci-int-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/int/api`)"
+      - "traefik.http.routers.sosci-int-backend.entrypoints=websecure"
+      - "traefik.http.routers.sosci-int-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-int-backend.service=sosci-int-backend"
+      - "traefik.http.services.sosci-int-backend.loadbalancer.server.port=9000"
+      - "traefik.http.routers.sosci-int-backend.middlewares=sosci-backend-stripprefix-int"
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  web:
+    driver: bridge
+    external: true

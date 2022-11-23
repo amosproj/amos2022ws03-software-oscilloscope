@@ -1,5 +1,10 @@
 # SOCSCI Frontend
 
+## Environments
+- [Develop - Nightly Builds](https://amos-sosci.die-degens.eu/dev/ui)
+- [Integration - Latest Release Canidate](https://amos-sosci.die-degens.eu/int/ui)
+- [Production - Latest Release](https://amos-sosci.die-degens.eu/prod/ui)
+
 ## Build the app
 ```shell
 npm install
