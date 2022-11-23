@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "lint": "npx eslint ./src/**/*",
-    "lint:fix": "npx eslint ./src/**/* --fix",
+    "lint": "npx eslint ./",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
