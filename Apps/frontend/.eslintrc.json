@@ -3,18 +3,18 @@
         "browser": true,
         "es2021": true
     },
-    "extends": "plugin:prettier/recommended",
-    "overrides": [
-        {
-            "files": [
-                "*.svelte"
-            ],
-            "processor": "svelte3/svelte3"
-        }
-    ],
+    "extends": "prettier",
     "plugins": [
         "svelte3",
         "prettier"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "**/*.svelte"
+            ],
+            "processor": "svelte3/svelte3"
+        }
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -25,5 +25,6 @@
     },
     "rules": {
         "prettier/prettier": "error"
-    }
+    },
+    "ignorePatterns": ["src/assets/**/*"]
 }
