@@ -73,15 +73,18 @@ jobs:
         uses: distributhor/workflow-webhook@v2
         env:
           webhook_url: ${{ secrets.WEBHOOK_URL_DEV }}?SERVICE_TAG=nightly
+          webhook_secret: "none"
       - 
         if: github.event.pull_request.base.ref == 'int'
         name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v2
         env:
           webhook_url: ${{ secrets.WEBHOOK_URL_INT }}?SERVICE_TAG=${{ github.event.pull_request.title }}
+          webhook_secret: "none"
       - 
         if: github.event.pull_request.base.ref == 'main'
         name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v2
         env:
           webhook_url: ${{ secrets.WEBHOOK_URL_PROD }}?SERVICE_TAG=${{ github.event.pull_request.title }}
+          webhook_secret: "none"
