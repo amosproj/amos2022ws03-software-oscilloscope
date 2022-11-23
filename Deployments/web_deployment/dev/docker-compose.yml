@@ -21,8 +21,6 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-    environment:
-      - HOST_BACKEND=amos-sosci.die-degens.eu/dev/api
     networks:
       - internal
       - web
