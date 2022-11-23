@@ -3,7 +3,7 @@ name: CI Push Docker Frontend
 on:
   pull_request:
     types:
-      - "completed"
+      - "closed"
     branches: 
       - "dev"
       - "int"
@@ -14,6 +14,7 @@ on:
 
 jobs:
   build-push:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       -
