@@ -1,15 +1,17 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
-  import SineWave from "./SineWave.svelte";
+  import Waves from "./Waves.svelte";
+  import OffsetSlider from "./OffsetSlider.svelte";
   import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_CHANNELS } from "../const";
   import Indicators from "./Indicators.svelte";
   import OnOffButton from "./OnOffButton.svelte";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
 
+
   let waveElement;
+  let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
-  let scaleY = 0.5; // 1V per horizontal line
   let socket;
 
   let isEnabled = false;
@@ -76,28 +78,36 @@
   data-cy="oscilloscope"
 >
   <div class="indicators">
-    <Indicators bind:this={indicatorElement} {scaleY} />
+    <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
   </div>
   <div class="stack coordinate-system">
-    <CoordinateSystem yScale={scaleY} />
+    <CoordinateSystem scaleY={Math.max(...scalesY)} />
   </div>
   <div class="stack wave">
-    <SineWave bind:this={waveElement} {scaleY} />
+    <Waves bind:this={waveElement} {scalesY} />
   </div>
-</div>
-
-<div class="wrapper" id="control-panel">
-  <div id="btn-on-off">
-    <OnOffButton
-      on:switch-plot-enabled={(e) => {
-        isEnabled = e.detail.enabled;
-      }}
-    />
-  </div>
-  <div id="slider-container">
-    {#each Array(NUM_CHANNELS) as _, i}
-      <div class="slider"><TimeSweepSlider channel={i} /></div>
-    {/each}
+  <div class="wrapper" id="control-panel">
+    <div id="btn-on-off">
+      <OnOffButton
+        on:switch-plot-enabled={(e) => {
+          isEnabled = e.detail.enabled;
+        }}
+      />
+    </div>
+    <div class="sliders-wrapper">
+      {#each { length: NUM_CHANNELS } as _, index}
+        <OffsetSlider
+          onInput={(offsetY) => {
+            waveElement.updateChannelOffsetY(index, offsetY);
+          }}
+        />
+      {/each}
+    </div>
+    <div class="sliders-wrapper">
+      {#each { length: NUM_CHANNELS } as _, i}
+        <TimeSweepSlider channel={i} />
+      {/each}
+    </div>
   </div>
 </div>
 
@@ -106,8 +116,8 @@
     position: relative;
     width: var(--canvas-width);
     height: var(--canvas-height);
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+    margin: 0 2rem;
   }
   .indicators {
     position: absolute;
@@ -127,10 +137,8 @@
   #control-panel {
     top: 500px;
   }
-  #slider-container {
-    display: table;
-  }
-  .slider {
-    display: table-cell;
+  .sliders-wrapper {
+    float: right;
+    margin-right: 2rem;
   }
 </style>
