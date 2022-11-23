@@ -14,4 +14,12 @@
 </script>
 
 <br>
-<button on:click={handleClick}>{label}</button>
+<button id="btn-on-off" on:click={handleClick}>{label}</button>
+
+
+<style>
+    #btn-on-off {
+        border-style: solid;
+        border-color: grey;
+    }
+</style>

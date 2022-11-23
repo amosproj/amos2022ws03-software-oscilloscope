@@ -1,6 +1,5 @@
 <script>
   import Logo from "./views/Logo.svelte";
-  import OnOffButton from "./views/OnOffButton.svelte";
   import Oscilloscope from "./views/Oscilloscope.svelte";
 </script>
 
@@ -11,7 +10,6 @@
   <div class="canvas">
     <Oscilloscope />
   </div>
-  <OnOffButton on:switch-plot-enabled={async (event)  => {console.log('Turned ' + (event.detail.enabled ? 'on' : 'off') +'...')}} />
 </main>
 
 <style>

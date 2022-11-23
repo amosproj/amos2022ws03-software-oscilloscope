@@ -6,7 +6,12 @@
     CANVAS_WIDTH,
     NUM_CHANNELS,
     NUM_INTERVALS_Y,
+    MIN_SWEEP,
+    MAX_SWEEP,
+    LINE_COLORS,
   } from "../const";
+  import { timeSweep } from "../stores";
+
 
   export let scalesY;
 
@@ -17,17 +22,31 @@
   );
   let lines = [];
 
-  let x = 0;
+  let xArr = new Array(NUM_CHANNELS).fill(0.0);
+  let xLast = new Array(NUM_CHANNELS).fill(0);
+
   export const updateBuffer = (samples) => {
     for (
       let channelIndex = 0;
       channelIndex < channel_samples.length;
       channelIndex++
     ) {
-      channel_samples[channelIndex][x] = samples[channelIndex];
+      let xCurr = xArr[channelIndex];
+      let xNew = Math.round(xCurr);
+      for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
+        channel_samples[channelIndex][x] = samples[channelIndex];
+      }
+      xLast[channelIndex] = xNew;
+
+      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0;
+      let fac = sweep < 0 ? MIN_SWEEP : MAX_SWEEP;
+      let delta = fac * sweep + 1.0;
+
+      xArr[channelIndex] = xCurr + delta;
+      while (xArr[channelIndex] >= CANVAS_WIDTH) {
+        xArr[channelIndex] -= CANVAS_WIDTH;
+      }
     }
-    x++;
-    x = x % CANVAS_WIDTH;
   };
 
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
@@ -57,9 +76,9 @@
   const initializeLines = () => {
     for (let i = 0; i < NUM_CHANNELS; i++) {
       const color = new ColorRGBA(
-        Math.random(),
-        Math.random(),
-        Math.random(),
+        LINE_COLORS[i][0] / 255,
+        LINE_COLORS[i][1] / 255,
+        LINE_COLORS[i][2] / 255,
         1
       );
       let line = new WebglLine(color, CANVAS_WIDTH);
