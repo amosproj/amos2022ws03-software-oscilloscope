@@ -4,15 +4,14 @@ services:
   generator:
     image: sosci/generator:${VERSION_TAG:-latest}
     pull_policy: always
-    hostname: generator
     restart: unless-stopped
     environment:
-      - HOST=0.0.0.0:34254
+      - HOST=0.0.0.0:34258
       - TARGET=backend:34259
       - PPS=100.0
       - SIG_FREQ=1.0
     ports:
-      - 34258:34254
+      - 34258:34258
     networks:
       - internal
 
@@ -35,10 +34,10 @@ services:
       - "traefik.http.routers.sosci-prod-frontend-web.service=sosci-prod-frontend-websecure"
       - "traefik.http.middlewares.sosci-prod-frontend-websecure.redirectscheme.scheme=https"
       - "traefik.http.routers.sosci-prod-frontend-web.middlewares=sosci-prod-frontend-websecure,sosci-frontend-stripprefix-prod"
-      - "traefik.http.routers.sosci-prod-frontend-web.rule=Host(`amos-sosci.die-degens.eu`)"
+      - "traefik.http.routers.sosci-prod-frontend-web.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/prod/ui`)"
       - "traefik.http.routers.sosci-prod-frontend-web.entrypoints=web"
         # HTTPS
-      - "traefik.http.routers.sosci-prod-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`)"
+      - "traefik.http.routers.sosci-prod-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/prod/ui`)"
       - "traefik.http.routers.sosci-prod-frontend-websecure.entrypoints=websecure"
       - "traefik.http.routers.sosci-prod-frontend-websecure.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-prod-frontend-websecure.service=sosci-prod-frontend-websecure"
@@ -48,12 +47,11 @@ services:
   backend:
     image: sosci/backend:${VERSION_TAG:-latest}
     pull_policy: always
-    hostname: backend
     environment:
-      - HOST_PORT=34255
+      - HOST_PORT=34259
       - HOST_ADDRESS=0.0.0.0
     ports: 
-      - 34259:34255
+      - 34259:34259
     networks:
       - internal
       - web
