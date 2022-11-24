@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "lint": "npx eslint ./",
+    "lint:fix": "npm run lint -- --fix",
+    "prettier": "npx prettier ./",
+    "prettier:fix": "npm run prettier -- --write",
+    "format": "npm run prettier:fix && npm run lint:fix",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -16,6 +20,7 @@
     "cypress": "^10.11.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.5.1",
     "eslint-plugin-prettier": "^4.2.1",
