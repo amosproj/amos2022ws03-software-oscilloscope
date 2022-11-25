@@ -1,7 +1,11 @@
 <script>
   import { onMount } from "svelte";
-  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_INTERVALS_X, NUM_INTERVALS_Y } from "../const";
-
+  import {
+    CANVAS_HEIGHT,
+    CANVAS_WIDTH,
+    NUM_INTERVALS_X,
+    NUM_INTERVALS_Y,
+  } from "../const";
 
   export let scaleY;
 
@@ -12,7 +16,7 @@
   const resizeCanvas = () => {
     canvasElement.width = CANVAS_WIDTH;
     canvasElement.height = CANVAS_HEIGHT;
-  }
+  };
 
   const drawCoordinateSystem = () => {
     const context = canvasElement.getContext("2d");
@@ -36,14 +40,14 @@
       context.lineTo(yPos, CANVAS_HEIGHT);
       context.stroke();
     }
-  }
+  };
 
   const drawScaleY = () => {
     const context = canvasElement.getContext("2d");
     context.font = "20px Arial";
     context.fillStyle = "white";
     context.fillText(`Y-Scale: ${scaleY}V`, 10, 25);
-  }
+  };
 
   onMount(() => {
     resizeCanvas();

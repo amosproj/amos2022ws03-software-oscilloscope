@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import {
     CANVAS_HEIGHT,
-    INDICATOR_DECIMAL_PLACES,
     INDICATOR_FONT_SIZE,
     INDICATOR_MARGIN,
     INDICATOR_SECTION_WIDTH,

@@ -12,7 +12,6 @@
   } from "../const";
   import { timeSweep } from "../stores";
 
-
   export let scalesY;
 
   let canvasElement;
