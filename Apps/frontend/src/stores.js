@@ -1,6 +1,5 @@
-import {writable} from 'svelte/store';
-import {NUM_CHANNELS} from './const';
-
+import { writable } from "svelte/store";
+import { NUM_CHANNELS } from "./const";
 
 export const osciData = writable([]);
 

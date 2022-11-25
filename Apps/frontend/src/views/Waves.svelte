@@ -4,15 +4,15 @@
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
-    NUM_INTERVALS_Y,
     NUM_CHANNELS,
+    NUM_INTERVALS_Y,
     MIN_SWEEP,
     MAX_SWEEP,
     LINE_COLORS,
   } from "../const";
   import { timeSweep } from "../stores";
 
-  export let scaleY;
+  export let scalesY;
 
   let canvasElement;
   let webGLPlot;
@@ -23,6 +23,7 @@
 
   let xArr = new Array(NUM_CHANNELS).fill(0.0);
   let xLast = new Array(NUM_CHANNELS).fill(0);
+
   export const updateBuffer = (samples) => {
     for (
       let channelIndex = 0;
@@ -47,9 +48,13 @@
     }
   };
 
+  export const updateChannelOffsetY = (channelIndex, offsetY) => {
+    lines[channelIndex].offsetY = offsetY;
+  };
+
   const update = () => {
     for (let i = 0; i < channel_samples.length; i++) {
-      for (let x = 0; x < CANVAS_WIDTH; x++) {
+      for (let x = 0; x < CANVAS_WIDTH; ++x) {
         lines[i].setY(x, channel_samples[i][x]);
       }
     }
@@ -77,7 +82,7 @@
       );
       let line = new WebglLine(color, CANVAS_WIDTH);
       line.arrangeX();
-      line.scaleY = 1 / ((NUM_INTERVALS_Y / 2) * scaleY);
+      line.scaleY = (1 / (NUM_INTERVALS_Y / 2)) * scalesY[i];
       webGLPlot.addLine(line);
       lines.push(line);
     }

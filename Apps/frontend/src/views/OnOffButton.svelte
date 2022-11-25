@@ -1,25 +1,23 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher } from "svelte";
 
+  const dispatch = createEventDispatcher();
 
-    const dispatch = createEventDispatcher()
+  let isOn = false;
+  $: label = "Turn " + (isOn ? "off" : "on") + ".";
 
-    let isOn = false;
-    $: label = 'Turn ' + (isOn ? 'off' : 'on') + '.';
-
-    const handleClick = async () => {
-        isOn = !isOn;
-        dispatch('switch-plot-enabled', {enabled: isOn});
-    }
+  const handleClick = async () => {
+    isOn = !isOn;
+    dispatch("switch-plot-enabled", { enabled: isOn });
+  };
 </script>
 
-<br>
+<br />
 <button id="btn-on-off" on:click={handleClick}>{label}</button>
 
-
 <style>
-    #btn-on-off {
-        border-style: solid;
-        border-color: grey;
-    }
+  #btn-on-off {
+    border-style: solid;
+    border-color: grey;
+  }
 </style>
