@@ -102,6 +102,17 @@
     webGLPlot.update();
     window.requestAnimationFrame(newFrame);
   };
+
+  export const resetPlot = () => {
+    xArr = new Array(NUM_CHANNELS).fill(0.0);
+    xLast = new Array(NUM_CHANNELS).fill(0);
+    channel_samples = Array.from(Array(NUM_CHANNELS), () =>
+      new Array(CANVAS_WIDTH).fill(0.0)
+    );
+    update();
+    webGLPlot.clear();
+    console.log("clear");
+  }
 </script>
 
 <canvas bind:this={canvasElement} />

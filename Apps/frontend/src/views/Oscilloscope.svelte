@@ -6,6 +6,7 @@
   import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_CHANNELS } from "../const";
   import Indicators from "./Indicators.svelte";
   import OnOffButton from "./OnOffButton.svelte";
+  import ResetButton from "./ResetButton.svelte";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
 
   let waveElement;
@@ -103,6 +104,14 @@
       <OnOffButton
         on:switch-plot-enabled={(e) => {
           isEnabled = e.detail.enabled;
+        }}
+      />
+    </div>
+    <div id="btn-on-off">
+      <ResetButton
+        on:reset={(e) => {
+          // if (!isEnabled) {}
+          waveElement.resetPlot();
         }}
       />
     </div>
