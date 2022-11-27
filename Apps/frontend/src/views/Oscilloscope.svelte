@@ -10,6 +10,7 @@
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
 
   let waveElement;
+  let btnOnOff;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
   let socket;
@@ -104,13 +105,15 @@
       <OnOffButton
         on:switch-plot-enabled={(e) => {
           isEnabled = e.detail.enabled;
-        }}
+        }} bind:this={btnOnOff}
       />
     </div>
     <div id="btn-on-off">
       <ResetButton
         on:reset={(e) => {
-          // if (!isEnabled) {}
+          if (isEnabled) {
+            btnOnOff.click();
+          }
           waveElement.resetPlot();
         }}
       />

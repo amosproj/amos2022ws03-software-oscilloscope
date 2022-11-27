@@ -10,6 +10,10 @@
     isOn = !isOn;
     dispatch("switch-plot-enabled", { enabled: isOn });
   };
+
+  export const click = () => {
+    handleClick();
+  }
 </script>
 
 <br />
