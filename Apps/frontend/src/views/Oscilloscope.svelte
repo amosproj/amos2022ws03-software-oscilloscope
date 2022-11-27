@@ -114,6 +114,7 @@
           if (isEnabled) {
             btnOnOff.click();
           }
+          indicatorElement.clearCanvas();
           waveElement.resetPlot();
         }}
       />
