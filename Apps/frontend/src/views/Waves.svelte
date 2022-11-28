@@ -48,8 +48,20 @@
     }
   };
 
+  const setScaling = (index, scale) => {
+    lines[index].scaleY = computeScaling(scale);
+  };
+
+  const computeScaling = (scale) => {
+    return (1 / (NUM_INTERVALS_Y / 2)) * scale;
+  };
+
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
+  };
+
+  export const updateChannelAmplitude = (channelIndex, amplitude) => {
+    setScaling(channelIndex, amplitude);
   };
 
   const update = () => {
@@ -82,7 +94,7 @@
       );
       let line = new WebglLine(color, CANVAS_WIDTH);
       line.arrangeX();
-      line.scaleY = (1 / (NUM_INTERVALS_Y / 2)) * scalesY[i];
+      line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addLine(line);
       lines.push(line);
     }
