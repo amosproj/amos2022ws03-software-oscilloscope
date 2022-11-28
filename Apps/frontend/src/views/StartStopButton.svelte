@@ -10,31 +10,24 @@
 
 	const handleStartStop = async () => {
 		hasStarted = !hasStarted;
-		hasStarted ? symbol = stop : symbol = play;	
+		hasStarted ? symbol = stop : symbol = play;
 		dispatch('startStop', {buttonValue: hasStarted})
 	}
-	
-	
+
+
 </script>
 
-<button class="button-style button-up" on:click={handleStartStop}> 
+<button class="button-style" on:click={handleStartStop}>
 	{symbol}
 </button>
 
 
 <style>
-	.button-style {    
+	.button-style {
     position: fixed;
     z-index: 99;
     left: 20px;
-	padding: 10px;
-	margin: 10px;
-	font-size: 1.5em;
+	top: 40px;
   }
-	
-	.button-up {
-		top: 40px;
-	}
-
 
 </style>
