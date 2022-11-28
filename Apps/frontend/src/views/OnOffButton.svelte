@@ -13,7 +13,7 @@
 
   export const click = () => {
     handleClick();
-  }
+  };
 </script>
 
 <br />

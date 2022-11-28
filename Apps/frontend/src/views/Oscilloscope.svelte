@@ -105,15 +105,18 @@
       <OnOffButton
         on:switch-plot-enabled={(e) => {
           isEnabled = e.detail.enabled;
-        }} bind:this={btnOnOff}
+        }}
+        bind:this={btnOnOff}
       />
     </div>
-    <div id="btn-on-off">
+    <div id="btn-reset">
       <ResetButton
         on:reset={(e) => {
+          // if oscilloscope is running, click stop button
           if (isEnabled) {
             btnOnOff.click();
           }
+          // clear canvas and indicators
           indicatorElement.clearCanvas();
           waveElement.resetPlot();
         }}

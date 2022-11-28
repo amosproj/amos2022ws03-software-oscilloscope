@@ -1,6 +1,8 @@
 <script>
   export let onInput = (offsetY) => {
-    console.error(`Missing implementation of OffsetSlider.onInput(${offsetY})!`);
+    console.error(
+      `Missing implementation of OffsetSlider.onInput(${offsetY})!`
+    );
   };
   let offsetY;
 </script>

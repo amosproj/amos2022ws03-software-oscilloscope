@@ -112,7 +112,7 @@
     update();
     webGLPlot.clear();
     console.log("clear");
-  }
+  };
 </script>
 
 <canvas bind:this={canvasElement} />
