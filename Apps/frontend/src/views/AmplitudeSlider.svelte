@@ -6,6 +6,7 @@
   };
 
   export let channel;
+  // default amplification
   let amplitude = 1.0;
 </script>
 

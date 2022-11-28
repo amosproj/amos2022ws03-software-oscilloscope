@@ -48,10 +48,12 @@
     }
   };
 
+  // Sets the scaling of a individual wave according to the voltage intervals
   const setScaling = (index, scale) => {
     lines[index].scaleY = computeScaling(scale);
   };
 
+  // computes the Scaling of a wave according to the voltage intervals
   const computeScaling = (scale) => {
     return (1 / (NUM_INTERVALS_Y / 2)) * scale;
   };
@@ -60,6 +62,7 @@
     lines[channelIndex].offsetY = offsetY;
   };
 
+  // Update the amplification of wave
   export const updateChannelAmplitude = (channelIndex, amplitude) => {
     setScaling(channelIndex, amplitude);
   };
