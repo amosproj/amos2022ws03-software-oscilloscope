@@ -7,6 +7,7 @@
   import Indicators from "./Indicators.svelte";
   import OnOffButton from "./OnOffButton.svelte";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
+  import AmplitudeSlider from "./AmplitudeSlider.svelte";
 
   let waveElement;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
@@ -118,6 +119,17 @@
     <div class="sliders-wrapper">
       {#each { length: NUM_CHANNELS } as _, i}
         <TimeSweepSlider channel={i} />
+      {/each}
+    </div>
+    <div class="sliders-wrapper">
+      {#each { length: NUM_CHANNELS } as _, i}
+        <AmplitudeSlider
+          channel={i}
+          type="number"
+          onInput={(amplitude) => {
+            waveElement.updateChannelAmplitude(i, amplitude);
+          }}
+        />
       {/each}
     </div>
   </div>
