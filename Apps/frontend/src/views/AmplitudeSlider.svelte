@@ -21,5 +21,6 @@
     max={MAX_AMPLITUDE}
     step="0.01"
     class="slider"
+    data-cy="amplitudeSlider-{channel}"
   />
 </div>
