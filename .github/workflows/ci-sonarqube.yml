@@ -1,0 +1,25 @@
+name: CI Sonarqube Analysis
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+      branches: [ "dev" ]
+
+jobs:
+  sonarqube-analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      with:
+        args: >
+          -Dsonar.projectKey=amosproj_amos2022ws03-software-oscilloscope
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

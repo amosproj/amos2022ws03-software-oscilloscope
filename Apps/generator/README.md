@@ -33,12 +33,18 @@ Possibilites:
 docker run generator
 ```
 
-## Run directly
+## Run/Build local
 
-Build without run:
+Build:
 
 ```cmd
 cargo build
+```
+
+Build as release:
+
+```cmd
+cargo build --release
 ```
 
 Build and run:
@@ -47,20 +53,9 @@ Build and run:
 cargo run
 ```
 
-Default parameters:
-
-* Host-IP: 127.0.0.1:34254
-* Target-IP: 127.0.0.1:34255
-* Frequency [Hz]: 1.0
-
-Build and with command line args:
+Run unit tests:
 
 ```cmd
-cargo run <host-ip> <target-ip> <frequency>
+cargo test
 ```
 
-Build and run as release:
-
-```cmd
-cargo run --release XX
-```
