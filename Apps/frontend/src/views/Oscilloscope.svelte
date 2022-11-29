@@ -109,7 +109,7 @@
         bind:this={btnOnOff}
       />
     </div>
-    <div id="btn-reset">
+    <div id="button-reset">
       <ResetButton
         on:reset={(e) => {
           // if oscilloscope is running, click stop button

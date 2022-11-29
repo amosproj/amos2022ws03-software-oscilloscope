@@ -11,10 +11,10 @@
 </script>
 
 <br />
-<button id="btn-on-off" on:click={handleClick}>{label}</button>
+<button id="button-reset" on:click={handleClick}>{label}</button>
 
 <style>
-  #btn-on-off {
+  #button-reset {
     border-style: solid;
     border-color: grey;
   }

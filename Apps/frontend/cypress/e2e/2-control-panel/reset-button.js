@@ -7,11 +7,11 @@ describe("everything visible on front page", () => {
 
   it("displays btn", () => {
     cy.get(".control-panel").should("be.visible");
-    cy.get(".btn-reset").should("be.visible");
+    cy.get(".button-reset").should("be.visible");
   });
 
   it("click btn", () => {
     // We use the `cy.get()` to get the canvas element
-    cy.get("#btn-reset").click();
+    cy.get("#button-reset").click();
   });
 });
