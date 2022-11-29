@@ -125,8 +125,8 @@
       {#each { length: NUM_CHANNELS } as _, i}
         <AmplitudeSlider
           channel={i}
-          onInput={(amplitude) => {
-            waveElement.updateChannelAmplitude(i, amplitude);
+          onInput={(scaling) => {
+            waveElement.updateChannelScaling(i, scaling);
           }}
         />
       {/each}

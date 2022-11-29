@@ -63,8 +63,8 @@
   };
 
   // Update the amplification of wave
-  export const updateChannelAmplitude = (channelIndex, amplitude) => {
-    setScaling(channelIndex, amplitude);
+  export const updateChannelScaling = (channelIndex, scaling) => {
+    setScaling(channelIndex, scaling);
   };
 
   const update = () => {
