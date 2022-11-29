@@ -52,6 +52,17 @@
     lines[channelIndex].offsetY = offsetY;
   };
 
+  // ----- Svelte lifecycle hooks -----
+  onMount(() => {
+    resizeCanvas();
+    initializePlot();
+  });
+
+  beforeUpdate(() => {
+    window.requestAnimationFrame(newFrame);
+  });
+
+  // ----- business logic -----
   const update = () => {
     for (let i = 0; i < channel_samples.length; i++) {
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
@@ -87,15 +98,6 @@
       lines.push(line);
     }
   };
-
-  onMount(() => {
-    resizeCanvas();
-    initializePlot();
-  });
-
-  beforeUpdate(() => {
-    window.requestAnimationFrame(newFrame);
-  });
 
   const newFrame = () => {
     update();

@@ -29,6 +29,12 @@
     }
   }
 
+  // ----- Svelte lifecycle hooks -----
+  onMount(() => {
+    resizeCanvas();
+  });
+
+  // ----- Business logic -----
   const updateMinMax = (sample, i) => {
     if (sample < min[i]) {
       min[i] = sample;
@@ -107,10 +113,6 @@
       -(CANVAS_HEIGHT / 2) + (channel + 1.5) * 2 * INDICATOR_FONT_SIZE
     );
   };
-
-  onMount(() => {
-    resizeCanvas();
-  });
 </script>
 
 <canvas data-cy="indicators" bind:this={canvasElement} />

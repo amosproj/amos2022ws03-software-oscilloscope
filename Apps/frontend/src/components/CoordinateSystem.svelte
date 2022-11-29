@@ -3,25 +3,32 @@
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
+    COORDINATE_LINE_COLOR,
     NUM_INTERVALS_X,
     NUM_INTERVALS_Y,
   } from "../const";
 
   export let scaleY;
 
-  const lineColor = "#FFFFFF80";
-
   let canvasElement;
 
-  const resizeCanvas = () => {
+  // ----- Svelte lifecycle hooks -----
+  onMount(() => {
+    resizeCanvas();
+    drawCoordinateSystem();
+    drawScaleY();
+  });
+
+  // ----- business logic -----
+  const resizeCanvas = function () {
     canvasElement.width = CANVAS_WIDTH;
     canvasElement.height = CANVAS_HEIGHT;
   };
 
-  const drawCoordinateSystem = () => {
+  const drawCoordinateSystem = function () {
     const context = canvasElement.getContext("2d");
     context.lineWidth = 1;
-    context.strokeStyle = lineColor;
+    context.strokeStyle = COORDINATE_LINE_COLOR;
 
     // X lines
     for (let x = 0; x < NUM_INTERVALS_Y; x++) {
@@ -42,18 +49,12 @@
     }
   };
 
-  const drawScaleY = () => {
+  const drawScaleY = function () {
     const context = canvasElement.getContext("2d");
     context.font = "20px Arial";
     context.fillStyle = "white";
     context.fillText(`Y-Scale: ${scaleY}V`, 10, 25);
   };
-
-  onMount(() => {
-    resizeCanvas();
-    drawCoordinateSystem();
-    drawScaleY();
-  });
 </script>
 
 <canvas bind:this={canvasElement} />
