@@ -36,18 +36,18 @@
     return socket;
   };
 
-  const socketOnOpen = function (this, event) {
+  const socketOnOpen = function (event) {
     console.log("Socket opened");
   };
 
-  const socketOnMessage = function (this, messageEvent) {
+  const socketOnMessage = function (messageEvent) {
     let samples = new Float64Array(messageEvent.data);
     if (!isEnabled) return;
     waveElement.updateBuffer(samples);
     indicatorElement.update(samples);
   };
 
-  const socketOnClose = function (this, closeEvent) {
+  const socketOnClose = function (closeEvent) {
     // See https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
     let reason;
     switch (closeEvent.code) {

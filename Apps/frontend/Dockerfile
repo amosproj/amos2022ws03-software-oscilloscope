@@ -1,8 +1,6 @@
 # Use Node v14 for building
 FROM node:14-alpine AS build
 
-ARG MODE 
-
 # Set workdir inside docker container
 WORKDIR /usr/src/app
 
@@ -16,7 +14,7 @@ RUN npm install
 COPY . ./
 
 # Expose vite port to host machine
-RUN npm run build -- --mode ${MODE}
+RUN npm run build
 
 # Use nginx for serving build
 FROM nginx:1.19-alpine
