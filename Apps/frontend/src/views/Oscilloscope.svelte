@@ -2,7 +2,6 @@
   import { onMount, onDestroy } from "svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
 
-
   import StartStopButton from "./StartStopButton.svelte";
   import Waves from "./Waves.svelte";
   import OffsetSlider from "./OffsetSlider.svelte";
@@ -16,7 +15,6 @@
   let indicatorElement;
   let socket;
 
-  let hasStarted = true
   let isEnabled = false;
 
   onMount(() => {
@@ -78,10 +76,11 @@
     socket.onmessage = (message) => {
       let samples = new Float64Array(message.data);
       if (!isEnabled) return;
-      if(hasStarted){
+     // if(hasStarted){
         waveElement.updateBuffer(samples);
-      }
-      indicatorElement.update(samples);
+        indicatorElement.update(samples);
+     // }
+
     };
   });
 
@@ -102,7 +101,6 @@
     <CoordinateSystem scaleY={Math.max(...scalesY)} />
   </div>
   <div class="stack wave">
-    <StartStopButton on:startStop={async (event)=> {hasStarted = event.detail.buttonValue}} />
     <Waves bind:this={waveElement} {scalesY} />
   </div>
   <div class="wrapper" id="control-panel">
@@ -125,6 +123,17 @@
     <div class="sliders-wrapper">
       {#each { length: NUM_CHANNELS } as _, i}
         <TimeSweepSlider channel={i} />
+      {/each}
+    </div>
+    <div class="sliders-wrapper">
+      {#each { length: NUM_CHANNELS } as _, i}
+        <StartStopButton channel_id={i}
+          on:startStop={async (event)=> {
+            let hasStarted = event.detail.buttonValue;
+            waveElement.startStopChannelI(i, hasStarted);
+            console.log("channel " + i)
+        }}
+      /><br>
       {/each}
     </div>
   </div>

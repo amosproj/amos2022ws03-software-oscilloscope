@@ -21,6 +21,8 @@
   );
   let lines = [];
 
+  let startStopLine = [];
+
   let xArr = new Array(NUM_CHANNELS).fill(0.0);
   let xLast = new Array(NUM_CHANNELS).fill(0);
 
@@ -30,6 +32,11 @@
       channelIndex < channel_samples.length;
       channelIndex++
     ) {
+
+      if (!startStopLine[channelIndex]) {
+        continue;
+      }
+
       let xCurr = xArr[channelIndex];
       let xNew = Math.round(xCurr);
       for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
@@ -50,6 +57,14 @@
 
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
+  };
+
+  export const startStopChannelI = (channelIndex, hasStarted) => {
+    startStopLine[channelIndex] = hasStarted;
+    /*if(hasStarted) console.log("start Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
+    else console.log("stop Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
+    */
+
   };
 
   const update = () => {
@@ -85,6 +100,8 @@
       line.scaleY = (1 / (NUM_INTERVALS_Y / 2)) * scalesY[i];
       webGLPlot.addLine(line);
       lines.push(line);
+
+      startStopLine[i] = true;
     }
   };
 

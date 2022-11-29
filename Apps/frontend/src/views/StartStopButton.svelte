@@ -1,16 +1,19 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
+	export let channel_id;
+
 
 	const dispatch = createEventDispatcher()
 
 	let play = "Start ▶";
 	let stop = "Stop ■";
-	let symbol = stop;
+	let symbol = channel_id + " " + stop;
 	let hasStarted = true;
 
 	const handleStartStop = async () => {
 		hasStarted = !hasStarted;
 		hasStarted ? symbol = stop : symbol = play;
+		symbol = channel_id + " " + symbol;
 		dispatch('startStop', {buttonValue: hasStarted})
 	}
 
@@ -24,10 +27,8 @@
 
 <style>
 	.button-style {
-    position: fixed;
-    z-index: 99;
-    left: 20px;
-	top: 40px;
+		border-style: solid;
+    	border-color: grey;
   }
 
 </style>
