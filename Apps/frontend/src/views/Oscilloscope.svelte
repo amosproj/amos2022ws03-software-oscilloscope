@@ -116,68 +116,79 @@
   style="--canvas-width: {CANVAS_WIDTH}px; --canvas-height: {CANVAS_HEIGHT}px"
   data-cy="oscilloscope"
 >
-  <div class="indicators">
-    <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
-  </div>
-  <div class="stack coordinate-system">
-    <CoordinateSystem scaleY={Math.max(...scalesY)} />
-  </div>
-  <div class="stack wave">
-    <Waves bind:this={waveElement} {scalesY} />
-  </div>
-  <div class="wrapper" id="control-panel">
-    <div id="btn-on-off">
+  <div class="grid-container">
+    <div class="indicators">
+      <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
+    </div>
+    <div class="oscilloscope">
+      <div class="coordinate-system">
+        <CoordinateSystem scaleY={Math.max(...scalesY)} />
+      </div>
+      <div class="waves">
+        <Waves bind:this={waveElement} {scalesY} />
+      </div>
+    </div>
+    <div class="controls">
       <OnOffButton
         on:switch-plot-enabled={(e) => {
           isEnabled = e.detail.enabled;
         }}
       />
-    </div>
-    <div class="sliders-wrapper">
-      {#each { length: NUM_CHANNELS } as _, index}
-        <OffsetSlider
-          onInput={(offsetY) => {
-            waveElement.updateChannelOffsetY(index, offsetY);
-          }}
-        />
-      {/each}
-    </div>
-    <div class="sliders-wrapper">
-      {#each { length: NUM_CHANNELS } as _, index}
-        <TimeSweepSlider channel={index} />
-      {/each}
+      <div class="slider-wrapper">
+        <div class="sliders">
+          Offset
+          {#each { length: NUM_CHANNELS } as _, index}
+            <OffsetSlider
+              onInput={(offsetY) => {
+                waveElement.updateChannelOffsetY(index, offsetY);
+              }}
+            />
+          {/each}
+        </div>
+        <div class="sliders">
+          Time Sweep
+          {#each { length: NUM_CHANNELS } as _, index}
+            <TimeSweepSlider channel={index} />
+          {/each}
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <style>
   .wrapper {
-    position: relative;
-    width: var(--canvas-width);
-    height: var(--canvas-height);
     display: flex;
-    margin: 0 2rem;
+    justify-content: center;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 200px var(--canvas-width);
   }
   .indicators {
-    position: absolute;
-    left: 0;
-    transform: translateX(-100%);
+    grid-column: 1;
   }
-  .stack {
+
+  .oscilloscope {
+    grid-column: 2;
+    position: relative;
+  }
+
+  .oscilloscope .coordinate-system,
+  .oscilloscope .waves {
     position: absolute;
     inset: 0;
   }
-  .coordinate-system {
-    z-index: 0;
+  .controls {
+    grid-column: 2;
   }
-  .wave {
-    z-index: 1;
+
+  .slider-wrapper {
+    display: flex;
   }
-  #control-panel {
-    top: 500px;
-  }
-  .sliders-wrapper {
-    float: right;
-    margin-right: 2rem;
+
+  .sliders {
+    width: 50%;
   }
 </style>
