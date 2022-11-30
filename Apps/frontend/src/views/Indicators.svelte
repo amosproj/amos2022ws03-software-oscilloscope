@@ -8,7 +8,7 @@
     INDICATOR_WIDTH,
     INDICATOR_ZERO_LINE_COLOR,
     LINE_COLORS_RGBA,
-    NUM_INTERVALS_Y,
+    NUM_INTERVALS_HORIZONTAL,
   } from "../const";
   import { roundVoltage } from "../helper";
 
@@ -18,7 +18,7 @@
   let max = Array(10).fill(0.0);
 
   export let scaleY;
-  export function update(samples) {
+  export const update = (samples) => {
     clearCanvas();
     drawZeroLine();
     for (let i = 0; i < samples.length; i++) {
@@ -27,8 +27,14 @@
       drawMinMaxLines(i, LINE_COLORS_RGBA[i]);
       writeText(i);
     }
-  }
+  };
 
+  // ----- Svelte lifecycle hooks -----
+  onMount(() => {
+    resizeCanvas();
+  });
+
+  // ----- Business logic -----
   const updateMinMax = (sample, i) => {
     if (sample < min[i]) {
       min[i] = sample;
@@ -38,7 +44,7 @@
     }
   };
 
-  const clearCanvas = () => {
+  export const clearCanvas = () => {
     canvasContext.clearRect(
       -canvasElement.width,
       -(canvasElement.height / 2),
@@ -69,7 +75,7 @@
 
   const drawIndicator = (channel, voltage, color) => {
     const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
-    const y = -(voltage * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_Y);
+    const y = -(voltage * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_HORIZONTAL);
 
     canvasContext.fillStyle = color;
     canvasContext.beginPath();
@@ -78,8 +84,10 @@
   };
 
   const drawMinMaxLines = (channel, color) => {
-    const minY = -(min[channel] * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_Y);
-    const maxY = -(max[channel] * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_Y);
+    const minY =
+      -(min[channel] * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_HORIZONTAL);
+    const maxY =
+      -(max[channel] * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_HORIZONTAL);
     const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
     canvasContext.beginPath();
     canvasContext.fillStyle = color;
@@ -107,10 +115,6 @@
       -(CANVAS_HEIGHT / 2) + (channel + 1.5) * 2 * INDICATOR_FONT_SIZE
     );
   };
-
-  onMount(() => {
-    resizeCanvas();
-  });
 </script>
 
 <canvas data-cy="indicators" bind:this={canvasElement} />
