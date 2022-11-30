@@ -18,6 +18,7 @@
   let webGLPlot;
   let channel_samples;
   let lines = [];
+  let startStopLine = [];
   let xArr;
   let xLast;
 
@@ -54,6 +55,9 @@
       channelIndex < channel_samples.length;
       channelIndex++
     ) {
+      if (!startStopLine[channelIndex]) {
+        continue;
+      }
       let xCurr = xArr[channelIndex];
       let xNew = Math.round(xCurr);
       for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
@@ -91,6 +95,13 @@
     setScaling(channelIndex, scaling);
   };
 
+  export const startStopChannelI = (channelIndex, hasStarted) => {
+    startStopLine[channelIndex] = hasStarted;
+    /*if(hasStarted) console.log("start Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
+    else console.log("stop Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
+    */
+  };
+
   const update = () => {
     for (let i = 0; i < channel_samples.length; i++) {
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
@@ -122,6 +133,7 @@
       line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addLine(line);
       lines.push(line);
+      startStopLine[i] = true;
     }
   };
 

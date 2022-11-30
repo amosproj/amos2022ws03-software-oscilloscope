@@ -16,7 +16,7 @@ RUN npm install
 COPY . ./
 
 # Expose vite port to host machine
-RUN npm run build -- --mode ${MODE}
+RUN npm run build --
 
 # Use nginx for serving build
 FROM nginx:1.19-alpine

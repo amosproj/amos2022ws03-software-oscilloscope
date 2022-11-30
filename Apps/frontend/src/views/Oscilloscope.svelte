@@ -9,6 +9,7 @@
   import CoordinateSystem from "../components/CoordinateSystem.svelte";
   import Waves from "../components/Waves.svelte";
   import OffsetSlider from "../components/OffsetSlider.svelte";
+  import StartStopButton from "./StartStopButton.svelte";
   import Indicators from "./Indicators.svelte";
   import OnOffButton from "../components/OnOffButton.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
@@ -93,6 +94,19 @@
       </div>
       <div class="slider-wrapper">
         <div class="sliders">
+          Start/Stop
+          <br>
+          {#each { length: NUM_CHANNELS } as _, index}
+            <StartStopButton
+              channel_id={index}
+              on:startStop={async (event) => {
+                let hasStarted = event.detail.buttonValue;
+                waveElement.startStopChannelI(index, hasStarted);
+              }}
+            />
+          {/each}
+        </div>
+        <div class="sliders">
           Offset
           {#each { length: NUM_CHANNELS } as _, index}
             <OffsetSlider
@@ -123,7 +137,6 @@
     </div>
   </div>
 </div>
-
 <style>
   .wrapper {
     display: flex;
