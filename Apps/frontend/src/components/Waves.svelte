@@ -35,7 +35,9 @@
   // ----- business logic -----
 
   const initChannelSamples = () => {
-    channel_samples = Array.from(Array(NUM_CHANNELS), () => new Array(CANVAS_WIDTH).fill(0.0));
+    channel_samples = Array.from(Array(NUM_CHANNELS), () =>
+      new Array(CANVAS_WIDTH).fill(0.0)
+    );
   };
 
   export const resetPlot = () => {

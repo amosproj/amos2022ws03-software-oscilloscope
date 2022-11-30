@@ -1,6 +1,11 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_CHANNELS } from "../const";
+  import {
+    CANVAS_HEIGHT,
+    CANVAS_WIDTH,
+    NUM_CHANNELS,
+    INDICATOR_SECTION_WIDTH,
+  } from "../const";
   import CoordinateSystem from "../components/CoordinateSystem.svelte";
   import Waves from "../components/Waves.svelte";
   import OffsetSlider from "../components/OffsetSlider.svelte";
@@ -10,7 +15,6 @@
   import ResetButton from "./ResetButton.svelte";
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
-  import { INDICATOR_SECTION_WIDTH } from "../const.js";
 
   let waveElement;
   let btnOnOff;
@@ -77,7 +81,7 @@
     </div>
     <div id="button-reset">
       <ResetButton
-        on:reset={(e) => {
+        on:reset={() => {
           // if oscilloscope is running, click stop button
           if (isEnabled) {
             btnOnOff.click();
@@ -110,8 +114,8 @@
             <AmplitudeSlider
               channel={index}
               onInput={(scaling) => {
-            waveElement.updateChannelScaling(index, scaling);
-          }}
+                waveElement.updateChannelScaling(index, scaling);
+              }}
             />
           {/each}
         </div>
