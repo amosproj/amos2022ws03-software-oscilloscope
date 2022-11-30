@@ -7,6 +7,7 @@
   import Indicators from "./Indicators.svelte";
   import OnOffButton from "../components/OnOffButton.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
+  import { logSocketCloseCode } from "../helper";
 
   let waveElement;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
@@ -19,7 +20,6 @@
   onMount(() => {
     socket = createSocket();
 
-    socket.onopen = socketOnOpen;
     socket.onmessage = socketOnMessage;
     socket.onclose = socketOnClose;
   });
@@ -29,86 +29,21 @@
   });
 
   // -----business logic functions -----
-  const createSocket = function () {
+  const createSocket = () => {
     let socket = new WebSocket(import.meta.env.VITE_BACKEND_WEBSOCKET);
     socket.binaryType = "arraybuffer";
 
     return socket;
   };
 
-  const socketOnOpen = function (event) {
-    console.log("Socket opened");
-  };
-
-  const socketOnMessage = function (messageEvent) {
+  const socketOnMessage = (messageEvent) => {
     let samples = new Float64Array(messageEvent.data);
     if (!isEnabled) return;
     waveElement.updateBuffer(samples);
     indicatorElement.update(samples);
   };
 
-  const socketOnClose = function (closeEvent) {
-    // See https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
-    let reason;
-    switch (closeEvent.code) {
-      case 1000:
-        reason =
-          "Normal closure, meaning that the purpose for which the connection was established has been fulfilled.";
-        break;
-      case 1001:
-        reason =
-          'An endpoint is "going away", such as a server going down or a browser having navigated away from a page.';
-        break;
-      case 1002:
-        reason =
-          "An endpoint is terminating the connection due to a protocol error";
-        break;
-      case 1003:
-        reason =
-          "An endpoint is terminating the connection because it has received a type of data it cannot accept (e.g., an endpoint that understands only text data MAY send this if it receives a binary message).";
-        break;
-      case 1004:
-        reason =
-          "Reserved. The specific meaning might be defined in the future.";
-        break;
-      case 1004:
-        reason = "No status code was actually present.";
-        break;
-      case 1006:
-        reason =
-          "The connection was closed abnormally, e.g., without sending or receiving a Close control frame";
-        break;
-      case 1007:
-        reason =
-          "An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [https://www.rfc-editor.org/rfc/rfc3629] data within a text message).";
-        break;
-      case 1008:
-        reason =
-          'An endpoint is terminating the connection because it has received a message that "violates its policy". This reason is given either if there is no other sutible reason, or if there is a need to hide specific details about the policy.';
-        break;
-      case 1009:
-        reason =
-          "An endpoint is terminating the connection because it has received a message that is too big for it to process.";
-        break;
-      case 1010:
-        reason =
-          "An endpoint (client) is terminating the connection because it has expected the server to negotiate one or more extension, but the server didn't return them in the response message of the WebSocket handshake. <br /> Specifically, the extensions that are needed are: " +
-          closeEvent.reason;
-        break;
-      case 1011:
-        reason =
-          "A server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.";
-        break;
-      case 1015:
-        reason =
-          "The connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).";
-        break;
-      default:
-        reason = "Unknown reason";
-        break;
-    }
-    console.log("Websocket closed: " + reason);
-  };
+  const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
 </script>
 
 <div

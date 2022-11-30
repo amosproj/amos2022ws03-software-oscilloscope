@@ -2,8 +2,8 @@ import { rgbArrayToRGBAString } from "./helper";
 
 export const CANVAS_WIDTH = 1000;
 export const CANVAS_HEIGHT = 500;
-export const NUM_INTERVALS_X = 20;
-export const NUM_INTERVALS_Y = 10;
+export const NUM_INTERVALS_VERTICAL = 20;
+export const NUM_INTERVALS_HORIZONTAL = 10;
 
 export const INDICATOR_MARGIN = 4;
 export const INDICATOR_WIDTH = 8;

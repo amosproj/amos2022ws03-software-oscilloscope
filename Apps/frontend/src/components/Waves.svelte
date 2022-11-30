@@ -5,7 +5,7 @@
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
     NUM_CHANNELS,
-    NUM_INTERVALS_Y,
+    NUM_INTERVALS_HORIZONTAL,
     MIN_SWEEP,
     MAX_SWEEP,
     LINE_COLORS,
@@ -79,8 +79,6 @@
   const initializePlot = () => {
     webGLPlot = new WebglPlot(canvasElement);
     initializeLines();
-    console.log(`lines: ${lines.length}`);
-    console.log(`channels: ${channel_samples.length}`);
   };
 
   const initializeLines = () => {
@@ -93,7 +91,7 @@
       );
       let line = new WebglLine(color, CANVAS_WIDTH);
       line.arrangeX();
-      line.scaleY = (1 / (NUM_INTERVALS_Y / 2)) * scalesY[i];
+      line.scaleY = (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * scalesY[i];
       webGLPlot.addLine(line);
       lines.push(line);
     }
