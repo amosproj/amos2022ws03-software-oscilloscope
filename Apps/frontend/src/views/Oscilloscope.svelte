@@ -8,6 +8,7 @@
   import OnOffButton from "../components/OnOffButton.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import { logSocketCloseCode } from "../helper";
+  import { INDICATOR_SECTION_WIDTH } from "../const.js";
 
   let waveElement;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
@@ -48,7 +49,7 @@
 
 <div
   class="wrapper"
-  style="--canvas-width: {CANVAS_WIDTH}px; --canvas-height: {CANVAS_HEIGHT}px"
+  style="--canvas-width: {CANVAS_WIDTH}px; --canvas-height: {CANVAS_HEIGHT}px; --indicators-width: {INDICATOR_SECTION_WIDTH}px"
   data-cy="oscilloscope"
 >
   <div class="grid-container">
@@ -99,7 +100,7 @@
 
   .grid-container {
     display: grid;
-    grid-template-columns: 200px var(--canvas-width);
+    grid-template-columns: var(--indicators-width) var(--canvas-width);
   }
   .indicators {
     grid-column: 1;
