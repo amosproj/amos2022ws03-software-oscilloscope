@@ -6,10 +6,12 @@
   import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_CHANNELS } from "../const";
   import Indicators from "./Indicators.svelte";
   import OnOffButton from "./OnOffButton.svelte";
+  import ResetButton from "./ResetButton.svelte";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
 
   let waveElement;
+  let btnOnOff;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
   let socket;
@@ -104,6 +106,20 @@
       <OnOffButton
         on:switch-plot-enabled={(e) => {
           isEnabled = e.detail.enabled;
+        }}
+        bind:this={btnOnOff}
+      />
+    </div>
+    <div id="button-reset">
+      <ResetButton
+        on:reset={(e) => {
+          // if oscilloscope is running, click stop button
+          if (isEnabled) {
+            btnOnOff.click();
+          }
+          // clear canvas and indicators
+          indicatorElement.clearCanvas();
+          waveElement.resetPlot();
         }}
       />
     </div>
