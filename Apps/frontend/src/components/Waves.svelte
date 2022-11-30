@@ -5,25 +5,49 @@
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
     NUM_CHANNELS,
-    NUM_INTERVALS_Y,
+    NUM_INTERVALS_HORIZONTAL,
     MIN_SWEEP,
     MAX_SWEEP,
     LINE_COLORS,
   } from "../const";
   import { timeSweep } from "../stores";
 
-
   export let scalesY;
 
   let canvasElement;
   let webGLPlot;
-  let channel_samples = Array.from(Array(NUM_CHANNELS), () =>
-    new Array(CANVAS_WIDTH).fill(0.0)
-  );
+  let channel_samples;
   let lines = [];
+  let startStopLine = [];
+  let xArr;
+  let xLast;
 
-  let xArr = new Array(NUM_CHANNELS).fill(0.0);
-  let xLast = new Array(NUM_CHANNELS).fill(0);
+  // ----- Svelte lifecycle hooks -----
+  onMount(() => {
+    resizeCanvas();
+    initializePlot();
+    resetPlot();
+  });
+
+  beforeUpdate(() => {
+    window.requestAnimationFrame(newFrame);
+  });
+
+  // ----- business logic -----
+
+  const initChannelSamples = () => {
+    channel_samples = Array.from(Array(NUM_CHANNELS), () =>
+      new Array(CANVAS_WIDTH).fill(0.0)
+    );
+  };
+
+  export const resetPlot = () => {
+    xArr = new Array(NUM_CHANNELS).fill(0.0);
+    xLast = new Array(NUM_CHANNELS).fill(0);
+    initChannelSamples();
+    webGLPlot.clear();
+    console.log("clear");
+  };
 
   export const updateBuffer = (samples) => {
     for (
@@ -31,6 +55,9 @@
       channelIndex < channel_samples.length;
       channelIndex++
     ) {
+      if (!startStopLine[channelIndex]) {
+        continue;
+      }
       let xCurr = xArr[channelIndex];
       let xNew = Math.round(xCurr);
       for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
@@ -49,8 +76,30 @@
     }
   };
 
+  // Sets the scaling of a individual wave according to the voltage intervals
+  const setScaling = (index, scale) => {
+    lines[index].scaleY = computeScaling(scale);
+  };
+
+  // computes the Scaling of a wave according to the voltage intervals
+  const computeScaling = (scale) => {
+    return (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * scale;
+  };
+
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
+  };
+
+  // Update the amplification of wave
+  export const updateChannelScaling = (channelIndex, scaling) => {
+    setScaling(channelIndex, scaling);
+  };
+
+  export const startStopChannelI = (channelIndex, hasStarted) => {
+    startStopLine[channelIndex] = hasStarted;
+    /*if(hasStarted) console.log("start Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
+    else console.log("stop Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
+    */
   };
 
   const update = () => {
@@ -69,8 +118,6 @@
   const initializePlot = () => {
     webGLPlot = new WebglPlot(canvasElement);
     initializeLines();
-    console.log(`lines: ${lines.length}`);
-    console.log(`channels: ${channel_samples.length}`);
   };
 
   const initializeLines = () => {
@@ -83,20 +130,12 @@
       );
       let line = new WebglLine(color, CANVAS_WIDTH);
       line.arrangeX();
-      line.scaleY = (1 / (NUM_INTERVALS_Y / 2)) * scalesY[i];
+      line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addLine(line);
       lines.push(line);
+      startStopLine[i] = true;
     }
   };
-
-  onMount(() => {
-    resizeCanvas();
-    initializePlot();
-  });
-
-  beforeUpdate(() => {
-    window.requestAnimationFrame(newFrame);
-  });
 
   const newFrame = () => {
     update();

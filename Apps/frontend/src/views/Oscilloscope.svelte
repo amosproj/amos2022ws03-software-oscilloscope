@@ -1,144 +1,181 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-  import CoordinateSystem from "./CoordinateSystem.svelte";
-  import Waves from "./Waves.svelte";
-  import OffsetSlider from "./OffsetSlider.svelte";
-  import { CANVAS_HEIGHT, CANVAS_WIDTH, NUM_CHANNELS } from "../const";
+  import {
+    CANVAS_HEIGHT,
+    CANVAS_WIDTH,
+    NUM_CHANNELS,
+    INDICATOR_SECTION_WIDTH,
+  } from "../const";
+  import CoordinateSystem from "../components/CoordinateSystem.svelte";
+  import Waves from "../components/Waves.svelte";
+  import OffsetSlider from "../components/OffsetSlider.svelte";
+  import StartStopButton from "./StartStopButton.svelte";
   import Indicators from "./Indicators.svelte";
-  import OnOffButton from "./OnOffButton.svelte";
-  import TimeSweepSlider from "./TimeSweepSlider.svelte";
-
+  import OnOffButton from "../components/OnOffButton.svelte";
+  import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
+  import ResetButton from "./ResetButton.svelte";
+  import AmplitudeSlider from "./AmplitudeSlider.svelte";
+  import { logSocketCloseCode } from "../helper";
 
   let waveElement;
+  let btnOnOff;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
   let socket;
 
   let isEnabled = false;
 
+  // ----- Svelte lifecycle hooks -----
   onMount(() => {
-    socket = new WebSocket(import.meta.env.VITE_BACKEND_WEBSOCKET);
-    socket.binaryType = "arraybuffer";
+    socket = createSocket();
 
-    socket.onopen = () => {
-      console.log("Socket opened");
-    };
-
-    socket.onclose = function (event) {
-        var reason;
-        // See https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
-        if (event.code == 1000)
-            reason = "Normal closure, meaning that the purpose for which the connection was established has been fulfilled.";
-        else if(event.code == 1001)
-            reason = "An endpoint is \"going away\", such as a server going down or a browser having navigated away from a page.";
-        else if(event.code == 1002)
-            reason = "An endpoint is terminating the connection due to a protocol error";
-        else if(event.code == 1003)
-            reason = "An endpoint is terminating the connection because it has received a type of data it cannot accept (e.g., an endpoint that understands only text data MAY send this if it receives a binary message).";
-        else if(event.code == 1004)
-            reason = "Reserved. The specific meaning might be defined in the future.";
-        else if(event.code == 1005)
-            reason = "No status code was actually present.";
-        else if(event.code == 1006)
-           reason = "The connection was closed abnormally, e.g., without sending or receiving a Close control frame";
-        else if(event.code == 1007)
-            reason = "An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [https://www.rfc-editor.org/rfc/rfc3629] data within a text message).";
-        else if(event.code == 1008)
-            reason = "An endpoint is terminating the connection because it has received a message that \"violates its policy\". This reason is given either if there is no other sutible reason, or if there is a need to hide specific details about the policy.";
-        else if(event.code == 1009)
-           reason = "An endpoint is terminating the connection because it has received a message that is too big for it to process.";
-        else if(event.code == 1010) // Note that this status code is not used by the server, because it can fail the WebSocket handshake instead.
-            reason = "An endpoint (client) is terminating the connection because it has expected the server to negotiate one or more extension, but the server didn't return them in the response message of the WebSocket handshake. <br /> Specifically, the extensions that are needed are: " + event.reason;
-        else if(event.code == 1011)
-            reason = "A server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.";
-        else if(event.code == 1015)
-            reason = "The connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).";
-        else
-            reason = "Unknown reason";  
-        
-        console.log("Websocket: " +reason)
-    };
-
-    socket.onmessage = (message) => {
-      let samples = new Float64Array(message.data);
-      if (!isEnabled) return;
-      waveElement.updateBuffer(samples);
-      indicatorElement.update(samples);
-    };
+    socket.onmessage = socketOnMessage;
+    socket.onclose = socketOnClose;
   });
 
   onDestroy(() => {
     socket.close();
   });
+
+  // -----business logic functions -----
+  const createSocket = () => {
+    let socket = new WebSocket(import.meta.env.VITE_BACKEND_WEBSOCKET);
+    socket.binaryType = "arraybuffer";
+
+    return socket;
+  };
+
+  const socketOnMessage = (messageEvent) => {
+    let samples = new Float64Array(messageEvent.data);
+    if (!isEnabled) return;
+    waveElement.updateBuffer(samples);
+    indicatorElement.update(samples);
+  };
+
+  const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
 </script>
 
 <div
   class="wrapper"
-  style="--canvas-width: {CANVAS_WIDTH}px; --canvas-height: {CANVAS_HEIGHT}px"
+  style="--canvas-width: {CANVAS_WIDTH}px; --canvas-height: {CANVAS_HEIGHT}px; --indicators-width: {INDICATOR_SECTION_WIDTH}px"
   data-cy="oscilloscope"
 >
-  <div class="indicators">
-    <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
-  </div>
-  <div class="stack coordinate-system">
-    <CoordinateSystem scaleY={Math.max(...scalesY)} />
-  </div>
-  <div class="stack wave">
-    <Waves bind:this={waveElement} {scalesY} />
-  </div>
-  <div class="wrapper" id="control-panel">
-    <div id="btn-on-off">
-      <OnOffButton
-        on:switch-plot-enabled={(e) => {
-          isEnabled = e.detail.enabled;
-        }}
-      />
+  <div class="grid-container">
+    <div class="indicators">
+      <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
     </div>
-    <div class="sliders-wrapper">
-      {#each { length: NUM_CHANNELS } as _, index}
-        <OffsetSlider
-          onInput={(offsetY) => {
-            waveElement.updateChannelOffsetY(index, offsetY);
+    <div class="oscilloscope">
+      <div class="coordinate-system">
+        <CoordinateSystem scaleY={Math.max(...scalesY)} />
+      </div>
+      <div class="waves">
+        <Waves bind:this={waveElement} {scalesY} />
+      </div>
+    </div>
+    <div class="controls">
+      <div class="button-wrapper">
+        <OnOffButton
+          on:switch-plot-enabled={(e) => {
+            isEnabled = e.detail.enabled;
+          }}
+          bind:this={btnOnOff}
+        />
+        <ResetButton
+          on:reset={() => {
+            // if oscilloscope is running, click stop button
+            if (isEnabled) {
+              btnOnOff.click();
+            }
+            // clear canvas and indicators
+            indicatorElement.clearCanvas();
+            waveElement.resetPlot();
           }}
         />
-      {/each}
-    </div>
-    <div class="sliders-wrapper">
-      {#each { length: NUM_CHANNELS } as _, i}
-        <TimeSweepSlider channel={i} />
-      {/each}
+      </div>
+      <div class="slider-wrapper">
+        <div class="sliders">
+          Start/Stop
+          <br>
+          {#each { length: NUM_CHANNELS } as _, index}
+            <StartStopButton
+              channel_id={index}
+              on:startStop={async (event) => {
+                let hasStarted = event.detail.buttonValue;
+                waveElement.startStopChannelI(index, hasStarted);
+              }}
+            />
+          {/each}
+        </div>
+        <div class="sliders">
+          Offset
+          {#each { length: NUM_CHANNELS } as _, index}
+            <OffsetSlider
+              onInput={(offsetY) => {
+                waveElement.updateChannelOffsetY(index, offsetY);
+              }}
+            />
+          {/each}
+        </div>
+        <div class="sliders">
+          Time Sweep
+          {#each { length: NUM_CHANNELS } as _, index}
+            <TimeSweepSlider channel={index} />
+          {/each}
+        </div>
+        <div class="sliders">
+          Amplitude
+          {#each { length: NUM_CHANNELS } as _, index}
+            <AmplitudeSlider
+              channel={index}
+              onInput={(scaling) => {
+                waveElement.updateChannelScaling(index, scaling);
+              }}
+            />
+          {/each}
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
 <style>
   .wrapper {
-    position: relative;
-    width: var(--canvas-width);
-    height: var(--canvas-height);
     display: flex;
-    margin: 0 2rem;
+    justify-content: center;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: var(--indicators-width) var(--canvas-width);
   }
   .indicators {
-    position: absolute;
-    left: 0;
-    transform: translateX(-100%);
+    grid-column: 1;
   }
-  .stack {
+
+  .oscilloscope {
+    grid-column: 2;
+    position: relative;
+  }
+
+  .oscilloscope .coordinate-system,
+  .oscilloscope .waves {
     position: absolute;
     inset: 0;
   }
-  .coordinate-system {
-    z-index: 0;
+  .controls {
+    grid-column: 2;
+    justify-content: center;
   }
-  .wave {
-    z-index: 1;
+
+  .slider-wrapper {
+    display: flex;
   }
-  #control-panel {
-    top: 500px;
+
+  .button-wrapper {
+    display: flex;
+    margin: 1rem;
   }
-  .sliders-wrapper {
-    float: right;
-    margin-right: 2rem;
+
+  .sliders {
+    width: 50%;
   }
 </style>
