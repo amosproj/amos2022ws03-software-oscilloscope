@@ -23,7 +23,9 @@ services:
     hostname: frontend
     depends_on:
       - backend
-    build: 
+    build:
+      args:
+        MODE: localhost
       context: ./frontend
       dockerfile: Dockerfile
     restart: unless-stopped

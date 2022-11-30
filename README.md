@@ -1,8 +1,5 @@
 # AMOS Project 3 - Software Oscilloscope (AMOS SS 2022)
 
-[Feature board](https://github.com/users/dev3225/projects/1/views/1)
-
-[Impediments backlog](https://github.com/users/rbalink/projects/1/views/1)
 
 # About The Project
 This project - SOSCI is a software developed based on an oscilloscopes and its features.
@@ -13,7 +10,19 @@ The objective of SOSCI is to enable users of oscilloscope a way to gain access t
 ### Product Mission
 To organize features of an oscilloscope and processing of information and make it possible for the user to access it through a webpage. To continuously raise the level of experience of the customer with use of current technologies and maximize the output of our customer. Using SOSCI application for displaying sensor data on the frontend. 
 
+
+## Environments
+- [Develop - Nightly Builds](https://amos-sosci.die-degens.eu/dev/ui)
+- [Integration - Latest Release Canidate](https://amos-sosci.die-degens.eu/int/ui)
+- [Production - Latest Release](https://amos-sosci.die-degens.eu/prod/ui)
+
 # Docker
+
+## DockerHub Images
+ - [Generator](https://hub.docker.com/repository/docker/sosci/generator)
+ - [Backend](https://hub.docker.com/repository/docker/sosci/backend)
+ - [Frontend](https://hub.docker.com/repository/docker/sosci/frontend)
+
 
 ## How to run docker containers
 
@@ -21,15 +30,11 @@ Prerequisites:
 
 - Make sure you have Docker installed with `docker -v`
 - Start the Docker daemon by running Docker Desktop or `dockerd`
+- docker-compose installes
 
 ### Frontend
 
-1. Enter the frontend directory: `cd code/frontend`
-2. Build the image: `docker build -t sosci-frontend .`
-   - `-t sosci-frontend` tags the image for convenience.
-   - `.` refers to the location of the Dockerfile.
-3. Run the container: `docker run --name=sosci-frontend -p 5000:80 sosci-frontend`
-   - `--name=sosci-frontend` sets the name of the container.
-   - `-p 5000:80` exposes port 80 of nginx to port 5000 on the host machine.
-   - `sosci-frontend` refers to the image you built in step 2.
-4. Open `localhost:5000`.
+1. Enter the frontend directory: `cd Apps/`
+2. Build & run the image: `docker-compose up --build`
+3. Run detached the container: `docker-compose up -d`
+4. Rebuild specific container: `docker-compose up -d --build <generator/backend/frontend>`

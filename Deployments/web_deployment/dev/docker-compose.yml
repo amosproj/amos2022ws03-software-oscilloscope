@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  generator:
+    image: sosci/generator:${VERSION_TAG:-nightly}
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      - HOST=0.0.0.0:34254
+      - TARGET=backend:34255
+      - PPS=100.0
+      - SIG_FREQ=1.0
+    ports:
+      - 34254:34254
+    networks:
+      - internal
+
+  frontend:
+    image: sosci/frontend:${VERSION_TAG:-nightly}
+    pull_policy: always
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - internal
+      - web
+    labels:
+      - "traefik.enable=true"
+      # Remove path prefix
+      - "traefik.http.middlewares.sosci-frontend-stripprefix-dev.stripprefix.prefixes=/dev/ui"
+        # Redirect HTTP
+      - "traefik.http.routers.sosci-dev-frontend-web.service=sosci-dev-frontend-websecure"
+      - "traefik.http.middlewares.sosci-dev-frontend-websecure.redirectscheme.scheme=https"
+      - "traefik.http.routers.sosci-dev-frontend-web.middlewares=sosci-dev-frontend-websecure,sosci-frontend-stripprefix-dev"
+      - "traefik.http.routers.sosci-dev-frontend-web.rule=Host(`amos-sosci.die-degens.eu`)  && PathPrefix(`/dev/ui`)"
+      - "traefik.http.routers.sosci-dev-frontend-web.entrypoints=web"
+        # HTTPS
+      - "traefik.http.routers.sosci-dev-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/ui`)"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.entrypoints=websecure"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.service=sosci-dev-frontend-websecure"
+      - "traefik.http.services.sosci-dev-frontend-websecure.loadbalancer.server.port=80"
+      - "traefik.http.routers.sosci-dev-frontend-websecure.middlewares=sosci-frontend-stripprefix-dev"
+
+  backend:
+    image: sosci/backend:${VERSION_TAG:-nightly}
+    pull_policy: always
+    environment:
+      - HOST_PORT=34255
+      - HOST_ADDRESS=0.0.0.0
+    ports: 
+      - 34255:34255
+    networks:
+      - internal
+      - web
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      # Remove path prefix
+      - "traefik.http.middlewares.sosci-backend-stripprefix-dev.stripprefix.prefixes=/dev/api"
+        # Main
+      - "traefik.http.routers.sosci-dev-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend.entrypoints=websecure"
+      - "traefik.http.routers.sosci-dev-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-dev-backend.service=sosci-dev-backend"
+      - "traefik.http.services.sosci-dev-backend.loadbalancer.server.port=9000"
+      - "traefik.http.routers.sosci-dev-backend.middlewares=sosci-backend-stripprefix-dev"
+
+networks:
+  internal:
+    driver: bridge
+    internal: true
+  web:
+    driver: bridge
+    external: true

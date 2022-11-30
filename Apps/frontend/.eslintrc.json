@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "plugin:cypress/recommended", "prettier"],
+  "plugins": ["svelte3", "prettier"],
+  "overrides": [
+    {
+      "files": ["**/*.svelte"],
+      "processor": "svelte3/svelte3"
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "extraFileExtensions": ["svelte"]
+  },
+  "rules": {
+    "prettier/prettier": "error"
+  },
+  "ignorePatterns": ["src/assets/**/*"]
+}

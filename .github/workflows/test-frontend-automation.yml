@@ -1,0 +1,49 @@
+name: CI Test Docker Frontend
+
+on:
+  push:
+    paths:
+      - 'Apps/frontend/**.*'
+      - '.github/workflows/test-frontend-automation.yml'
+  pull_request:
+    branches: 
+      - "dev"
+      - "int"
+      - "main"
+
+jobs:
+  cypress-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress Install
+        uses: cypress-io/github-action@v4
+        with:
+          working-directory: ./Apps/frontend
+          # Disable running of tests within install job
+          runTests: false
+          build: npm run build
+      
+      - name: Cypress Test Execution
+        uses: cypress-io/github-action@v4
+        with:        
+          working-directory: ./Apps/frontend
+          start: npm run dev
+          wait-on: 'http://127.0.0.1:5173'
+          wait-on-timeout: 120
+          browser: chrome
+          record: true
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESSCLOUD_TOKEN }}
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # pass the project ID from the secrets through environment variable
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESSCLOUD_PROJECTID }}
+          # overwrite commit message sent to Cypress Cloud
+          COMMIT_INFO_MESSAGE: ${{github.event.pull_request.title}}
+          # re-enable PR comment bot
+          COMMIT_INFO_SHA: ${{github.event.pull_request.head.sha}}
