@@ -16,13 +16,23 @@
 
   let canvasElement;
   let webGLPlot;
-  let channel_samples = Array.from(Array(NUM_CHANNELS), () =>
-    new Array(CANVAS_WIDTH).fill(0.0)
-  );
+  let channel_samples;
+  const initChannelSamples = () => {
+    channel_samples = Array.from(Array(NUM_CHANNELS), () => new Array(CANVAS_WIDTH).fill(0.0));
+  };
+  initChannelSamples();
   let lines = [];
 
-  let xArr = new Array(NUM_CHANNELS).fill(0.0);
-  let xLast = new Array(NUM_CHANNELS).fill(0);
+  let xArr;
+  let xLast;
+
+  export const resetPlot = () => {
+    xArr = new Array(NUM_CHANNELS).fill(0.0);
+    xLast = new Array(NUM_CHANNELS).fill(0);
+    initChannelSamples();
+    webGLPlot.clear();
+    console.log("clear");
+  };
 
   export const updateBuffer = (samples) => {
     for (
@@ -91,6 +101,7 @@
   onMount(() => {
     resizeCanvas();
     initializePlot();
+    resetPlot();
   });
 
   beforeUpdate(() => {
