@@ -44,7 +44,7 @@
     }
   };
 
-  const clearCanvas = () => {
+  export const clearCanvas = () => {
     canvasContext.clearRect(
       -canvasElement.width,
       -(canvasElement.height / 2),

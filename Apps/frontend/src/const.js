@@ -32,3 +32,5 @@ export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
 export const NUM_CHANNELS = 10;
 export const MIN_SWEEP = 0.5; // <= 1
 export const MAX_SWEEP = 2.0; // >= 1
+export const MIN_AMPLITUDE = 0.0;
+export const MAX_AMPLITUDE = NUM_INTERVALS_Y / 2;

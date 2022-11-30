@@ -16,13 +16,35 @@
 
   let canvasElement;
   let webGLPlot;
-  let channel_samples = Array.from(Array(NUM_CHANNELS), () =>
-    new Array(CANVAS_WIDTH).fill(0.0)
-  );
+  let channel_samples;
   let lines = [];
+  let xArr;
+  let xLast;
 
-  let xArr = new Array(NUM_CHANNELS).fill(0.0);
-  let xLast = new Array(NUM_CHANNELS).fill(0);
+  // ----- Svelte lifecycle hooks -----
+  onMount(() => {
+    resizeCanvas();
+    initializePlot();
+    resetPlot();
+  });
+
+  beforeUpdate(() => {
+    window.requestAnimationFrame(newFrame);
+  });
+
+  // ----- business logic -----
+
+  const initChannelSamples = () => {
+    channel_samples = Array.from(Array(NUM_CHANNELS), () => new Array(CANVAS_WIDTH).fill(0.0));
+  };
+
+  export const resetPlot = () => {
+    xArr = new Array(NUM_CHANNELS).fill(0.0);
+    xLast = new Array(NUM_CHANNELS).fill(0);
+    initChannelSamples();
+    webGLPlot.clear();
+    console.log("clear");
+  };
 
   export const updateBuffer = (samples) => {
     for (
@@ -48,21 +70,25 @@
     }
   };
 
+  // Sets the scaling of a individual wave according to the voltage intervals
+  const setScaling = (index, scale) => {
+    lines[index].scaleY = computeScaling(scale);
+  };
+
+  // computes the Scaling of a wave according to the voltage intervals
+  const computeScaling = (scale) => {
+    return (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * scale;
+  };
+
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
   };
 
-  // ----- Svelte lifecycle hooks -----
-  onMount(() => {
-    resizeCanvas();
-    initializePlot();
-  });
+  // Update the amplification of wave
+  export const updateChannelScaling = (channelIndex, scaling) => {
+    setScaling(channelIndex, scaling);
+  };
 
-  beforeUpdate(() => {
-    window.requestAnimationFrame(newFrame);
-  });
-
-  // ----- business logic -----
   const update = () => {
     for (let i = 0; i < channel_samples.length; i++) {
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
@@ -91,7 +117,7 @@
       );
       let line = new WebglLine(color, CANVAS_WIDTH);
       line.arrangeX();
-      line.scaleY = (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * scalesY[i];
+      line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addLine(line);
       lines.push(line);
     }

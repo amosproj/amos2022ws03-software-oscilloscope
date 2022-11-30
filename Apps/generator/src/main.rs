@@ -21,15 +21,14 @@ async fn main() {
 
 async fn run(socket: &UdpSocket, config: &Config) {
     let mut generator = TenChannelSampleGenerator::new(
-        config.pps,
+        config.packages_per_second,
         config.signal_frequency,
         config.signal_amplitude,
         true,
     );
-
-    let mut interval = time::interval(Duration::from_nanos(
-        (1.0 / config.pps * 1_000_000_000.0) as u64,
-    ));
+    let nanos_between_packages = (1.0 / config.packages_per_second * 1_000_000_000.0) as u64;
+    let package_interval = Duration::from_nanos(nanos_between_packages);
+    let mut package_interval = time::interval(package_interval);
 
     loop {
         let samples: Vec<f64> = generator.next();
@@ -41,6 +40,6 @@ async fn run(socket: &UdpSocket, config: &Config) {
         }
 
         //wait to match desired packages per second
-        interval.tick().await;
+        package_interval.tick().await;
     }
 }
