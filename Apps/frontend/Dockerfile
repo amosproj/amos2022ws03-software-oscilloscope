@@ -1,7 +1,7 @@
 # Use Node v14 for building
 FROM node:14-alpine AS build
 
-ARG MODE 
+ARG MODE
 
 # Set workdir inside docker container
 WORKDIR /usr/src/app

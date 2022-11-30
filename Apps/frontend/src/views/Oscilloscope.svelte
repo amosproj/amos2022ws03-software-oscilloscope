@@ -8,6 +8,7 @@
   import OnOffButton from "./OnOffButton.svelte";
   import ResetButton from "./ResetButton.svelte";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
+  import AmplitudeSlider from "./AmplitudeSlider.svelte";
 
   let waveElement;
   let btnOnOff;
@@ -134,6 +135,16 @@
     <div class="sliders-wrapper">
       {#each { length: NUM_CHANNELS } as _, i}
         <TimeSweepSlider channel={i} />
+      {/each}
+    </div>
+    <div class="sliders-wrapper">
+      {#each { length: NUM_CHANNELS } as _, i}
+        <AmplitudeSlider
+          channel={i}
+          onInput={(scaling) => {
+            waveElement.updateChannelScaling(i, scaling);
+          }}
+        />
       {/each}
     </div>
   </div>

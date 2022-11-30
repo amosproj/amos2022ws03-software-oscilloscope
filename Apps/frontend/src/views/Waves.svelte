@@ -58,8 +58,23 @@
     }
   };
 
+  // Sets the scaling of a individual wave according to the voltage intervals
+  const setScaling = (index, scale) => {
+    lines[index].scaleY = computeScaling(scale);
+  };
+
+  // computes the Scaling of a wave according to the voltage intervals
+  const computeScaling = (scale) => {
+    return (1 / (NUM_INTERVALS_Y / 2)) * scale;
+  };
+
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
+  };
+
+  // Update the amplification of wave
+  export const updateChannelScaling = (channelIndex, scaling) => {
+    setScaling(channelIndex, scaling);
   };
 
   const update = () => {
@@ -92,7 +107,7 @@
       );
       let line = new WebglLine(color, CANVAS_WIDTH);
       line.arrangeX();
-      line.scaleY = (1 / (NUM_INTERVALS_Y / 2)) * scalesY[i];
+      line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addLine(line);
       lines.push(line);
     }
