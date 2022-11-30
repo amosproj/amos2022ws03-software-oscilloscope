@@ -12,3 +12,59 @@ export const rgbArrayToRGBAString = (rgb) =>
 export const roundVoltage = (voltage) =>
   Math.trunc(voltage * 10 ** INDICATOR_DECIMAL_PLACES) /
   10 ** INDICATOR_DECIMAL_PLACES;
+
+export const logSocketCloseCode = (code) => {
+  // See https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
+  switch (code) {
+    case 1000:
+      console.log("Socket closed normally.");
+      break;
+    case 1001:
+      console.log("Socket closed due to server shutdown.");
+      break;
+    case 1002:
+      console.log("Socket closed due to protocol error.");
+      break;
+    case 1003:
+      console.log("Socket closed due to unsupported data.");
+      break;
+    case 1004:
+      console.log("Socket closed due to reserved error.");
+      break;
+    case 1005:
+      console.log("Socket closed due to no status code.");
+      break;
+    case 1006:
+      console.log("Socket closed due to abnormal closure.");
+      break;
+    case 1007:
+      console.log("Socket closed due to invalid frame payload data.");
+      break;
+    case 1008:
+      console.log("Socket closed due to policy violation.");
+      break;
+    case 1009:
+      console.log("Socket closed due to message too big.");
+      break;
+    case 1010:
+      console.log("Socket closed due to missing extension.");
+      break;
+    case 1011:
+      console.log("Socket closed due to internal error.");
+      break;
+    case 1012:
+      console.log("Socket closed due to service restart.");
+      break;
+    case 1013:
+      console.log("Socket closed due to try again later.");
+      break;
+    case 1014:
+      console.log("Socket closed due to bad gateway.");
+      break;
+    case 1015:
+      console.log("Socket closed due to TLS handshake.");
+      break;
+    default:
+      console.log("Socket closed due to unknown reason.");
+  }
+};

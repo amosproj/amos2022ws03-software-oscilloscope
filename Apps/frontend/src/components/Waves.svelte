@@ -5,7 +5,7 @@
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
     NUM_CHANNELS,
-    NUM_INTERVALS_Y,
+    NUM_INTERVALS_HORIZONTAL,
     MIN_SWEEP,
     MAX_SWEEP,
     LINE_COLORS,
@@ -17,14 +17,28 @@
   let canvasElement;
   let webGLPlot;
   let channel_samples;
-  const initChannelSamples = () => {
-    channel_samples = Array.from(Array(NUM_CHANNELS), () => new Array(CANVAS_WIDTH).fill(0.0));
-  };
-  initChannelSamples();
   let lines = [];
-
   let xArr;
   let xLast;
+
+  // ----- Svelte lifecycle hooks -----
+  onMount(() => {
+    resizeCanvas();
+    initializePlot();
+    resetPlot();
+  });
+
+  beforeUpdate(() => {
+    window.requestAnimationFrame(newFrame);
+  });
+
+  // ----- business logic -----
+
+  const initChannelSamples = () => {
+    channel_samples = Array.from(Array(NUM_CHANNELS), () =>
+      new Array(CANVAS_WIDTH).fill(0.0)
+    );
+  };
 
   export const resetPlot = () => {
     xArr = new Array(NUM_CHANNELS).fill(0.0);
@@ -65,7 +79,7 @@
 
   // computes the Scaling of a wave according to the voltage intervals
   const computeScaling = (scale) => {
-    return (1 / (NUM_INTERVALS_Y / 2)) * scale;
+    return (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * scale;
   };
 
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
@@ -93,8 +107,6 @@
   const initializePlot = () => {
     webGLPlot = new WebglPlot(canvasElement);
     initializeLines();
-    console.log(`lines: ${lines.length}`);
-    console.log(`channels: ${channel_samples.length}`);
   };
 
   const initializeLines = () => {
@@ -112,16 +124,6 @@
       lines.push(line);
     }
   };
-
-  onMount(() => {
-    resizeCanvas();
-    initializePlot();
-    resetPlot();
-  });
-
-  beforeUpdate(() => {
-    window.requestAnimationFrame(newFrame);
-  });
 
   const newFrame = () => {
     update();
