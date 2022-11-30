@@ -72,25 +72,25 @@
       </div>
     </div>
     <div class="controls">
-      <OnOffButton
-        on:switch-plot-enabled={(e) => {
-          isEnabled = e.detail.enabled;
-        }}
-        bind:this={btnOnOff}
-      />
-    </div>
-    <div id="button-reset">
-      <ResetButton
-        on:reset={() => {
-          // if oscilloscope is running, click stop button
-          if (isEnabled) {
-            btnOnOff.click();
-          }
-          // clear canvas and indicators
-          indicatorElement.clearCanvas();
-          waveElement.resetPlot();
-        }}
-      />
+      <div class="button-wrapper">
+        <OnOffButton
+          on:switch-plot-enabled={(e) => {
+            isEnabled = e.detail.enabled;
+          }}
+          bind:this={btnOnOff}
+        />
+        <ResetButton
+          on:reset={() => {
+            // if oscilloscope is running, click stop button
+            if (isEnabled) {
+              btnOnOff.click();
+            }
+            // clear canvas and indicators
+            indicatorElement.clearCanvas();
+            waveElement.resetPlot();
+          }}
+        />
+      </div>
       <div class="slider-wrapper">
         <div class="sliders">
           Offset
@@ -150,10 +150,16 @@
   }
   .controls {
     grid-column: 2;
+    justify-content: center;
   }
 
   .slider-wrapper {
     display: flex;
+  }
+
+  .button-wrapper {
+    display: flex;
+    margin: 1rem;
   }
 
   .sliders {
