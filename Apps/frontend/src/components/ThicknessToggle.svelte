@@ -1,0 +1,37 @@
+<script>
+  import { Switch } from '@svelteuidev/core';
+  import { LINE_COLORS_RGBA } from '../const.js';
+  import { thicknessAdjustment } from "../stores.js";
+
+  export let onClick = (isThick) => {
+    console.error(
+      `Missing implementation of ThicknessSwitch.onClick(${isThick})!`
+    );
+    return;
+  };
+
+  export let channel;
+  let isThick = false;
+</script>
+
+<div
+  class="toggle-wrapper"
+>
+  <Switch
+    className="toggle"
+    bind:checked={isThick}
+    on:click={() => {
+      $thicknessAdjustment[channel] = isThick;
+      onClick(isThick);
+    }}
+    color={LINE_COLORS_RGBA[channel]}
+  />
+</div>
+
+<style>
+  .toggle-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 0.25rem;
+  }
+</style>
