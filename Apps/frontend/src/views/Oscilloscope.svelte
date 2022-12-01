@@ -95,7 +95,7 @@
       <div class="slider-wrapper">
         <div class="sliders">
           Start/Stop
-          <br>
+          <br />
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
               channel_id={index}
@@ -137,6 +137,7 @@
     </div>
   </div>
 </div>
+
 <style>
   .wrapper {
     display: flex;
