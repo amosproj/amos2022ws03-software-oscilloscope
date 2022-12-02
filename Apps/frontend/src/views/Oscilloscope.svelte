@@ -112,6 +112,7 @@
             <OffsetSlider
               onInput={(offsetY) => {
                 waveElement.updateChannelOffsetY(index, offsetY);
+                indicatorElement.updateChannelOffsetY(index, offsetY);
               }}
             />
           {/each}
@@ -129,6 +130,7 @@
               channel={index}
               onInput={(scaling) => {
                 waveElement.updateChannelScaling(index, scaling);
+                indicatorElement.updateChannelScaling(index, scaling);
               }}
             />
           {/each}
