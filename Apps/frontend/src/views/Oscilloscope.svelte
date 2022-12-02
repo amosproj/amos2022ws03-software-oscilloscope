@@ -102,6 +102,7 @@
               on:startStop={async (event) => {
                 let hasStarted = event.detail.buttonValue;
                 waveElement.startStopChannelI(index, hasStarted);
+                indicatorElement.startStopChannelI(index, hasStarted);
               }}
             />
           {/each}

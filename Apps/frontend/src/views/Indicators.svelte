@@ -14,10 +14,12 @@
 
   let canvasElement;
   let canvasContext;
+  let current = Array(NUM_CHANNELS).fill(0.0);
   let min = Array(NUM_CHANNELS).fill(0.0);
   let max = Array(NUM_CHANNELS).fill(0.0);
   let offsets = Array(NUM_CHANNELS).fill(0.0);
   let scalings = Array(NUM_CHANNELS).fill(1.0);
+  let startStopLine = Array(NUM_CHANNELS).fill(true);
 
   export let scaleY;
 
@@ -25,8 +27,10 @@
     clearCanvas();
     drawGlobalZeroLine();
     for (let channel = 0; channel < samples.length; channel++) {
-      updateMinMax(samples[channel], channel);
-      const transformedCurrent = transformSampleToYCoord(samples[channel], offsets[channel], scalings[channel]);
+      if(startStopLine[channel]) {
+        updateCurrentMinMax(samples[channel], channel);
+      }
+      const transformedCurrent = transformSampleToYCoord(current[channel], offsets[channel], scalings[channel]);
       const transformedMin = transformSampleToYCoord(min[channel], offsets[channel], scalings[channel]);
       const transformedMax = transformSampleToYCoord(max[channel], offsets[channel], scalings[channel]);
       const transformedZero = transformSampleToYCoord(0, offsets[channel], scalings[channel]);
@@ -37,15 +41,17 @@
   };
 
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
-    resetMinMax();
     offsets[channelIndex] = offsetY;
   };
 
   // Update the amplification of wave
   export const updateChannelScaling = (channelIndex, scaling) => {
-    resetMinMax();
     scalings[channelIndex] = scaling;
   };
+
+  export const startStopChannelI = (channelIndex, hasStarted) => {
+    startStopLine[channelIndex] = hasStarted;
+  }
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -54,11 +60,8 @@
 
   // ----- Business logic -----
 
-  const resetMinMax = () => {
-    min.fill(0);
-    max.fill(0);
-  };
-  const updateMinMax = (sample, i) => {
+  const updateCurrentMinMax = (sample, i) => {
+    current[i] = sample;
     if (sample < min[i]) {
       min[i] = sample;
     }
