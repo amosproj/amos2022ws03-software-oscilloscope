@@ -7,17 +7,17 @@
     INDICATOR_SECTION_WIDTH,
     INDICATOR_WIDTH,
     INDICATOR_ZERO_LINE_COLOR,
-    LINE_COLORS_RGBA,
-    NUM_INTERVALS_HORIZONTAL,
+    LINE_COLORS_RGBA, NUM_CHANNELS,
+    NUM_INTERVALS_HORIZONTAL
   } from "../const";
   import { roundVoltage } from "../helper";
 
   let canvasElement;
   let canvasContext;
-  let min = Array(10).fill(0.0);
-  let max = Array(10).fill(0.0);
-  let offsets = Array(10).fill(0.0);
-  let scalings = Array(10).fill(1.0);
+  let min = Array(NUM_CHANNELS).fill(0.0);
+  let max = Array(NUM_CHANNELS).fill(0.0);
+  let offsets = Array(NUM_CHANNELS).fill(0.0);
+  let scalings = Array(NUM_CHANNELS).fill(1.0);
 
   export let scaleY;
 
