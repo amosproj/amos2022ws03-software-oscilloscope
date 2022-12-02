@@ -23,14 +23,15 @@
 
   export const update = (samples) => {
     clearCanvas();
-    drawZeroLine();
+    drawGlobalZeroLine();
     for (let channel = 0; channel < samples.length; channel++) {
       updateMinMax(samples[channel], channel);
       const transformedCurrent = transformSampleToYCoord(samples[channel], offsets[channel], scalings[channel]);
       const transformedMin = transformSampleToYCoord(min[channel], offsets[channel], scalings[channel]);
       const transformedMax = transformSampleToYCoord(max[channel], offsets[channel], scalings[channel]);
+      const transformedZero = transformSampleToYCoord(0, offsets[channel], scalings[channel]);
       drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
-      drawMinMaxLines(channel, transformedMin, transformedMax, LINE_COLORS_RGBA[channel]);
+      drawMinMaxZeroLines(channel, transformedMin, transformedMax, transformedZero, LINE_COLORS_RGBA[channel]);
       writeText(channel, min[channel], max[channel]);
     }
   };
@@ -89,7 +90,7 @@
     canvasContext.translate(canvasElement.width, canvasElement.height / 2);
   };
 
-  const drawZeroLine = () => {
+  const drawGlobalZeroLine = () => {
     canvasContext.beginPath();
     canvasContext.strokeStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.moveTo(0, 0);
@@ -110,16 +111,22 @@
     canvasContext.fill();
   };
 
-  const drawMinMaxLines = (channel, min, max, color) => {
+  const drawMinMaxZeroLines = (channel, min, max, zero, color) => {
     const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
     canvasContext.beginPath();
     canvasContext.fillStyle = color;
     canvasContext.strokeStyle = color;
+    // min
     canvasContext.moveTo(x - 4, min);
     canvasContext.lineTo(x + 4, min);
     canvasContext.stroke();
+    // //max
     canvasContext.moveTo(x - 4, max);
     canvasContext.lineTo(x + 4, max);
+    canvasContext.stroke();
+    //zero
+    canvasContext.moveTo(x - 6, zero);
+    canvasContext.lineTo(x + 6, zero);
     canvasContext.stroke();
   };
 
