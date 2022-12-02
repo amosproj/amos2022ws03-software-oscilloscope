@@ -97,7 +97,7 @@
     canvasContext.lineTo(-canvasElement.width, 0);
     canvasContext.stroke();
     canvasContext.font = `${INDICATOR_FONT_SIZE}px Arial`;
-    canvasContext.textColor = INDICATOR_ZERO_LINE_COLOR;
+    canvasContext.fillStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.textAlign = "left";
     canvasContext.fillText("0", -canvasElement.width, INDICATOR_FONT_SIZE);
   };
