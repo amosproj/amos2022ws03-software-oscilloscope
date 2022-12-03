@@ -19,10 +19,12 @@
 
   let waveElement;
   let btnOnOff;
-  let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
+  /** @type {Number[]} */
+  let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
+  /** @type {WebSocket} */
   let socket;
-
+  /** @type {boolean}*/
   let isEnabled = false;
 
   // ----- Svelte lifecycle hooks -----
@@ -38,6 +40,7 @@
   });
 
   // -----business logic functions -----
+
   const createSocket = () => {
     let socket = new WebSocket(import.meta.env.VITE_BACKEND_WEBSOCKET);
     socket.binaryType = "arraybuffer";
@@ -45,6 +48,9 @@
     return socket;
   };
 
+  /**
+   * @param {MessageEvent} messageEvent
+   */
   const socketOnMessage = (messageEvent) => {
     let samples = new Float64Array(messageEvent.data);
     if (!isEnabled) return;
@@ -52,6 +58,9 @@
     indicatorElement.update(samples);
   };
 
+  /**
+   * @param {CloseEvent} closeEvent
+   */
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
 </script>
 
@@ -95,7 +104,7 @@
       <div class="slider-wrapper">
         <div class="sliders">
           Start/Stop
-          <br>
+          <br />
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
               channel_id={index}
@@ -110,9 +119,8 @@
           Offset
           {#each { length: NUM_CHANNELS } as _, index}
             <OffsetSlider
-              onInput={(offsetY) => {
-                waveElement.updateChannelOffsetY(index, offsetY);
-              }}
+              onInput={(offsetY) =>
+                waveElement.updateChannelOffsetY(index, offsetY)}
             />
           {/each}
         </div>
@@ -127,9 +135,8 @@
           {#each { length: NUM_CHANNELS } as _, index}
             <AmplitudeSlider
               channel={index}
-              onInput={(scaling) => {
-                waveElement.updateChannelScaling(index, scaling);
-              }}
+              onInput={(scaling) =>
+                waveElement.updateChannelScaling(index, scaling)}
             />
           {/each}
         </div>
@@ -137,6 +144,7 @@
     </div>
   </div>
 </div>
+
 <style>
   .wrapper {
     display: flex;

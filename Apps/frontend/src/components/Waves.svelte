@@ -49,6 +49,10 @@
     console.log("clear");
   };
 
+  /**
+   * Updates the data buffer with the new samples.
+   * @param {number[]} samples
+   */
   export const updateBuffer = (samples) => {
     for (
       let channelIndex = 0;
@@ -76,25 +80,43 @@
     }
   };
 
-  // Sets the scaling of a individual wave according to the voltage intervals
+  /** Sets the scaling of a individual wave according to the voltage intervals
+   * @param {number} index
+   * @param {number} scale
+   */
   const setScaling = (index, scale) => {
     lines[index].scaleY = computeScaling(scale);
   };
 
-  // computes the Scaling of a wave according to the voltage intervals
+  /**
+   * Computes the Scaling of a wave according to the voltage intervals
+   * @param {number} scale
+   */
   const computeScaling = (scale) => {
     return (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * scale;
   };
 
+  /**
+   * @param channelIndex
+   * @param offsetY
+   */
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
   };
 
-  // Update the amplification of wave
+  /**
+   * Update the amplification of wave
+   * @param {number} channelIndex
+   * @param {number} scaling
+   */
   export const updateChannelScaling = (channelIndex, scaling) => {
     setScaling(channelIndex, scaling);
   };
 
+  /**
+   * @param {number} channelIndex
+   * @param {boolean} hasStarted
+   */
   export const startStopChannelI = (channelIndex, hasStarted) => {
     startStopLine[channelIndex] = hasStarted;
     /*if(hasStarted) console.log("start Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);

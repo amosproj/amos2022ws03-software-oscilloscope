@@ -1,14 +1,20 @@
 <script>
   import { amplitudeAdjustment } from "../stores.js";
   import { MIN_AMPLITUDE, MAX_AMPLITUDE } from "../const.js";
+
+  /** @type {number} */
+  export let channel;
+
+  /**
+   * Callback to be called when the user moves the slider
+   * @param {number} amplitude
+   */
   export let onInput = (amplitude) => {
     console.error(
       `Missing implementation of AmplitudeSlider.onInput(${amplitude})!`
     );
-    return amplitude;
   };
 
-  export let channel;
   // default amplification
   let amplitude = 1.0;
 </script>

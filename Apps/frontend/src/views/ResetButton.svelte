@@ -5,9 +5,7 @@
 
   $: label = "Reset";
 
-  const handleClick = async () => {
-    dispatch("reset", {});
-  };
+  const handleClick = async () => dispatch("reset", {});
 </script>
 
 <br />

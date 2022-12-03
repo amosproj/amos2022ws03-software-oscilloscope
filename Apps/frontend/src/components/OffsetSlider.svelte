@@ -1,4 +1,8 @@
 <script>
+  /**
+   * Callback to be called when the user moves the slider
+   * @param {number} offsetY
+   */
   export let onInput = (offsetY) => {
     console.error(
       `Missing implementation of OffsetSlider.onInput(${offsetY})!`

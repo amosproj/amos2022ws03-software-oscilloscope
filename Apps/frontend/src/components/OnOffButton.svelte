@@ -11,9 +11,7 @@
     dispatch("switch-plot-enabled", { enabled: isOn });
   };
 
-  export const click = () => {
-    handleClick();
-  };
+  export const click = () => handleClick();
 </script>
 
 <br />

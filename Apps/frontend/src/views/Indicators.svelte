@@ -14,10 +14,15 @@
 
   let canvasElement;
   let canvasContext;
+  /** @type {number[]} */
   let min = Array(10).fill(0.0);
+  /** @type {number[]} */
   let max = Array(10).fill(0.0);
 
+  /** @type {number}*/
   export let scaleY;
+
+  /** @param {number[]} samples */
   export const update = (samples) => {
     clearCanvas();
     drawZeroLine();
@@ -35,12 +40,16 @@
   });
 
   // ----- Business logic -----
-  const updateMinMax = (sample, i) => {
-    if (sample < min[i]) {
-      min[i] = sample;
+  /**
+   * @param {number} sample
+   * @param {number} index
+   */
+  const updateMinMax = (sample, index) => {
+    if (sample < min[index]) {
+      min[index] = sample;
     }
-    if (sample > max[i]) {
-      max[i] = sample;
+    if (sample > max[index]) {
+      max[index] = sample;
     }
   };
 
@@ -73,6 +82,11 @@
     canvasContext.fillText("0", -canvasElement.width, INDICATOR_FONT_SIZE);
   };
 
+  /**
+   * @param {number} channel
+   * @param {number }voltage
+   * @param {string} color
+   */
   const drawIndicator = (channel, voltage, color) => {
     const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
     const y = -(voltage * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_HORIZONTAL);
@@ -83,6 +97,10 @@
     canvasContext.fill();
   };
 
+  /**
+   * @param {number} channel
+   * @param {string} color
+   */
   const drawMinMaxLines = (channel, color) => {
     const minY =
       -(min[channel] * CANVAS_HEIGHT) / (scaleY * NUM_INTERVALS_HORIZONTAL);
@@ -100,6 +118,9 @@
     canvasContext.stroke();
   };
 
+  /**
+   * @param {number} channel
+   */
   const writeText = (channel) => {
     const roundedMin = roundVoltage(min[channel]);
     const roundedMax = roundVoltage(max[channel]);
