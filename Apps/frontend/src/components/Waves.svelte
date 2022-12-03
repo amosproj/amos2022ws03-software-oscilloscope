@@ -9,6 +9,7 @@
     MIN_SWEEP,
     MAX_SWEEP,
     LINE_COLORS,
+    WAVE_CURSOR_SIZE,
   } from "../const";
   import { timeSweep } from "../stores";
 
@@ -16,7 +17,14 @@
 
   let canvasElement;
   let webGLPlot;
-  let channel_samples;
+  /**
+   * @type {Number[][]}
+   */
+  let channelSamples;
+  /**
+   * @type {Number[][]}
+   */
+  let channelSamplesInjectCursor;
   let lines = [];
   let startStopLine = [];
   let xArr;
@@ -36,7 +44,10 @@
   // ----- business logic -----
 
   const initChannelSamples = () => {
-    channel_samples = Array.from(Array(NUM_CHANNELS), () =>
+    channelSamples = Array.from(Array(NUM_CHANNELS), () =>
+      new Array(CANVAS_WIDTH).fill(0.0)
+    );
+    channelSamplesInjectCursor = Array.from(Array(NUM_CHANNELS), () =>
       new Array(CANVAS_WIDTH).fill(0.0)
     );
   };
@@ -52,7 +63,7 @@
   export const updateBuffer = (samples) => {
     for (
       let channelIndex = 0;
-      channelIndex < channel_samples.length;
+      channelIndex < channelSamples.length;
       channelIndex++
     ) {
       if (!startStopLine[channelIndex]) {
@@ -61,8 +72,14 @@
       let xCurr = xArr[channelIndex];
       let xNew = Math.round(xCurr);
       for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
-        channel_samples[channelIndex][x] = samples[channelIndex];
+        channelSamples[channelIndex][x] = samples[channelIndex];
       }
+      channelSamplesInjectCursor[channelIndex] = channelSamples[channelIndex];
+      // inject cursor (undefined values are not rendered) before the newest data sample
+      for (let x = xNew + 1; x < xNew + WAVE_CURSOR_SIZE; x++) {
+        channelSamplesInjectCursor[channelIndex][x] = undefined;
+      }
+
       xLast[channelIndex] = xNew;
 
       let sweep = $timeSweep[channelIndex] / 5.0 - 1.0;
@@ -103,9 +120,9 @@
   };
 
   const update = () => {
-    for (let i = 0; i < channel_samples.length; i++) {
+    for (let i = 0; i < channelSamplesInjectCursor.length; i++) {
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
-        lines[i].setY(x, channel_samples[i][x]);
+        lines[i].setY(x, channelSamplesInjectCursor[i][x]);
       }
     }
   };
