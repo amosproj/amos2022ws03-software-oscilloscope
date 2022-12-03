@@ -77,7 +77,9 @@
       channelSamplesInjectCursor[channelIndex] = channelSamples[channelIndex];
       // inject cursor (undefined values are not rendered) before the newest data sample
       for (let x = xNew + 1; x < xNew + WAVE_CURSOR_SIZE; x++) {
-        channelSamplesInjectCursor[channelIndex][x] = undefined;
+        channelSamplesInjectCursor[channelIndex][
+          x % channelSamplesInjectCursor[channelIndex].length
+        ] = undefined;
       }
 
       xLast[channelIndex] = xNew;
