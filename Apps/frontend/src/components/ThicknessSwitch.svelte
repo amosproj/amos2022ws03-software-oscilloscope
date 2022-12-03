@@ -1,6 +1,6 @@
 <script>
-  import { Switch } from '@svelteuidev/core';
-  import { LINE_COLORS_RGBA } from '../const.js';
+  import { Switch } from "@svelteuidev/core";
+  import { LINE_COLORS_RGBA } from "../const.js";
   import { thicknessAdjustment } from "../stores.js";
 
   export let onClick = (isThick) => {
@@ -14,11 +14,8 @@
   let isThick = false;
 </script>
 
-<div
-  class="toggle-wrapper"
->
+<div class="switch-wrapper" data-cy="thicknessSwitch-{channel}">
   <Switch
-    className="toggle"
     bind:checked={isThick}
     on:click={() => {
       $thicknessAdjustment[channel] = isThick;
@@ -29,7 +26,7 @@
 </div>
 
 <style>
-  .toggle-wrapper {
+  .switch-wrapper {
     display: flex;
     justify-content: center;
     margin: 0.25rem;

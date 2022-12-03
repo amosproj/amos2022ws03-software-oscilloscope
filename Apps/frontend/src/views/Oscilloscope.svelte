@@ -16,7 +16,7 @@
   import ResetButton from "./ResetButton.svelte";
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
-  import ThicknessToggle from "../components/ThicknessToggle.svelte";
+  import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
 
   let waveElement;
   let btnOnOff;
@@ -110,7 +110,7 @@
         <div class="sliders">
           Thickness
           {#each { length: NUM_CHANNELS } as _, index}
-            <ThicknessToggle
+            <ThicknessSwitch
               channel={index}
               onClick={(isThick) => {
                 waveElement.updateChannelThickness(index, !isThick);
