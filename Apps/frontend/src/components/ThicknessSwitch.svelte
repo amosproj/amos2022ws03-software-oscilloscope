@@ -1,5 +1,5 @@
 <script>
-  import { Switch } from "@svelteuidev/core";
+  import Switch from "svelte-toggle";
   import { LINE_COLORS_RGBA } from "../const.js";
   import { thicknessAdjustment } from "../stores.js";
 
@@ -16,12 +16,13 @@
 
 <div class="switch-wrapper" data-cy="thicknessSwitch-{channel}">
   <Switch
-    bind:checked={isThick}
+    hideLabel
+    bind:toggled={isThick}
     on:click={() => {
       $thicknessAdjustment[channel] = isThick;
       onClick(isThick);
     }}
-    color={LINE_COLORS_RGBA[channel]}
+    toggledColor={LINE_COLORS_RGBA[channel]}
   />
 </div>
 

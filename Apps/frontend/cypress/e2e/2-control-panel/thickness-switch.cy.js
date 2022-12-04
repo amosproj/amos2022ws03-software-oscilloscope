@@ -13,8 +13,10 @@ describe("thicknessSwitch", () => {
 
   it("toggle switch", () => {
     cy.get(`[data-cy="thicknessSwitch-0"]`).within(() => {
-      cy.get('[type="checkbox"]').check({ force: true }).should("be.checked");
-      cy.get('[type="checkbox"]').click().should("not.be.checked");
+      cy.get('[role="switch"]').should("have.attr", "aria-checked", "false");
+      cy.get('[role="switch"]')
+        .click()
+        .should("have.attr", "aria-checked", "true");
     });
   });
 });
