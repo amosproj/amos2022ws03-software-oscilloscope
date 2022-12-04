@@ -21,10 +21,6 @@
    * @type {Number[][]}
    */
   let channelSamples;
-  /**
-   * @type {Number[][]}
-   */
-  let channelSamplesInjectCursor;
   let lines = [];
   let startStopLine = [];
   let xArr;
@@ -45,16 +41,13 @@
 
   const initChannelSamples = () => {
     channelSamples = Array.from(Array(NUM_CHANNELS), () =>
-      new Array(CANVAS_WIDTH).fill(0.0)
-    );
-    channelSamplesInjectCursor = Array.from(Array(NUM_CHANNELS), () =>
-      new Array(CANVAS_WIDTH).fill(0.0)
+      new Array(CANVAS_WIDTH).fill(undefined)
     );
   };
 
   export const resetPlot = () => {
     xArr = new Array(NUM_CHANNELS).fill(0.0);
-    xLast = new Array(NUM_CHANNELS).fill(0);
+    xLast = new Array(NUM_CHANNELS).fill(undefined);
     initChannelSamples();
     webGLPlot.clear();
     console.log("clear");
@@ -73,15 +66,8 @@
       let xNew = Math.round(xCurr);
       for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
         channelSamples[channelIndex][x] = samples[channelIndex];
+        channelSamples[channelIndex][(x+WAVE_CURSOR_SIZE) % canvasElement.width] = undefined;
       }
-      channelSamplesInjectCursor[channelIndex] = channelSamples[channelIndex];
-      // inject cursor (undefined values are not rendered) before the newest data sample
-      for (let x = xNew + 1; x < xNew + WAVE_CURSOR_SIZE; x++) {
-        channelSamplesInjectCursor[channelIndex][
-          x % channelSamplesInjectCursor[channelIndex].length
-        ] = undefined;
-      }
-
       xLast[channelIndex] = xNew;
 
       let sweep = $timeSweep[channelIndex] / 5.0 - 1.0;
@@ -116,15 +102,12 @@
 
   export const startStopChannelI = (channelIndex, hasStarted) => {
     startStopLine[channelIndex] = hasStarted;
-    /*if(hasStarted) console.log("start Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
-    else console.log("stop Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
-    */
   };
 
   const update = () => {
-    for (let i = 0; i < channelSamplesInjectCursor.length; i++) {
+    for (let i = 0; i < channelSamples.length; i++) {
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
-        lines[i].setY(x, channelSamplesInjectCursor[i][x]);
+        lines[i].setY(x, channelSamples[i][x]);
       }
     }
   };
@@ -152,7 +135,7 @@
       line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addLine(line);
       lines.push(line);
-      startStopLine[i] = true;
+      startStopLine[i] = true; // can be moved out of here
     }
   };
 
