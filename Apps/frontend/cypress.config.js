@@ -1,9 +1,11 @@
 import { defineConfig } from "cypress";
+import getCompareSnapshotsPlugin from "cypress-image-diff-js/dist/plugin";
 
 export default defineConfig({
+  viewportWidth: 1500,
   e2e: {
-    // setupNodeEvents(on, config) {
-    //   // implement node event listeners here
-    // },
+    setupNodeEvents(on, config) {
+      getCompareSnapshotsPlugin(on, config);
+    },
   },
 });

@@ -6,4 +6,8 @@ describe("indicators", () => {
   it("is visible", () => {
     cy.get('[data-cy="indicators"]');
   });
+
+  it("is displayed correctly initially", () => {
+    cy.get('[data-cy="indicators"]').compareSnapshot("initial");
+  });
 });
