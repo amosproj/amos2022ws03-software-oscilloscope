@@ -33,7 +33,7 @@
     clearCanvas();
     drawGlobalZeroLine();
     for (let channel = 0; channel < samples.length; channel++) {
-      if (startStopLine[channel]) {
+      if(startStopLine[channel]) {
         updateCurrentMinMax(samples[channel], channel);
       }
       const transformedCurrent = transformSampleToYCoord(current[channel], offsets[channel], scalings[channel]);
@@ -74,12 +74,11 @@
    */
   export const startStopChannelI = (channelIndex, hasStarted) => {
     startStopLine[channelIndex] = hasStarted;
-  };
+  }
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
     resizeCanvas();
-    update(Array(NUM_CHANNELS).fill(0.0));
   });
 
   // ----- Business logic -----

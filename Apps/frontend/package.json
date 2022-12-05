@@ -18,7 +18,6 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.1.0",
     "cypress": "^10.11.0",
-    "cypress-image-diff-js": "^1.22.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.12.1",
