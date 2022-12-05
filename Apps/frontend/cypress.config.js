@@ -1,5 +1,5 @@
 import { defineConfig } from "cypress";
-import getCompareSnapshotsPlugin from "cypress-image-diff-js/dist/plugin.js";
+import getCompareSnapshotsPlugin from "cypress-image-diff-js/dist/plugin";
 
 export default defineConfig({
   viewportWidth: 1500,
