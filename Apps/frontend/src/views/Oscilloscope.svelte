@@ -103,6 +103,7 @@
               on:startStop={async (event) => {
                 let hasStarted = event.detail.buttonValue;
                 waveElement.startStopChannelI(index, hasStarted);
+                indicatorElement.startStopChannelI(index, hasStarted);
               }}
             />
           {/each}
@@ -124,6 +125,7 @@
             <OffsetSlider
               onInput={(offsetY) => {
                 waveElement.updateChannelOffsetY(index, offsetY);
+                indicatorElement.updateChannelOffsetY(index, offsetY);
               }}
             />
           {/each}
@@ -141,6 +143,7 @@
               channel={index}
               onInput={(scaling) => {
                 waveElement.updateChannelScaling(index, scaling);
+                indicatorElement.updateChannelScaling(index, scaling);
               }}
             />
           {/each}
