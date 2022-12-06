@@ -1,6 +1,6 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
-  import { ColorRGBA, WebglPlot, WebglThickLine } from "webgl-plot";
+  import { ColorRGBA, WebglPlot, WebglSquare, WebglThickLine } from "webgl-plot";
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
@@ -20,6 +20,7 @@
   let webGLPlot;
   let channel_samples;
   let lines = [];
+  let heads = [];
   let startStopLine = [];
   let xArr;
   let xLast;
@@ -48,7 +49,6 @@
     xLast = new Array(NUM_CHANNELS).fill(0);
     initChannelSamples();
     webGLPlot.clear();
-    console.log("clear");
   };
 
   export const updateBuffer = (samples) => {
@@ -90,6 +90,7 @@
 
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
+    heads[channelIndex].offsetY = offsetY;
   };
 
   // Update the amplification of wave
@@ -114,6 +115,12 @@
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
         lines[i].setY(x, channel_samples[i][x]);
       }
+
+      const size = 0.01;
+      let x = (xArr[i] * 2) / CANVAS_WIDTH - 1;
+      let scale = lines[i].scaleY * 5;
+      let y = channel_samples[i][xLast[i]-1] * 100 * scale / CANVAS_HEIGHT;
+      heads[i].setSquare(x - (size/2), y - size, x + (size/2), y + size);
     }
   };
 
@@ -142,6 +149,10 @@
       webGLPlot.addThickLine(line);
       lines.push(line);
       startStopLine[i] = true;
+
+      let head = new WebglSquare(color);
+      heads.push(head);
+      webGLPlot.addSurface(head);
     }
   };
 
