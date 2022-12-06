@@ -1,34 +1,24 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
+	import Switch from "svelte-toggle";
 	export let channel_id;
 
 
 	const dispatch = createEventDispatcher()
 
-	let play = "Start ▶";
-	let stop = "Stop ■";
-	let symbol = channel_id + " " + stop;
 	let hasStarted = true;
+	let switchLabelOn = "Started " + channel_id;
+	let switchLabelOff = "Stopped " + channel_id;
 
 	const handleStartStop = async () => {
 		hasStarted = !hasStarted;
-		hasStarted ? symbol = stop : symbol = play;
-		symbol = channel_id + " " + symbol;
 		dispatch('startStop', {buttonValue: hasStarted})
 	}
 
 
 </script>
 
-<button class="button-style" on:click={handleStartStop}>
-	{symbol}
-</button>
+<Switch bind:value={hasStarted} hideLabel on={switchLabelOn}
+off={switchLabelOff} design="slider" on:click={handleStartStop} />
 
 
-<style>
-	.button-style {
-		border-style: solid;
-    	border-color: grey;
-  }
-
-</style>

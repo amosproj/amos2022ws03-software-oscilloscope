@@ -93,7 +93,7 @@
         />
       </div>
       <div class="slider-wrapper">
-        <div class="sliders">
+        <div class="switches">
           Start/Stop
           <br>
           {#each { length: NUM_CHANNELS } as _, index}
@@ -177,5 +177,10 @@
 
   .sliders {
     width: 50%;
+  }
+
+  .switches {
+    justify-content: center;
+    width: 25%;
   }
 </style>
