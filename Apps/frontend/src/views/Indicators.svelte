@@ -54,6 +54,7 @@
    */
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     offsets[channelIndex] = offsetY;
+    update(current);
   };
 
   /**
@@ -64,6 +65,7 @@
    */
   export const updateChannelScaling = (channelIndex, scaling) => {
     scalings[channelIndex] = scaling;
+    update(current);
   };
 
   /**
