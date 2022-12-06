@@ -9,7 +9,7 @@
     INDICATOR_ZERO_LINE_COLOR,
     LINE_COLORS_RGBA,
     NUM_CHANNELS,
-    NUM_INTERVALS_HORIZONTAL,
+    NUM_INTERVALS_HORIZONTAL
   } from "../const";
   import { roundVoltage } from "../helper";
 
@@ -33,7 +33,7 @@
     clearCanvas();
     drawGlobalZeroLine();
     for (let channel = 0; channel < samples.length; channel++) {
-      if(startStopLine[channel]) {
+      if (startStopLine[channel]) {
         updateCurrentMinMax(samples[channel], channel);
       }
       const transformedCurrent = transformSampleToYCoord(current[channel], offsets[channel], scalings[channel]);
@@ -74,11 +74,12 @@
    */
   export const startStopChannelI = (channelIndex, hasStarted) => {
     startStopLine[channelIndex] = hasStarted;
-  }
+  };
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
     resizeCanvas();
+    update(current);
   });
 
   // ----- Business logic -----
@@ -120,7 +121,7 @@
       -canvasElement.width,
       -(canvasElement.height / 2),
       canvasElement.width,
-      canvasElement.height,
+      canvasElement.height
     );
   };
 
@@ -208,12 +209,12 @@
     canvasContext.fillText(
       `[${channel}] Min:${roundedMin} V`,
       -INDICATOR_SECTION_WIDTH,
-      -(CANVAS_HEIGHT / 2) + (channel + 1) * 2 * INDICATOR_FONT_SIZE,
+      -(CANVAS_HEIGHT / 2) + (channel + 1) * 2 * INDICATOR_FONT_SIZE
     );
     canvasContext.fillText(
       `    Max:${roundedMax} V`,
       -INDICATOR_SECTION_WIDTH,
-      -(CANVAS_HEIGHT / 2) + (channel + 1.5) * 2 * INDICATOR_FONT_SIZE,
+      -(CANVAS_HEIGHT / 2) + (channel + 1.5) * 2 * INDICATOR_FONT_SIZE
     );
   };
 </script>
