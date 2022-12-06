@@ -28,6 +28,8 @@ export const LINE_COLORS = [
 ];
 
 export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
+export const LINE_THICKNESS_SMALL = 0.002;
+export const LINE_THICKNESS_BIG = 0.008;
 
 export const NUM_CHANNELS = 10;
 export const MIN_SWEEP = 0.5; // <= 1
