@@ -1,6 +1,6 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
-  import { ColorRGBA, WebglLine, WebglPlot, WebglSquare } from "webgl-plot";
+  import { ColorRGBA, WebglPlot, WebglSquare, WebglThickLine } from "webgl-plot";
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
@@ -9,6 +9,8 @@
     MIN_SWEEP,
     MAX_SWEEP,
     LINE_COLORS,
+    LINE_THICKNESS_SMALL,
+    LINE_THICKNESS_BIG,
   } from "../const";
   import { timeSweep } from "../stores";
 
@@ -96,6 +98,11 @@
     setScaling(channelIndex, scaling);
   };
 
+  export const updateChannelThickness = (channelIndex, isThick) => {
+    const thickness = isThick ? LINE_THICKNESS_BIG : LINE_THICKNESS_SMALL;
+    lines[channelIndex].setThickness(thickness);
+  };
+
   export const startStopChannelI = (channelIndex, hasStarted) => {
     startStopLine[channelIndex] = hasStarted;
     /*if(hasStarted) console.log("start Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
@@ -135,10 +142,11 @@
         LINE_COLORS[i][2] / 255,
         1
       );
-      let line = new WebglLine(color, CANVAS_WIDTH);
-      line.arrangeX();
+      let line = new WebglThickLine(color, CANVAS_WIDTH, LINE_THICKNESS_SMALL);
+      // same thing arrangeX does, but WebglThickLine does not provide it
+      line.lineSpaceX(-1, 2 / CANVAS_WIDTH);
       line.scaleY = computeScaling(scalesY[i]);
-      webGLPlot.addLine(line);
+      webGLPlot.addThickLine(line);
       lines.push(line);
       startStopLine[i] = true;
 
