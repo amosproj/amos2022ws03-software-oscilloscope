@@ -20,7 +20,7 @@
 
 </script>
 	<div class="switch-wrapper" >
-		<Switch bind:value={hasStarted} hideLabel switchColor={color} design="slider" on:click={handleStartStop} />
+		<Switch bind:value={hasStarted} hideLabel toggledColor={color} design="slider" on:click={handleStartStop} />
 	</div>
 
 <style>
