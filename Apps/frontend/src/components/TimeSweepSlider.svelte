@@ -5,7 +5,7 @@
   
   export let isCommon = false;
   const handleChange = () => {
-    if (isCommon || true) {
+    if (isCommon) {
       for (let idx=0; idx<NUM_CHANNELS; idx++) {
         $timeSweep[idx] = $timeSweep[channel];
       }
@@ -21,5 +21,6 @@
     class="slider"
     bind:value={$timeSweep[channel]}
     on:change={handleChange}
+    data-cy="timesweepSlider-{channel}"
   />
 </div>
