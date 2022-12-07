@@ -22,7 +22,6 @@ services:
       - backend
     restart: unless-stopped
     networks:
-      - internal
       - web
     labels:
       - "traefik.enable=true"
@@ -54,9 +53,9 @@ services:
     labels:
       - "traefik.enable=true"
       # Remove path prefix
-      - "traefik.http.middlewares.sosci-backend-stripprefix-prod.stripprefix.prefixes=/prod/api"
+      - "traefik.http.middlewares.sosci-backend-stripprefix-prod.stripprefix.prefixes=/api"
         # Main
-      - "traefik.http.routers.sosci-prod-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/prod/api`)"
+      - "traefik.http.routers.sosci-prod-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/api`)"
       - "traefik.http.routers.sosci-prod-backend.entrypoints=websecure"
       - "traefik.http.routers.sosci-prod-backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-prod-backend.service=sosci-prod-backend"

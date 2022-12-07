@@ -22,7 +22,6 @@ services:
       - backend
     restart: unless-stopped
     networks:
-      - internal
       - web
     labels:
       - "traefik.enable=true"
