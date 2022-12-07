@@ -1,6 +1,11 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
-  import { ColorRGBA, WebglLine, WebglPlot } from "webgl-plot";
+  import {
+    ColorRGBA,
+    WebglPlot,
+    WebglSquare,
+    WebglThickLine,
+  } from "webgl-plot";
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
@@ -9,6 +14,9 @@
     MIN_SWEEP,
     MAX_SWEEP,
     LINE_COLORS,
+    WAVE_CURSOR_SIZE,
+    LINE_THICKNESS_SMALL,
+    LINE_THICKNESS_BIG,
   } from "../const";
   import { timeSweep } from "../stores";
 
@@ -16,8 +24,12 @@
 
   let canvasElement;
   let webGLPlot;
-  let channel_samples;
+  /**
+   * @type {Number[][]}
+   */
+  let channelSamples;
   let lines = [];
+  let heads = [];
   let startStopLine = [];
   let xArr;
   let xLast;
@@ -36,23 +48,22 @@
   // ----- business logic -----
 
   const initChannelSamples = () => {
-    channel_samples = Array.from(Array(NUM_CHANNELS), () =>
-      new Array(CANVAS_WIDTH).fill(0.0)
+    channelSamples = Array.from(Array(NUM_CHANNELS), () =>
+      new Array(CANVAS_WIDTH).fill(undefined)
     );
   };
 
   export const resetPlot = () => {
     xArr = new Array(NUM_CHANNELS).fill(0.0);
-    xLast = new Array(NUM_CHANNELS).fill(0);
+    xLast = new Array(NUM_CHANNELS).fill(undefined);
     initChannelSamples();
     webGLPlot.clear();
-    console.log("clear");
   };
 
   export const updateBuffer = (samples) => {
     for (
       let channelIndex = 0;
-      channelIndex < channel_samples.length;
+      channelIndex < channelSamples.length;
       channelIndex++
     ) {
       if (!startStopLine[channelIndex]) {
@@ -61,7 +72,10 @@
       let xCurr = xArr[channelIndex];
       let xNew = Math.round(xCurr);
       for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
-        channel_samples[channelIndex][x] = samples[channelIndex];
+        channelSamples[channelIndex][x] = samples[channelIndex];
+        channelSamples[channelIndex][
+          (x + WAVE_CURSOR_SIZE) % canvasElement.width
+        ] = undefined;
       }
       xLast[channelIndex] = xNew;
 
@@ -88,6 +102,7 @@
 
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
+    heads[channelIndex].offsetY = offsetY;
   };
 
   // Update the amplification of wave
@@ -95,18 +110,26 @@
     setScaling(channelIndex, scaling);
   };
 
+  export const updateChannelThickness = (channelIndex, isThick) => {
+    const thickness = isThick ? LINE_THICKNESS_BIG : LINE_THICKNESS_SMALL;
+    lines[channelIndex].setThickness(thickness);
+  };
+
   export const startStopChannelI = (channelIndex, hasStarted) => {
     startStopLine[channelIndex] = hasStarted;
-    /*if(hasStarted) console.log("start Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
-    else console.log("stop Channel " + channelIndex + ", hasStarted:" + startStopLine[channelIndex]);
-    */
   };
 
   const update = () => {
-    for (let i = 0; i < channel_samples.length; i++) {
+    for (let i = 0; i < channelSamples.length; i++) {
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
-        lines[i].setY(x, channel_samples[i][x]);
+        lines[i].setY(x, channelSamples[i][x]);
       }
+
+      const size = 0.01;
+      let x = (xArr[i] * 2) / CANVAS_WIDTH - 1;
+      let scale = lines[i].scaleY * 5;
+      let y = (channelSamples[i][xLast[i] - 1] * 100 * scale) / CANVAS_HEIGHT;
+      heads[i].setSquare(x - size / 2, y - size, x + size / 2, y + size);
     }
   };
 
@@ -128,12 +151,17 @@
         LINE_COLORS[i][2] / 255,
         1
       );
-      let line = new WebglLine(color, CANVAS_WIDTH);
-      line.arrangeX();
+      let line = new WebglThickLine(color, CANVAS_WIDTH, LINE_THICKNESS_SMALL);
+      // same thing arrangeX does, but WebglThickLine does not provide it
+      line.lineSpaceX(-1, 2 / CANVAS_WIDTH);
       line.scaleY = computeScaling(scalesY[i]);
-      webGLPlot.addLine(line);
+      webGLPlot.addThickLine(line);
       lines.push(line);
       startStopLine[i] = true;
+
+      let head = new WebglSquare(color);
+      heads.push(head);
+      webGLPlot.addSurface(head);
     }
   };
 
