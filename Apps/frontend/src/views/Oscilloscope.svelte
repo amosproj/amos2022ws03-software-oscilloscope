@@ -194,4 +194,5 @@
   .sliders {
     width: 50%;
   }
+
 </style>
