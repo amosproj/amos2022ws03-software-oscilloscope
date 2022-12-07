@@ -16,6 +16,7 @@
   import ResetButton from "./ResetButton.svelte";
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
+  import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
 
   let waveElement;
   let btnOnOff;
@@ -95,13 +96,25 @@
       <div class="slider-wrapper">
         <div class="sliders">
           Start/Stop
-          <br>
+          <br />
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
               channel_id={index}
               on:startStop={async (event) => {
                 let hasStarted = event.detail.buttonValue;
                 waveElement.startStopChannelI(index, hasStarted);
+                indicatorElement.startStopChannelI(index, hasStarted);
+              }}
+            />
+          {/each}
+        </div>
+        <div class="sliders">
+          Thickness
+          {#each { length: NUM_CHANNELS } as _, index}
+            <ThicknessSwitch
+              channel={index}
+              onClick={(isThick) => {
+                waveElement.updateChannelThickness(index, !isThick);
               }}
             />
           {/each}
@@ -112,6 +125,7 @@
             <OffsetSlider
               onInput={(offsetY) => {
                 waveElement.updateChannelOffsetY(index, offsetY);
+                indicatorElement.updateChannelOffsetY(index, offsetY);
               }}
             />
           {/each}
@@ -129,6 +143,7 @@
               channel={index}
               onInput={(scaling) => {
                 waveElement.updateChannelScaling(index, scaling);
+                indicatorElement.updateChannelScaling(index, scaling);
               }}
             />
           {/each}
@@ -137,6 +152,7 @@
     </div>
   </div>
 </div>
+
 <style>
   .wrapper {
     display: flex;
