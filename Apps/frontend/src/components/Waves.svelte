@@ -1,6 +1,11 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
-  import { ColorRGBA, WebglPlot, WebglSquare, WebglThickLine } from "webgl-plot";
+  import {
+    ColorRGBA,
+    WebglPlot,
+    WebglSquare,
+    WebglThickLine,
+  } from "webgl-plot";
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
@@ -68,7 +73,9 @@
       let xNew = Math.round(xCurr);
       for (let x = xLast[channelIndex] + 1; x < xNew + 1; x++) {
         channelSamples[channelIndex][x] = samples[channelIndex];
-        channelSamples[channelIndex][(x+WAVE_CURSOR_SIZE) % canvasElement.width] = undefined;
+        channelSamples[channelIndex][
+          (x + WAVE_CURSOR_SIZE) % canvasElement.width
+        ] = undefined;
       }
       xLast[channelIndex] = xNew;
 
@@ -121,8 +128,8 @@
       const size = 0.01;
       let x = (xArr[i] * 2) / CANVAS_WIDTH - 1;
       let scale = lines[i].scaleY * 5;
-      let y = channelSamples[i][xLast[i]-1] * 100 * scale / CANVAS_HEIGHT;
-      heads[i].setSquare(x - (size/2), y - size, x + (size/2), y + size);
+      let y = (channelSamples[i][xLast[i] - 1] * 100 * scale) / CANVAS_HEIGHT;
+      heads[i].setSquare(x - size / 2, y - size, x + size / 2, y + size);
     }
   };
 
