@@ -36,3 +36,4 @@ export const MIN_SWEEP = 0.5; // <= 1
 export const MAX_SWEEP = 2.0; // >= 1
 export const MIN_AMPLITUDE = 0.0;
 export const MAX_AMPLITUDE = NUM_INTERVALS_HORIZONTAL / 2;
+export const WAVE_CURSOR_SIZE = 50;
