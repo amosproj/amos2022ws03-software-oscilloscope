@@ -94,7 +94,7 @@
         />
       </div>
       <div class="slider-wrapper">
-        <div class="switches">
+        <div class="sliders">
           Start/Stop
           <br />
           {#each { length: NUM_CHANNELS } as _, index}
