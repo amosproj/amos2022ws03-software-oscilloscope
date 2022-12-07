@@ -179,8 +179,4 @@
     width: 50%;
   }
 
-  .switches {
-    justify-content: center;
-    width: 25%;
-  }
 </style>

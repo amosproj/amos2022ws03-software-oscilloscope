@@ -1,14 +1,16 @@
 <script>
 	import { createEventDispatcher } from 'svelte'
 	import Switch from "svelte-toggle";
+	import { LINE_COLORS_RGBA } from "../const.js";
 	export let channel_id;
 
 
 	const dispatch = createEventDispatcher()
 
 	let hasStarted = true;
-	let switchLabelOn = "Started " + channel_id;
-	let switchLabelOff = "Stopped " + channel_id;
+	//let switchLabelOn = "Started " + channel_id;
+	//let switchLabelOff = "Stopped " + channel_id;
+	let color= LINE_COLORS_RGBA[channel_id];
 
 	const handleStartStop = async () => {
 		hasStarted = !hasStarted;
@@ -17,8 +19,16 @@
 
 
 </script>
+	<div class="switch-wrapper" >
+		<Switch bind:value={hasStarted} hideLabel switchColor={color} design="slider" on:click={handleStartStop} />
+	</div>
 
-<Switch bind:value={hasStarted} hideLabel on={switchLabelOn}
-off={switchLabelOff} design="slider" on:click={handleStartStop} />
+<style>
+	.switch-wrapper {
+	  display: flex;
+	  justify-content: center;
+	  margin: 0.25rem;
+	}
+  </style>
 
 
