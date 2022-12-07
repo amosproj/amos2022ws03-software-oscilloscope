@@ -1,6 +1,16 @@
 <script>
   import { timeSweep } from "../stores";
+  import { NUM_CHANNELS } from "../const";
   export let channel;
+  
+  export let isCommon = false;
+  const handleChange = () => {
+    if (isCommon || true) {
+      for (let idx=0; idx<NUM_CHANNELS; idx++) {
+        $timeSweep[idx] = $timeSweep[channel];
+      }
+    }
+  }
 </script>
 
 <div>
@@ -10,5 +20,6 @@
     max="10"
     class="slider"
     bind:value={$timeSweep[channel]}
+    on:change={handleChange}
   />
 </div>

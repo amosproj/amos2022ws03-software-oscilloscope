@@ -135,6 +135,8 @@
           {#each { length: NUM_CHANNELS } as _, index}
             <TimeSweepSlider channel={index} />
           {/each}
+          <small>Common</small>
+          <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
         </div>
         <div class="sliders">
           Amplitude
