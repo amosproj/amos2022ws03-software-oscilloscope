@@ -25,6 +25,8 @@
   let socket;
 
   let isEnabled = false;
+  let packageCounterPreCompute = 0
+  let packageCounterAfterCompute = 0
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -40,6 +42,7 @@
 
   // -----business logic functions -----
   const createSocket = () => {
+    console.log("Connecting to :" + import.meta.env.VITE_BACKEND_WEBSOCKET)
     let socket = new WebSocket(import.meta.env.VITE_BACKEND_WEBSOCKET);
     socket.binaryType = "arraybuffer";
 
@@ -47,18 +50,31 @@
   };
 
   const socketOnMessage = (messageEvent) => {
-    let samples = new Float64Array(messageEvent.data);
+    
     if (!isEnabled) return;
+    
+    let samples = new Float64Array(messageEvent.data);
+    packageCounterPreCompute += 1
     waveElement.updateBuffer(samples);
     indicatorElement.update(samples);
+    packageCounterAfterCompute += 1
   };
 
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
+
+  
+  function calculatePackagesPerSecond(){
+    console.log("Current PPS Precompute: " +packageCounterPreCompute + " | Current PPS AfterCompute: " +packageCounterAfterCompute)
+    packageCounterPreCompute = 0;
+    packageCounterAfterCompute = 0;
+  }
+
+  setInterval(function(){ calculatePackagesPerSecond() }, 1000);
 </script>
 
 <div
   class="wrapper"
-  style="--canvas-width: {CANVAS_WIDTH}px; --canvas-height: {CANVAS_HEIGHT}px; --indicators-width: {INDICATOR_SECTION_WIDTH}px"
+  style="--canvas-width: 1000px; --canvas-height: {CANVAS_HEIGHT}px; --indicators-width: {INDICATOR_SECTION_WIDTH}px"
   data-cy="oscilloscope"
 >
   <div class="grid-container">

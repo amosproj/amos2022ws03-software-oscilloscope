@@ -1,5 +1,5 @@
 import dgram from "node:dgram";
-import WebSocket, {WebSocketServer} from 'ws';
+import {WebSocketServer} from 'ws';
 
 const server = dgram.createSocket("udp4");
 const socket = new WebSocketServer({
@@ -10,6 +10,10 @@ const socket = new WebSocketServer({
 });
 let client = undefined;
 let packageCounter = 0
+let packageCounterWS = 0
+
+let count = 0
+let sendArray = []
 
 socket.on('connection', (clientSocket) => {
   client = clientSocket
@@ -24,11 +28,20 @@ server.on("error", (err) => {
 
 server.on("message", (msg, rinfo) => {
   let samples = new Float64Array(msg.buffer);
-
-  packageCounter = packageCounter +1
-  if (client !== undefined && client !== null) {
-    client.send(samples)
-  }
+  packageCounter += 1
+  
+  if(client !== undefined && client !== null) {
+    if(count === 4) {
+      packageCounterWS += 1
+      client.send(sendArray)
+      sendArray = []
+      count = 0
+    }
+    else {
+      sendArray.push(...samples)
+      count += 1
+    }
+  }  
 });
 
 server.on("listening", () => {
@@ -50,6 +63,7 @@ socket.onopen = function(e) {
 };
 
 function calculatePackagesPerSecond(){
-  console.log("Current PPS: " +packageCounter)
+  console.log("Current rcv PPS: " +packageCounter + " | Current sending PPS: " +packageCounterWS)
   packageCounter = 0;
+  packageCounterWS = 0;
 }
