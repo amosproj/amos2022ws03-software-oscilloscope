@@ -31,7 +31,7 @@ services:
         # Redirect HTTP
       - "traefik.http.routers.sosci-dev-frontend-web.service=sosci-dev-frontend-websecure"
       - "traefik.http.middlewares.sosci-dev-frontend-websecure.redirectscheme.scheme=https"
-      - "traefik.http.routers.sosci-dev-frontend-web.middlewares=sosci-dev-frontend-websecure,sosci-frontend-stripprefix-dev"
+      - "traefik.http.routers.sosci-dev-frontend-web.middlewares=sosci-dev-frontend-websecure"
       - "traefik.http.routers.sosci-dev-frontend-web.rule=Host(`amos-sosci.die-degens.eu`)  && PathPrefix(`/dev/ui`)"
       - "traefik.http.routers.sosci-dev-frontend-web.entrypoints=web"
         # HTTPS
