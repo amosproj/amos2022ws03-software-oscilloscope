@@ -8,8 +8,6 @@
 	const dispatch = createEventDispatcher()
 
 	let hasStarted = true;
-	//let switchLabelOn = "Started " + channel_id;
-	//let switchLabelOff = "Stopped " + channel_id;
 	let color= LINE_COLORS_RGBA[channel_id];
 
 	const handleStartStop = async () => {

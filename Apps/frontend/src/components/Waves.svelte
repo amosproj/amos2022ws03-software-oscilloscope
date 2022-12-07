@@ -1,6 +1,6 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
-  import { ColorRGBA, WebglLine, WebglPlot } from "webgl-plot";
+  import { ColorRGBA, WebglPlot, WebglSquare, WebglThickLine } from "webgl-plot";
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
@@ -9,6 +9,8 @@
     MIN_SWEEP,
     MAX_SWEEP,
     LINE_COLORS,
+    LINE_THICKNESS_SMALL,
+    LINE_THICKNESS_BIG,
   } from "../const";
   import { timeSweep } from "../stores";
 
@@ -18,6 +20,7 @@
   let webGLPlot;
   let channel_samples;
   let lines = [];
+  let heads = [];
   let startStopLine = [];
   let xArr;
   let xLast;
@@ -46,7 +49,6 @@
     xLast = new Array(NUM_CHANNELS).fill(0);
     initChannelSamples();
     webGLPlot.clear();
-    console.log("clear");
   };
 
   export const updateBuffer = (samples) => {
@@ -88,11 +90,17 @@
 
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     lines[channelIndex].offsetY = offsetY;
+    heads[channelIndex].offsetY = offsetY;
   };
 
   // Update the amplification of wave
   export const updateChannelScaling = (channelIndex, scaling) => {
     setScaling(channelIndex, scaling);
+  };
+
+  export const updateChannelThickness = (channelIndex, isThick) => {
+    const thickness = isThick ? LINE_THICKNESS_BIG : LINE_THICKNESS_SMALL;
+    lines[channelIndex].setThickness(thickness);
   };
 
   export const startStopChannelI = (channelIndex, hasStarted) => {
@@ -107,6 +115,12 @@
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
         lines[i].setY(x, channel_samples[i][x]);
       }
+
+      const size = 0.01;
+      let x = (xArr[i] * 2) / CANVAS_WIDTH - 1;
+      let scale = lines[i].scaleY * 5;
+      let y = channel_samples[i][xLast[i]-1] * 100 * scale / CANVAS_HEIGHT;
+      heads[i].setSquare(x - (size/2), y - size, x + (size/2), y + size);
     }
   };
 
@@ -128,12 +142,17 @@
         LINE_COLORS[i][2] / 255,
         1
       );
-      let line = new WebglLine(color, CANVAS_WIDTH);
-      line.arrangeX();
+      let line = new WebglThickLine(color, CANVAS_WIDTH, LINE_THICKNESS_SMALL);
+      // same thing arrangeX does, but WebglThickLine does not provide it
+      line.lineSpaceX(-1, 2 / CANVAS_WIDTH);
       line.scaleY = computeScaling(scalesY[i]);
-      webGLPlot.addLine(line);
+      webGLPlot.addThickLine(line);
       lines.push(line);
       startStopLine[i] = true;
+
+      let head = new WebglSquare(color);
+      heads.push(head);
+      webGLPlot.addSurface(head);
     }
   };
 
