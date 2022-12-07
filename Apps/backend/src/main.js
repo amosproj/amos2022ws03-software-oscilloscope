@@ -9,10 +9,12 @@ const socket = new WebSocketServer({
   console.log("WebSocket Server started on 0.0.0.0:9000")
 });
 let client = undefined;
+let packageCounter = 0
 
 socket.on('connection', (clientSocket) => {
   client = clientSocket
   client.send("connection established")
+  console.log(`Connection established remote=`)
 });
 
 server.on("error", (err) => {
@@ -23,6 +25,7 @@ server.on("error", (err) => {
 server.on("message", (msg, rinfo) => {
   let samples = new Float64Array(msg.buffer);
 
+  packageCounter = packageCounter +1
   if (client !== undefined && client !== null) {
     client.send(samples)
   }
@@ -38,7 +41,15 @@ server.bind(
   process.env.HOST_ADDRESS || "0.0.0.0"
 );
 
+
+setInterval(function(){ calculatePackagesPerSecond() }, 1000);
+
 socket.onopen = function(e) {
-  alert("[open] Connection established");
-  alert("Sending to server");
+  console.log("[open] Connection established");
+  console.log("Sending to server");
 };
+
+function calculatePackagesPerSecond(){
+  console.log("Current PPS: " +packageCounter)
+  packageCounter = 0;
+}

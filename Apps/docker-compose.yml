@@ -11,7 +11,7 @@ services:
     environment:
       - HOST=0.0.0.0:34254
       - TARGET=backend:34255
-      - PPS=100.0
+      - PPS=10000.0
       - SIG_FREQ=1.0
     ports:
       - 34254:34254
@@ -31,7 +31,6 @@ services:
     restart: unless-stopped
     ports:
       - 5000:80
-      - 9001:9000
     networks:
       - internal
       - web
