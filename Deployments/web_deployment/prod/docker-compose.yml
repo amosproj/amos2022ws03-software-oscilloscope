@@ -22,20 +22,19 @@ services:
       - backend
     restart: unless-stopped
     networks:
-      - internal
       - web
     labels:
       - "traefik.enable=true"
       # Remove path prefix
-      - "traefik.http.middlewares.sosci-frontend-stripprefix-prod.stripprefix.prefixes=/prod/ui"
+      - "traefik.http.middlewares.sosci-frontend-stripprefix-prod.stripprefix.prefixes=/ui"
         # Redirect HTTP
       - "traefik.http.routers.sosci-prod-frontend-web.service=sosci-prod-frontend-websecure"
       - "traefik.http.middlewares.sosci-prod-frontend-websecure.redirectscheme.scheme=https"
-      - "traefik.http.routers.sosci-prod-frontend-web.middlewares=sosci-prod-frontend-websecure,sosci-frontend-stripprefix-prod"
-      - "traefik.http.routers.sosci-prod-frontend-web.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/prod/ui`)"
+      - "traefik.http.routers.sosci-prod-frontend-web.middlewares=sosci-prod-frontend-websecure"
+      - "traefik.http.routers.sosci-prod-frontend-web.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/ui`)"
       - "traefik.http.routers.sosci-prod-frontend-web.entrypoints=web"
         # HTTPS
-      - "traefik.http.routers.sosci-prod-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/prod/ui`)"
+      - "traefik.http.routers.sosci-prod-frontend-websecure.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/ui`)"
       - "traefik.http.routers.sosci-prod-frontend-websecure.entrypoints=websecure"
       - "traefik.http.routers.sosci-prod-frontend-websecure.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-prod-frontend-websecure.service=sosci-prod-frontend-websecure"
@@ -57,9 +56,9 @@ services:
     labels:
       - "traefik.enable=true"
       # Remove path prefix
-      - "traefik.http.middlewares.sosci-backend-stripprefix-prod.stripprefix.prefixes=/prod/api"
+      - "traefik.http.middlewares.sosci-backend-stripprefix-prod.stripprefix.prefixes=/api"
         # Main
-      - "traefik.http.routers.sosci-prod-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/prod/api`)"
+      - "traefik.http.routers.sosci-prod-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/api`)"
       - "traefik.http.routers.sosci-prod-backend.entrypoints=websecure"
       - "traefik.http.routers.sosci-prod-backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-prod-backend.service=sosci-prod-backend"

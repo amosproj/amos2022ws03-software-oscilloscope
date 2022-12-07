@@ -22,7 +22,6 @@ services:
       - backend
     restart: unless-stopped
     networks:
-      - internal
       - web
     labels:
       - "traefik.enable=true"
@@ -31,7 +30,7 @@ services:
         # Redirect HTTP
       - "traefik.http.routers.sosci-int-frontend-web.service=sosci-int-frontend-websecure"
       - "traefik.http.middlewares.sosci-int-frontend-websecure.redirectscheme.scheme=https"
-      - "traefik.http.routers.sosci-int-frontend-web.middlewares=sosci-int-frontend-websecure,sosci-frontend-stripprefix-int"
+      - "traefik.http.routers.sosci-int-frontend-web.middlewares=sosci-int-frontend-websecure"
       - "traefik.http.routers.sosci-int-frontend-web.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/int/ui`)"
       - "traefik.http.routers.sosci-int-frontend-web.entrypoints=web"
         # HTTPS
