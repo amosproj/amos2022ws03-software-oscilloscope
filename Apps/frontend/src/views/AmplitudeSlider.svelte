@@ -13,7 +13,7 @@
   let amplitude = 1.0;
 </script>
 
-<div>
+<div class="amplitude-slider" data-cy="amplitudeSlider-{channel}">
   <input
     type="range"
     bind:value={amplitude}
@@ -25,6 +25,14 @@
     max={MAX_AMPLITUDE}
     step="0.01"
     class="slider"
-    data-cy="amplitudeSlider-{channel}"
   />
+  <span>{(1 / amplitude).toFixed(2)}</span>
 </div>
+
+<style>
+  .amplitude-slider {
+    display: grid;
+    grid-template-columns: 129px auto;
+    margin: 0 8%;
+  }
+</style>
