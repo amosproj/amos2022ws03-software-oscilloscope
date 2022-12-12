@@ -29,10 +29,10 @@
    *
    * @param {number[]} samples
    */
-  export const update = (samples) => {
+  export const update = (samples, startIndex, endIndex) => {
     clearCanvas();
     drawGlobalZeroLine();
-    for (let channel = 0; channel < samples.length; channel++) {
+    for (let channel = startIndex; channel < endIndex; channel++) {
       if (startStopLine[channel]) {
         updateCurrentMinMax(samples[channel], channel);
       }

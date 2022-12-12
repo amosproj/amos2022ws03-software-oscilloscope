@@ -71,13 +71,11 @@
     var chunkCounter = 0
 
     let samples = new Float64Array(messageEvent.data);
-    for (let i = 0; i < samples.length; i += NUM_CHANNELS) {
+    for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       ++chunkCounter;
       var start = window.performance.now();
-      let sample = new Float64Array(samples.slice(i, i + NUM_CHANNELS))
-      
-      waveElement.updateBuffer(sample);
-      indicatorElement.update(sample);
+      waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
+      indicatorElement.update(samples, index, index + NUM_CHANNELS);
       var end = window.performance.now();
 
       updatePackageComputeTime(start, end)

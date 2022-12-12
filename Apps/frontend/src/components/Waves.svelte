@@ -60,10 +60,10 @@
     webGLPlot.clear();
   };
 
-  export const updateBuffer = (samples) => {
+  export const updateBuffer = (samples, startIndex, endIndex) => {
     for (
-      let channelIndex = 0;
-      channelIndex < channelSamples.length;
+      let channelIndex = startIndex;
+      channelIndex < endIndex;
       channelIndex++
     ) {
       if (!startStopLine[channelIndex]) {
