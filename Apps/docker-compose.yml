@@ -12,7 +12,7 @@ services:
       - HOST=0.0.0.0:34254
       - TARGET=backend:34255
       - PPS=10000.0
-      - SIG_FREQ=1.0
+      - SIG_FREQ=50.0
     ports:
       - 34254:34254
     networks:
