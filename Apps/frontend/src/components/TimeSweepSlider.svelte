@@ -6,8 +6,8 @@
   export let isCommon = false;
   const handleChange = () => {
     if (isCommon) {
-      for (let idx=0; idx<NUM_CHANNELS; idx++) {
-        $timeSweep[idx] = $timeSweep[channel];
+      for (let index=0; index<NUM_CHANNELS; index++) {
+        $timeSweep[index] = $timeSweep[channel];
       }
     }
   }
