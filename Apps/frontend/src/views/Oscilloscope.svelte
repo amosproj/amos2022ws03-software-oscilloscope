@@ -26,7 +26,7 @@
 
   let isEnabled = false;
   let packageCounterPreCompute = 0
-  let packageCounterAfterCompute = 0
+  let pps = 0
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -49,24 +49,34 @@
     return socket;
   };
 
+
+  /**
+   * On receiving a socket message, update buffer of waves.
+   *
+   * @param {MessageEvent} messageEvent - has poperty (Float64Array) data
+   */
   const socketOnMessage = (messageEvent) => {
     
     if (!isEnabled) return;
-    
-    let samples = new Float64Array(messageEvent.data);
     packageCounterPreCompute += 1
-    waveElement.updateBuffer(samples);
-    indicatorElement.update(samples);
-    packageCounterAfterCompute += 1
+
+    let samples = new Float64Array(messageEvent.data);
+    for (let i = 0; i < samples.length; i += NUM_CHANNELS) {
+      let sample = new Float64Array(samples.slice(i, i + NUM_CHANNELS))
+
+      waveElement.updateBuffer(sample);
+      indicatorElement.update(sample);
+    }
   };
 
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
 
-  
+  /**
+  * Calculates the packages per second received on the web socket
+  */
   function calculatePackagesPerSecond(){
-    console.log("Current PPS Precompute: " +packageCounterPreCompute + " | Current PPS AfterCompute: " +packageCounterAfterCompute)
-    packageCounterPreCompute = 0;
-    packageCounterAfterCompute = 0;
+    pps = packageCounterPreCompute
+    packageCounterPreCompute = 0;     
   }
 
   setInterval(function(){ calculatePackagesPerSecond() }, 1000);
@@ -165,6 +175,9 @@
           {/each}
         </div>
       </div>
+    </div>
+    <div style="grid-column: 3; margin: 1rem">
+      PPS: {pps*50}
     </div>
   </div>
 </div>

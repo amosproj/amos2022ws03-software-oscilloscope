@@ -1,6 +1,6 @@
 import { rgbArrayToRGBAString } from "./helper";
 
-export const CANVAS_WIDTH = 10000;
+export const CANVAS_WIDTH = 1000;
 export const CANVAS_HEIGHT = 500;
 export const NUM_INTERVALS_VERTICAL = 20;
 export const NUM_INTERVALS_HORIZONTAL = 10;
@@ -32,7 +32,7 @@ export const LINE_THICKNESS_SMALL = 0.002;
 export const LINE_THICKNESS_BIG = 0.008;
 
 export const NUM_CHANNELS = 10;
-export const MIN_SWEEP = 0.5; // <= 1
+export const MIN_SWEEP = 0.1; // <= 1
 export const MAX_SWEEP = 2.0; // >= 1
 export const MIN_AMPLITUDE = 0.0;
 export const MAX_AMPLITUDE = NUM_INTERVALS_HORIZONTAL / 2;
