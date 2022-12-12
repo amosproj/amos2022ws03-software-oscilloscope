@@ -93,10 +93,9 @@
           }}
         />
       </div>
-      <div class="slider-wrapper">
-        <div class="sliders">
+      <div class="control-panel">
+        <div class="switch">
           Start/Stop
-          <br />
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
               channel_id={index}
@@ -108,7 +107,7 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="switch">
           Thickness
           {#each { length: NUM_CHANNELS } as _, index}
             <ThicknessSwitch
@@ -119,7 +118,7 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Offset
           {#each { length: NUM_CHANNELS } as _, index}
             <OffsetSlider
@@ -130,13 +129,13 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Time Sweep
           {#each { length: NUM_CHANNELS } as _, index}
             <TimeSweepSlider channel={index} />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Amplitude
           {#each { length: NUM_CHANNELS } as _, index}
             <AmplitudeSlider
@@ -182,8 +181,9 @@
     justify-content: center;
   }
 
-  .slider-wrapper {
+  .control-panel {
     display: flex;
+    text-align: start;
   }
 
   .button-wrapper {
@@ -191,8 +191,11 @@
     margin: 1rem;
   }
 
-  .sliders {
-    width: 50%;
+  .switch {
+    width: 24%;
   }
 
+  .slider {
+    width: 50%;
+  }
 </style>
