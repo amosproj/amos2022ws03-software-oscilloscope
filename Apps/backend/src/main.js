@@ -8,11 +8,15 @@ const socket = new WebSocketServer({
 }, () => {
   console.log("WebSocket Server started on 0.0.0.0:9000")
 });
+/** Frontend client (WebSocket Connection) */
 let client = undefined;
+/** Received packages from generator */
 let packageCounter = 0
+/** Sent packages to frontend */
 let packageCounterWS = 0
 
-let count = 0
+let chunkCounter = 0
+/** Array which will be send to frontend */
 let sendArray = []
 
 socket.on('connection', (clientSocket) => {
@@ -75,13 +79,13 @@ function calculatePackagesPerSecond(){
  * 1000 packages * 10 channel * 64 bit/value = 79 kB
  * PPS of 10 = 790 kB/s network traffic towards frontend
  * 
- * UDP datagrams are packaged to a size of <packageSize> and sent to the connected clients on the web socket
+ * UDP datagrams are packaged to a size of <maxNumberOfChunks> and sent to the connected clients on the web socket
  * We use a normal JS array as temporary buffer to support push operations and a Float64Buffer for sending
  * @param {Float64Array} data
- * @param {number} packageSize 
+ * @param {number} maxNumberOfChunks 
  */
-function handle(data, packageSize) {
-  if(count === packageSize) {
+function handle(data, maxNumberOfChunks) {
+  if(chunkCounter === maxNumberOfChunks) {
     packageCounterWS += 1
 
     let pkg = new Float64Array(sendArray)
@@ -90,11 +94,12 @@ function handle(data, packageSize) {
       client.send(pkg)
     }     
 
+    // Reset chunk stats
     sendArray = []
-    count = 0
+    chunkCounter = 0
   }
   else {
     sendArray.push(...data)
-    count += 1
+    chunkCounter += 1
   }
 }

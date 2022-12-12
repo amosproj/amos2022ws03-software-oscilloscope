@@ -22,11 +22,18 @@
   let btnOnOff;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
+  /** Websocket for connection to backend */
   let socket;
-
+  /** Flag for enabled and updating canvas */
   let isEnabled = false;
+  /** Number of received packages before they are computed */
   let packageCounterPreCompute = 0
+  /** Number of packages per second */
   let pps = 0
+  /** Duration of computing and updating one package */
+  let packageComputeTime = 0
+  /** Number of chunks in a package */
+  let chunkNumber = 0
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -60,13 +67,23 @@
     if (!isEnabled) return;
     packageCounterPreCompute += 1
 
+
+    var chunkCounter = 0
+
     let samples = new Float64Array(messageEvent.data);
     for (let i = 0; i < samples.length; i += NUM_CHANNELS) {
+      ++chunkCounter;
+      var start = window.performance.now();
       let sample = new Float64Array(samples.slice(i, i + NUM_CHANNELS))
-
+      
       waveElement.updateBuffer(sample);
       indicatorElement.update(sample);
+      var end = window.performance.now();
+
+      updatePackageComputeTime(start, end)
     }
+
+    chunkNumber = chunkCounter
   };
 
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
@@ -77,6 +94,16 @@
   function calculatePackagesPerSecond(){
     pps = packageCounterPreCompute
     packageCounterPreCompute = 0;     
+  }
+
+  /**
+   * Calculate the duration between start and end
+   * TODO implement historic average over e.g. last 20 packages
+   * @param start start timestamp
+   * @param end end timestamp
+   */
+  function updatePackageComputeTime(start, end) {
+    packageComputeTime = end - start
   }
 
   setInterval(function(){ calculatePackagesPerSecond() }, 1000);
@@ -175,13 +202,13 @@
           {/each}
         </div>
       </div>
-    </div>
-    <div style="grid-column: 3; margin: 1rem">
-      PPS: {pps*50}
-    </div>
-  </div>
+    </div>    
+  </div>  
 </div>
-
+<div style="grid-column: 3; margin: 1rem; text-align: end">
+  <p>PPS: {pps*chunkNumber}</p>
+  <p>Updatetime/Package: {packageComputeTime} ms</p>
+</div>
 <style>
   .wrapper {
     display: flex;
