@@ -32,6 +32,8 @@
     "vite": "^3.2.0"
   },
   "dependencies": {
+    "@pixi/math-extras": "^7.0.5",
+    "pixi.js": "^7.0.5",
     "webgl-plot": "^0.7.0"
   }
 }

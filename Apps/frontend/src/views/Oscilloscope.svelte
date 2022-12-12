@@ -17,6 +17,7 @@
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
+  import IndicatorsPixi from "./IndicatorsPixi.svelte";
 
   let waveElement;
   let btnOnOff;
@@ -63,7 +64,8 @@
 >
   <div class="grid-container">
     <div class="indicators">
-      <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
+<!--      <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />-->
+      <IndicatorsPixi bind:this={indicatorElement} scaleY={Math.max(...scalesY)}/>
     </div>
     <div class="oscilloscope">
       <div class="coordinate-system">

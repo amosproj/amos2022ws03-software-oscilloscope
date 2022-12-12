@@ -1,4 +1,4 @@
-import { rgbArrayToRGBAString } from "./helper";
+import { rgbArrayToNumber, rgbArrayToRGBAString } from "./helper";
 
 export const CANVAS_WIDTH = 1000;
 export const CANVAS_HEIGHT = 500;
@@ -7,10 +7,12 @@ export const NUM_INTERVALS_HORIZONTAL = 10;
 
 export const INDICATOR_MARGIN = 4;
 export const INDICATOR_WIDTH = 8;
-export const INDICATOR_FONT_SIZE = 11;
+export const INDICATOR_FONT_FAMILY = "monospace";
+export const INDICATOR_FONT_SIZE = 12;
 export const INDICATOR_DECIMAL_PLACES = 3;
 export const INDICATOR_SECTION_WIDTH = 235;
 export const INDICATOR_ZERO_LINE_COLOR = "#000000";
+export const INDICATOR_ZERO_LINE_COLOR_PIXI = 0x000000;
 
 export const COORDINATE_LINE_COLOR = "#FFFFFF80";
 
@@ -28,6 +30,7 @@ export const LINE_COLORS = [
 ];
 
 export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
+export const LINE_COLORS_NUMBER = LINE_COLORS.map(rgbArrayToNumber);
 export const LINE_THICKNESS_SMALL = 0.002;
 export const LINE_THICKNESS_BIG = 0.008;
 
