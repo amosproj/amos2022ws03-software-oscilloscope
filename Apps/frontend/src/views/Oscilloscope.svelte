@@ -5,6 +5,8 @@
     CANVAS_WIDTH,
     NUM_CHANNELS,
     INDICATOR_SECTION_WIDTH,
+    MAX_AMPLITUDE,
+    MIN_AMPLITUDE,
   } from "../const";
   import CoordinateSystem from "../components/CoordinateSystem.svelte";
   import Waves from "../components/Waves.svelte";
@@ -16,6 +18,9 @@
   import ResetButton from "./ResetButton.svelte";
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
+  import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
+  import Slider from "../components/Slider.svelte";
+  import { timeSweep } from "../stores";
 
   let waveElement;
   let btnOnOff;
@@ -95,7 +100,7 @@
       <div class="slider-wrapper">
         <div class="sliders">
           Start/Stop
-          <br>
+          <br />
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
               channel_id={index}
@@ -109,27 +114,52 @@
         <div class="sliders">
           Offset
           {#each { length: NUM_CHANNELS } as _, index}
-            <OffsetSlider
+            <!-- <OffsetSlider
               onInput={(offsetY) => {
                 waveElement.updateChannelOffsetY(index, offsetY);
               }}
+            /> -->
+            <Slider
+              id={`offset-slider-${index}`}
+              onInput={(offsetY) => {
+                waveElement.updateChannelOffsetY(index, offsetY);
+                indicatorElement.updateChannelOffsetY(index, offsetY);
+              }}
+              value={0}
+              min={-1.0}
+              max={1.0}
+              step={0.01}
             />
           {/each}
         </div>
         <div class="sliders">
           Time Sweep
           {#each { length: NUM_CHANNELS } as _, index}
-            <TimeSweepSlider channel={index} />
+            <!-- <TimeSweepSlider channel={index} /> -->
+            <Slider
+              id={`time-sweep-slider-${index}`}
+              bind:value={$timeSweep[index]}
+              onInput={() => {}}
+            />
           {/each}
         </div>
         <div class="sliders">
           Amplitude
           {#each { length: NUM_CHANNELS } as _, index}
-            <AmplitudeSlider
+            <!-- <AmplitudeSlider
               channel={index}
               onInput={(scaling) => {
                 waveElement.updateChannelScaling(index, scaling);
               }}
+            /> -->
+            <Slider
+              id={`amplitude-slider-${index}`}
+              onInput={(value) => {
+                waveElement.updateChannelScaling(index, value);
+                indicatorElement.updateChannelScaling(index, value);
+              }}
+              max={MAX_AMPLITUDE}
+              min={MIN_AMPLITUDE}
             />
           {/each}
         </div>
@@ -137,6 +167,7 @@
     </div>
   </div>
 </div>
+
 <style>
   .wrapper {
     display: flex;
