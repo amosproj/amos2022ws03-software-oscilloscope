@@ -96,7 +96,9 @@
       <div class="slider-wrapper">
         <div class="sliders">
           Start/Stop
-          <br />
+          <div class="placeholder"></div>
+          <br>
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
               channel_id={index}
@@ -110,6 +112,9 @@
         </div>
         <div class="sliders">
           Thickness
+          <div class="placeholder"></div>
+          <br>
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <ThicknessSwitch
               channel={index}
@@ -121,6 +126,9 @@
         </div>
         <div class="sliders">
           Offset
+          <div class="placeholder"></div>
+          <br>
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <OffsetSlider
               onInput={(offsetY) => {
@@ -132,12 +140,19 @@
         </div>
         <div class="sliders">
           Time Sweep
+          <br>
+          <small>Common</small>
+          <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <TimeSweepSlider channel={index} />
           {/each}
         </div>
         <div class="sliders">
           Amplitude
+          <div class="placeholder"></div>
+          <br>
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <AmplitudeSlider
               channel={index}
@@ -193,6 +208,10 @@
 
   .sliders {
     width: 50%;
+  }
+
+  .placeholder {
+    height: 32.4833px;
   }
 
 </style>
