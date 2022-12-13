@@ -13,7 +13,6 @@ services:
     environment:
       - HOST=0.0.0.0:34254
       - TARGET=combined-app_sosci-frontend:9022
-      - FREQUENCY=1.0
 
     ports:
       - 9022:34254

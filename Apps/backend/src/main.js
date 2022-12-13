@@ -9,6 +9,7 @@ const socket = new WebSocketServer({
   console.log("WebSocket Server started on 0.0.0.0:9000")
 });
 let client = undefined;
+let pps = 0;
 
 socket.on('connection', (clientSocket) => {
   client = clientSocket
@@ -22,9 +23,10 @@ server.on("error", (err) => {
 
 server.on("message", (msg, rinfo) => {
   let samples = new Float64Array(msg.buffer);
-
+  
   if (client !== undefined && client !== null) {
     client.send(samples)
+    pps = pps + 1;
   }
 });
 

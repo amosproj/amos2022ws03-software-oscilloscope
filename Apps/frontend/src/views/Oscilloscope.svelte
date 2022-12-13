@@ -7,7 +7,7 @@
     INDICATOR_SECTION_WIDTH,
   } from "../const";
   import CoordinateSystem from "../components/CoordinateSystem.svelte";
-  import Waves from "../components/Waves.svelte";
+  import Waves_WebGL from "../components/Waves_WebGL.svelte";
   import OffsetSlider from "../components/OffsetSlider.svelte";
   import StartStopButton from "./StartStopButton.svelte";
   import Indicators from "./Indicators.svelte";
@@ -25,6 +25,13 @@
   let socket;
 
   let isEnabled = false;
+  let pps = 0;
+
+  function printPPS() {
+    console.log(`PPS: ${pps}`);
+    pps = 0;
+  }
+  setInterval(printPPS, 1000);
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -40,7 +47,7 @@
 
   // -----business logic functions -----
   const createSocket = () => {
-    let socket = new WebSocket(import.meta.env.VITE_BACKEND_WEBSOCKET);
+    let socket = new WebSocket("ws://localhost:9000");
     socket.binaryType = "arraybuffer";
 
     return socket;
@@ -51,6 +58,7 @@
     if (!isEnabled) return;
     waveElement.updateBuffer(samples);
     indicatorElement.update(samples);
+    pps = pps + 1;
   };
 
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
@@ -66,11 +74,8 @@
       <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
     </div>
     <div class="oscilloscope">
-      <div class="coordinate-system">
-        <CoordinateSystem scaleY={Math.max(...scalesY)} />
-      </div>
       <div class="waves">
-        <Waves bind:this={waveElement} {scalesY} />
+        <Waves_WebGL bind:this={waveElement} />
       </div>
     </div>
     <div class="controls">
