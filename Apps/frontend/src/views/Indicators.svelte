@@ -48,6 +48,7 @@
       writeText(channel, min[channel], max[channel]);
 
     }
+
   };
 
   /**

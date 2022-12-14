@@ -76,7 +76,8 @@
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       var startWindow = window.performance.now();
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
-      indicatorElement.update(samples, index);
+      if (index % 1000 == 0)
+        indicatorElement.update(samples, index);
       var endWindow = window.performance.now();
       
       ++chunkCounter;
