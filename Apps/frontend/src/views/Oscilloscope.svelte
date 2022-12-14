@@ -14,6 +14,7 @@
   import OnOffButton from "../components/OnOffButton.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import ResetButton from "./ResetButton.svelte";
+  import GNDButton from "../components/GNDButton.svelte";
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
@@ -26,6 +27,8 @@
   let socket;
   /** Flag for enabled and updating canvas */
   let isEnabled = false;
+  /** Flag for enabled GND */
+  let isGND = false;
   /** Number of received packages before they are computed */
   let packageCounterPreCompute = 0;
   /** Number of packages per second */
@@ -71,6 +74,7 @@
     var startPackage = window.performance.now();
 
     let samples = new Float64Array(messageEvent.data);
+    if (isGND) {samples.fill(0.0);}
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       var startWindow = window.performance.now();
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
@@ -155,6 +159,11 @@
             indicatorElement.clearCanvas();
             waveElement.resetPlot();
           }}
+        />
+        <GNDButton
+        on:gnd={(e) => {
+          isGND = e.detail.down;
+        }}          
         />
       </div>
       <div class="control-panel">
