@@ -32,6 +32,8 @@
   let pps = 0
   /** Duration of computing and updating one package */
   let packageComputeTime = 0
+  /** Duration of computing and updating one channel window within the package */
+  let windowComputeTime = 0
   /** Number of chunks in a package */
   let chunkNumber = 0
 
@@ -67,20 +69,22 @@
     if (!isEnabled) return;
     packageCounterPreCompute += 1
 
-
     var chunkCounter = 0
+    var startPackage = window.performance.now();
 
     let samples = new Float64Array(messageEvent.data);
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
-      ++chunkCounter;
-      var start = window.performance.now();
+      var startWindow = window.performance.now();
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
-      indicatorElement.update(samples, index, index + NUM_CHANNELS);
-      var end = window.performance.now();
-
-      updatePackageComputeTime(start, end)
+      indicatorElement.update(samples, index);
+      var endWindow = window.performance.now();
+      
+      ++chunkCounter;
+      updateWindowComputeTime(startWindow, endWindow)
     }
 
+    var endPackage = window.performance.now();
+    updatePackageComputeTime(startPackage, endPackage)
     chunkNumber = chunkCounter
   };
 
@@ -95,13 +99,22 @@
   }
 
   /**
-   * Calculate the duration between start and end
+   * Calculate the duration between start and end of 
    * TODO implement historic average over e.g. last 20 packages
    * @param start start timestamp
    * @param end end timestamp
    */
   function updatePackageComputeTime(start, end) {
     packageComputeTime = end - start
+  }
+  /**
+   * Calculate the duration between start and end of single index windows on a package
+   * TODO implement historic average over e.g. last 20 packages
+   * @param start start timestamp
+   * @param end end timestamp
+   */
+  function updateWindowComputeTime(start, end) {
+    windowComputeTime = end - start
   }
 
   setInterval(function(){ calculatePackagesPerSecond() }, 1000);
@@ -204,8 +217,7 @@
   </div>  
 </div>
 <div style="grid-column: 3; margin: 1rem; text-align: end">
-  <p>PPS: {pps*chunkNumber}</p>
-  <p>Updatetime/Package: {packageComputeTime} ms</p>
+  <p>Package Size: {chunkNumber} | PPS: {pps*chunkNumber} | Updatetime/Window: {windowComputeTime.toFixed(5)} ms | Updatetime/Package: {packageComputeTime.toFixed(5)} ms</p>
 </div>
 <style>
   .wrapper {

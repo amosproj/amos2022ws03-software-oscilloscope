@@ -22,6 +22,7 @@
   let scalings = Array(NUM_CHANNELS).fill(1.0);
   let startStopLine = Array(NUM_CHANNELS).fill(true);
 
+
   export let scaleY;
 
   /**
@@ -29,20 +30,23 @@
    *
    * @param {number[]} samples
    */
-  export const update = (samples, startIndex, endIndex) => {
+  export const update = (samples, startIndex) => {
     clearCanvas();
     drawGlobalZeroLine();
-    for (let channel = startIndex; channel < endIndex; channel++) {
+
+    for (let channel = 0; channel < NUM_CHANNELS; channel++) {
+      
       if (startStopLine[channel]) {
-        updateCurrentMinMax(samples[channel], channel);
+        updateCurrentMinMax(samples[startIndex + channel], channel);
       }
       const transformedCurrent = transformSampleToYCoord(current[channel], offsets[channel], scalings[channel]);
       const transformedMin = transformSampleToYCoord(min[channel], offsets[channel], scalings[channel]);
       const transformedMax = transformSampleToYCoord(max[channel], offsets[channel], scalings[channel]);
       const transformedZero = transformSampleToYCoord(0, offsets[channel], scalings[channel]);
-      drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
+      //drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
       drawMinMaxZeroLines(channel, transformedMin, transformedMax, transformedZero, LINE_COLORS_RGBA[channel]);
       writeText(channel, min[channel], max[channel]);
+
     }
   };
 

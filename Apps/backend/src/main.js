@@ -32,13 +32,13 @@ server.on("error", (err) => {
 
 /**
  * Receive incoming UDP packages and handle them
- * @param {Float64Array} message
+ * @param {Float64Array} msg.bufffer
  */
 server.on("message", (msg, rinfo) => {
   let samples = new Float64Array(msg.buffer);
   packageCounter += 1
   
-  handle(samples, 50)   
+  handle(samples, 200)   
 });
 
 server.on("listening", () => {
@@ -92,8 +92,7 @@ function handle(data, maxNumberOfChunks) {
 
     if(client !== undefined && client !== null) {
       client.send(pkg)
-    }     
-
+    }
     // Reset chunk stats
     sendArray = []
     chunkCounter = 0
