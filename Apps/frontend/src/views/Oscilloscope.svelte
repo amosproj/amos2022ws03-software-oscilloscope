@@ -158,10 +158,12 @@
           }}
         />
       </div>
-      <div class="slider-wrapper">
-        <div class="sliders">
+      <div class="control-panel">
+        <div class="switch">
           Start/Stop
-          <br />
+          <div class="placeholder"></div>
+          <br>
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
               channel_id={index}
@@ -173,8 +175,11 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="switch">
           Thickness
+          <div class="placeholder"></div>
+          <br>
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <ThicknessSwitch
               channel={index}
@@ -184,8 +189,11 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Offset
+          <div class="placeholder"></div>
+          <br>
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <OffsetSlider
               onInput={(offsetY) => {
@@ -195,14 +203,21 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Time Sweep
+          <br>
+          <small>Common</small>
+          <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <TimeSweepSlider channel={index} />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Amplitude
+          <div class="placeholder"></div>
+          <br>
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <AmplitudeSlider
               channel={index}
@@ -249,8 +264,9 @@
     justify-content: center;
   }
 
-  .slider-wrapper {
+  .control-panel {
     display: flex;
+    text-align: start;
   }
 
   .button-wrapper {
@@ -258,8 +274,16 @@
     margin: 1rem;
   }
 
-  .sliders {
+  .switch {
+    width: 24%;
+  }
+
+  .slider {
     width: 50%;
+  }
+
+  .placeholder {
+    height: 32.4833px;
   }
 
 </style>

@@ -29,7 +29,7 @@
 <style>
   .switch-wrapper {
     display: flex;
-    justify-content: center;
-    margin: 0.25rem;
+    justify-content: start;
+    margin: 0.56rem;
   }
 </style>
