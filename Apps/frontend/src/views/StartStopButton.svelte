@@ -9,6 +9,7 @@
 
 	let hasStarted = true;
 	let color= LINE_COLORS_RGBA[channel_id];
+	let channelLabel = "CH " + channel_id + "  ";
 
 	const handleStartStop = async () => {
 		hasStarted = !hasStarted;
@@ -18,7 +19,7 @@
 
 </script>
 	<div class="switch-wrapper" >
-		<Switch bind:value={hasStarted} hideLabel toggledColor={color} on:click={handleStartStop} />
+		<Switch bind:value={hasStarted} hideLabel on={channelLabel} off={channelLabel} toggledColor={color} on:click={handleStartStop} />
 	</div>
 
 <style>
