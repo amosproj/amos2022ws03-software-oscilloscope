@@ -93,8 +93,8 @@
           }}
         />
       </div>
-      <div class="slider-wrapper">
-        <div class="sliders">
+      <div class="control-panel">
+        <div class="switch">
           Start/Stop
           <div class="placeholder"></div>
           <br>
@@ -110,7 +110,7 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="switch">
           Thickness
           <div class="placeholder"></div>
           <br>
@@ -124,7 +124,7 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Offset
           <div class="placeholder"></div>
           <br>
@@ -138,7 +138,7 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Time Sweep
           <br>
           <small>Common</small>
@@ -148,7 +148,7 @@
             <TimeSweepSlider channel={index} />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Amplitude
           <div class="placeholder"></div>
           <br>
@@ -197,8 +197,9 @@
     justify-content: center;
   }
 
-  .slider-wrapper {
+  .control-panel {
     display: flex;
+    text-align: start;
   }
 
   .button-wrapper {
@@ -206,7 +207,11 @@
     margin: 1rem;
   }
 
-  .sliders {
+  .switch {
+    width: 24%;
+  }
+
+  .slider {
     width: 50%;
   }
 

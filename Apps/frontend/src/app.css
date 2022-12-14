@@ -77,3 +77,13 @@ button:focus-visible {
   max-width: 80vw;
   max-height: 80vh;
 }
+
+.control-panel-items {
+  display: flex;
+  align-content: space-around;
+}
+
+.control-panel-items > input {
+  width: 8vw;
+  height: 2vh;
+}
