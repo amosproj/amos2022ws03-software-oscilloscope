@@ -66,7 +66,7 @@
         <Waves bind:this={waveElement} {scalesY} />
       </div>
     </div>
-    <WaveControls bind:isEnabled bind:waveElement />
+    <WaveControls bind:isEnabled bind:waveElement bind:indicatorElement />
   </div>
 </div>
 
