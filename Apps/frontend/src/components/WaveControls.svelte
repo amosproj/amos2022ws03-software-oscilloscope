@@ -5,10 +5,12 @@
   import ResetButton from "../views/ResetButton.svelte";
   import Slider from "./Slider.svelte";
   import { timeSweep } from "../stores.js";
+  import ThicknessSwitch from "./ThicknessSwitch.svelte";
+  import TimeSweepSlider from "./TimeSweepSlider.svelte";
 
   export let waveElement;
   export let isEnabled;
-  let indicatorElement;
+  export let indicatorElement;
   let btnOnOff;
 </script>
 
@@ -35,25 +37,40 @@
   <div class="slider-wrapper">
     <div class="sliders">
       Start/Stop
+      <div class="placeholder" />
       <br />
+      <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
         <StartStopButton
           channel_id={index}
           on:startStop={async (event) => {
             let hasStarted = event.detail.buttonValue;
             waveElement.startStopChannelI(index, hasStarted);
+            indicatorElement.startStopChannelI(index, hasStarted);
+          }}
+        />
+      {/each}
+    </div>
+    <div class="sliders">
+      Thickness
+      <div class="placeholder" />
+      <br />
+      <small>Channels</small>
+      {#each { length: NUM_CHANNELS } as _, index}
+        <ThicknessSwitch
+          channel={index}
+          onClick={(isThick) => {
+            waveElement.updateChannelThickness(index, !isThick);
           }}
         />
       {/each}
     </div>
     <div class="sliders">
       Offset
+      <div class="placeholder" />
+      <br />
+      <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
-        <!-- <OffsetSlider
-          onInput={(offsetY) => {
-            waveElement.updateChannelOffsetY(index, offsetY);
-          }}
-        /> -->
         <Slider
           id={`offset-slider-${index}`}
           onInput={(offsetY) => {
@@ -69,8 +86,11 @@
     </div>
     <div class="sliders">
       Time Sweep
+      <br />
+      <small>Common</small>
+      <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
+      <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
-        <!-- <TimeSweepSlider channel={index} /> -->
         <Slider
           id={`time-sweep-slider-${index}`}
           bind:value={$timeSweep[index]}
@@ -80,13 +100,10 @@
     </div>
     <div class="sliders">
       Amplitude
+      <div class="placeholder" />
+      <br />
+      <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
-        <!-- <AmplitudeSlider
-          channel={index}
-          onInput={(scaling) => {
-            waveElement.updateChannelScaling(index, scaling);
-          }}
-        /> -->
         <Slider
           id={`amplitude-slider-${index}`}
           onInput={(value) => {
@@ -117,5 +134,9 @@
   .button-wrapper {
     display: flex;
     margin: 1rem;
+  }
+
+  .placeholder {
+    height: 32.4833px;
   }
 </style>
