@@ -1,5 +1,5 @@
 import dgram from "node:dgram";
-import {WebSocketServer} from 'ws';
+import { WebSocketServer } from 'ws';
 
 const server = dgram.createSocket("udp4");
 const socket = new WebSocketServer({
@@ -37,8 +37,8 @@ server.on("error", (err) => {
 server.on("message", (msg, rinfo) => {
   let samples = new Float64Array(msg.buffer);
   packageCounter += 1
-  
-  handle(samples, 200)   
+
+  handle(samples, 200)
 });
 
 server.on("listening", () => {
@@ -56,10 +56,10 @@ server.bind(
  * Set the interval for tracking the received PPS
  */
 function setupPpsCalculator() {
-  setInterval(function(){ calculatePackagesPerSecond() }, 1000);
+  setInterval(function () { calculatePackagesPerSecond() }, 1000);
 }
 
-socket.onopen = function(e) {
+socket.onopen = function (e) {
   console.log("[open] Connection established");
   console.log("Sending to server");
 };
@@ -67,8 +67,8 @@ socket.onopen = function(e) {
 /**
  * Calculates the packages per second received on the UDP socket
  */
-function calculatePackagesPerSecond(){
-  console.log("Current rcv PPS: " +packageCounter + " | Current sending PPS: " +packageCounterWS)
+function calculatePackagesPerSecond() {
+  console.log("Current rcv PPS: " + packageCounter + " | Current sending PPS: " + packageCounterWS)
   packageCounter = 0;
   packageCounterWS = 0;
 }
@@ -85,12 +85,12 @@ function calculatePackagesPerSecond(){
  * @param {number} maxNumberOfChunks 
  */
 function handle(data, maxNumberOfChunks) {
-  if(chunkCounter === maxNumberOfChunks) {
+  if (chunkCounter === maxNumberOfChunks) {
     packageCounterWS += 1
 
     let pkg = new Float64Array(sendArray)
 
-    if(client !== undefined && client !== null) {
+    if (client !== undefined && client !== null) {
       client.send(pkg)
     }
     // Reset chunk stats

@@ -9,7 +9,7 @@
     INDICATOR_ZERO_LINE_COLOR,
     LINE_COLORS_RGBA,
     NUM_CHANNELS,
-    NUM_INTERVALS_HORIZONTAL
+    NUM_INTERVALS_HORIZONTAL,
   } from "../const";
   import { roundVoltage } from "../helper";
 
@@ -21,7 +21,6 @@
   let offsets = Array(NUM_CHANNELS).fill(0.0);
   let scalings = Array(NUM_CHANNELS).fill(1.0);
   let startStopLine = Array(NUM_CHANNELS).fill(true);
-
 
   export let scaleY;
 
@@ -35,20 +34,39 @@
     drawGlobalZeroLine();
 
     for (let channel = 0; channel < NUM_CHANNELS; channel++) {
-      
       if (startStopLine[channel]) {
         updateCurrentMinMax(samples[startIndex + channel], channel);
       }
-      const transformedCurrent = transformSampleToYCoord(current[channel], offsets[channel], scalings[channel]);
-      const transformedMin = transformSampleToYCoord(min[channel], offsets[channel], scalings[channel]);
-      const transformedMax = transformSampleToYCoord(max[channel], offsets[channel], scalings[channel]);
-      const transformedZero = transformSampleToYCoord(0, offsets[channel], scalings[channel]);
+      const transformedCurrent = transformSampleToYCoord(
+        current[channel],
+        offsets[channel],
+        scalings[channel]
+      );
+      const transformedMin = transformSampleToYCoord(
+        min[channel],
+        offsets[channel],
+        scalings[channel]
+      );
+      const transformedMax = transformSampleToYCoord(
+        max[channel],
+        offsets[channel],
+        scalings[channel]
+      );
+      const transformedZero = transformSampleToYCoord(
+        0,
+        offsets[channel],
+        scalings[channel]
+      );
       //drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
-      drawMinMaxZeroLines(channel, transformedMin, transformedMax, transformedZero, LINE_COLORS_RGBA[channel]);
+      drawMinMaxZeroLines(
+        channel,
+        transformedMin,
+        transformedMax,
+        transformedZero,
+        LINE_COLORS_RGBA[channel]
+      );
       writeText(channel, min[channel], max[channel]);
-
     }
-
   };
 
   /**

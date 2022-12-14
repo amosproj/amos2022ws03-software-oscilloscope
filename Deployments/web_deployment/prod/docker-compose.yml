@@ -8,7 +8,7 @@ services:
     environment:
       - HOST=0.0.0.0:34258
       - TARGET=backend:34259
-      - PPS=100.0
+      - PPS=20000.0
       - SIG_FREQ=1.0
     ports:
       - 34258:34258

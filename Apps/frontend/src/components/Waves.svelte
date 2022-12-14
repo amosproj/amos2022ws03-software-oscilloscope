@@ -103,7 +103,13 @@
 
     bufferCounter++;
     if (bufferCounter >= LOG_AFTER) {
-      console.log('Updated ' + LOG_AFTER + ' times in ' + (currentTime() - startTime) + ' ms.');
+      console.log(
+        "Updated " +
+          LOG_AFTER +
+          " times in " +
+          (currentTime() - startTime) +
+          " ms."
+      );
       resetLogVars();
     }
   };
