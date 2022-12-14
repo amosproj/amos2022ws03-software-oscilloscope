@@ -2,12 +2,8 @@
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
-
-  let isOn = false;
   $: label = "GND";
-
   const handleClick = async (/** @type {boolean} */ down) => {
-    isOn = !isOn;
     dispatch("gnd", { down: down });
   };
 </script>
