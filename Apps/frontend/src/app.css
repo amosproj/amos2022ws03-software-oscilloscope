@@ -84,6 +84,5 @@ button:focus-visible {
 }
 
 .control-panel-items > input {
-  width: 8vw;
-  height: 2vh;
+  height: 1.6rem;
 }
