@@ -17,7 +17,7 @@
 </script>
 
 <div class="switch-wrapper">
-  <small style="margin-right: 1vw;">{channelLabel}</small>
+  <small style="margin-right: 0.5vw;">{channelLabel}</small>
   <Switch
     bind:value={hasStarted}
     hideLabel
@@ -29,6 +29,7 @@
 <style>
   .switch-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: start;
+    margin: 0.32rem;
   }
 </style>

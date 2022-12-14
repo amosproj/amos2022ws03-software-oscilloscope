@@ -7,7 +7,7 @@
   let offsetY;
 </script>
 
-<div>
+<div class="control-panel-items">
   <input
     type="range"
     bind:value={offsetY}
