@@ -8,6 +8,7 @@
 
   let hasStarted = true;
   let color = LINE_COLORS_RGBA[channel_id];
+  let channelLabel = `CH ${channel_id}`;
 
   const handleStartStop = async () => {
     hasStarted = !hasStarted;
@@ -16,6 +17,7 @@
 </script>
 
 <div class="switch-wrapper">
+  <small style="margin-right: 0.5vw;">{channelLabel}</small>
   <Switch
     bind:value={hasStarted}
     hideLabel
@@ -28,6 +30,6 @@
   .switch-wrapper {
     display: flex;
     justify-content: start;
-    margin: 0.25rem;
+    margin: 0.32rem;
   }
 </style>

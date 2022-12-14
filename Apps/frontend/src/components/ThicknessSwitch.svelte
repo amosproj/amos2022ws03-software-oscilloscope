@@ -30,6 +30,6 @@
   .switch-wrapper {
     display: flex;
     justify-content: start;
-    margin: 0.25rem;
+    margin: 0.56rem;
   }
 </style>
