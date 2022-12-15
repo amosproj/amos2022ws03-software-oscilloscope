@@ -5,9 +5,6 @@ import { Logger } from "../utils/logger.js";
 
 /**
  * Create a new UDP socket. The callback is called on incoming UDP packages
- * @param {number} port Port which shall be used to bind the UDP socket
- * @param {string} address Address which shall be used to bind the UDP socket
- * @param {Function} callback Callback on incoming UDP packages
  */
 export class UdpSocket {
   /**

@@ -1,5 +1,6 @@
-import { UdpSocket } from "./interfaces/udpsocket.js";
-import { WebSocketInterface } from "./interfaces/websocket.js";
+import { UdpSocket } from "./sockets/udpsocket.js";
+
+import { WebSocketInterface } from "./sockets/websocket.js";
 import { RestApi } from "./rest/rest_api.js";
 
 const UDP_PORT = process.env.UDP_PORT || "34255";

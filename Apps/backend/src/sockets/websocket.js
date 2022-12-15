@@ -5,12 +5,20 @@ import { DeliveryPackage } from "../utils/deliveryPackage.js";
 import { Logger } from "../utils/logger.js";
 import { DEFAULT_PACKAGE_SIZE } from "../const.js";
 
+/**
+ * WebSocket Interface
+ */
 export class WebSocketInterface {
-  constructor(port, address, callback) {
+   /**
+   * Create a new Web socket.
+   * @param {number} port Port which shall be used to bind the web socket
+   * @param {string} address Address which shall be used to bind the web socket
+   */
+  constructor(port, address) {
     this.port = port;
     this.address = address;
-    this.callback = callback;
 
+    
     this.metrics = new Metrics("Web Socket");
     setupMetricMonitors(this.metrics);
 
@@ -22,8 +30,9 @@ export class WebSocketInterface {
     this.logger = new Logger("WebSocket");
   }
 
-  /**
+  /** 
    * Setup the Websocket server frontend connecton
+   * @memberof WebSocketInterface
    */
   setupInterface() {
     this.socket = new WebSocketServer(

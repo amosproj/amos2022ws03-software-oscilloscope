@@ -1,8 +1,6 @@
 import express from "express";
 import fs from "fs";
 import path from "path";
-//import cors from 'cors'
-//import bodyParser from 'body-parser'
 import { initialize } from "express-openapi";
 import { Logger } from "../utils/logger.js";
 
@@ -12,8 +10,15 @@ import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const app = express();
-
+/**
+ * Rest API interface
+ */
 export class RestApi {
+  /**
+   * Create a new rest api
+   * @param {String} port Port which shall be used for serving the rest api
+   * @param {String} address Not used
+   */
   constructor(port, address) {
     this.port = port;
     this.address = address;
