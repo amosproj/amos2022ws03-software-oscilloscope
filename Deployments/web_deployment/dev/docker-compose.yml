@@ -48,7 +48,9 @@ services:
     image: sosci/backend:${VERSION_TAG:-nightly}
     pull_policy: always
     environment:
-      - HOST_PORT=34255
+      - UDP_PORT=34255
+      - WS_PORT=9000
+      - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
     ports: 
       - 34255:34255
