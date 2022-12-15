@@ -51,6 +51,8 @@ services:
       - internal
       - web
     restart: unless-stopped
+    volumes:
+      - backend-data:/opt/sosci/data
 
 networks:
   internal:
@@ -58,3 +60,6 @@ networks:
     internal: true
   web:
     driver: bridge
+
+volumes:
+  backend-data:

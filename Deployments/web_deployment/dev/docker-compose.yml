@@ -21,6 +21,8 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    volumes:
+      - backend-data:/opt/sosci/data
     networks:
       - web
       - internal
@@ -73,3 +75,6 @@ networks:
   web:
     driver: bridge
     external: true
+
+volumes:
+  backend-data:
