@@ -9,7 +9,7 @@
     INDICATOR_ZERO_LINE_COLOR,
     LINE_COLORS_RGBA,
     NUM_CHANNELS,
-    NUM_INTERVALS_HORIZONTAL
+    NUM_INTERVALS_HORIZONTAL,
   } from "../const";
   import { roundVoltage } from "../helper";
 
@@ -29,19 +29,42 @@
    *
    * @param {number[]} samples
    */
-  export const update = (samples) => {
+  export const update = (samples, startIndex) => {
     clearCanvas();
     drawGlobalZeroLine();
-    for (let channel = 0; channel < samples.length; channel++) {
+
+    for (let channel = 0; channel < NUM_CHANNELS; channel++) {
       if (startStopLine[channel]) {
-        updateCurrentMinMax(samples[channel], channel);
+        updateCurrentMinMax(samples[startIndex + channel], channel);
       }
-      const transformedCurrent = transformSampleToYCoord(current[channel], offsets[channel], scalings[channel]);
-      const transformedMin = transformSampleToYCoord(min[channel], offsets[channel], scalings[channel]);
-      const transformedMax = transformSampleToYCoord(max[channel], offsets[channel], scalings[channel]);
-      const transformedZero = transformSampleToYCoord(0, offsets[channel], scalings[channel]);
-      drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
-      drawMinMaxZeroLines(channel, transformedMin, transformedMax, transformedZero, LINE_COLORS_RGBA[channel]);
+      const transformedCurrent = transformSampleToYCoord(
+        current[channel],
+        offsets[channel],
+        scalings[channel]
+      );
+      const transformedMin = transformSampleToYCoord(
+        min[channel],
+        offsets[channel],
+        scalings[channel]
+      );
+      const transformedMax = transformSampleToYCoord(
+        max[channel],
+        offsets[channel],
+        scalings[channel]
+      );
+      const transformedZero = transformSampleToYCoord(
+        0,
+        offsets[channel],
+        scalings[channel]
+      );
+      //drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
+      drawMinMaxZeroLines(
+        channel,
+        transformedMin,
+        transformedMax,
+        transformedZero,
+        LINE_COLORS_RGBA[channel]
+      );
       writeText(channel, min[channel], max[channel]);
     }
   };

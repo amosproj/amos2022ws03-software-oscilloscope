@@ -1,32 +1,35 @@
 <script>
-	import { createEventDispatcher } from 'svelte'
-	import Switch from "svelte-toggle";
-	import { LINE_COLORS_RGBA } from "../const.js";
-	export let channel_id;
+  import { createEventDispatcher } from "svelte";
+  import Switch from "svelte-toggle";
+  import { LINE_COLORS_RGBA } from "../const.js";
+  export let channel_id;
 
+  const dispatch = createEventDispatcher();
 
-	const dispatch = createEventDispatcher()
+  let hasStarted = true;
+  let color = LINE_COLORS_RGBA[channel_id];
+  let channelLabel = `CH ${channel_id}`;
 
-	let hasStarted = true;
-	let color= LINE_COLORS_RGBA[channel_id];
-
-	const handleStartStop = async () => {
-		hasStarted = !hasStarted;
-		dispatch('startStop', {buttonValue: hasStarted})
-	}
-
-
+  const handleStartStop = async () => {
+    hasStarted = !hasStarted;
+    dispatch("startStop", { buttonValue: hasStarted });
+  };
 </script>
-	<div class="switch-wrapper" >
-		<Switch bind:value={hasStarted} hideLabel toggledColor={color} on:click={handleStartStop} />
-	</div>
+
+<div class="switch-wrapper">
+  <small style="margin-right: 0.5vw;">{channelLabel}</small>
+  <Switch
+    bind:value={hasStarted}
+    hideLabel
+    toggledColor={color}
+    on:click={handleStartStop}
+  />
+</div>
 
 <style>
-	.switch-wrapper {
-	  display: flex;
-	  justify-content: center;
-	  margin: 0.25rem;
-	}
-  </style>
-
-
+  .switch-wrapper {
+    display: flex;
+    justify-content: start;
+    margin: 0.32rem;
+  }
+</style>

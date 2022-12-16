@@ -34,6 +34,18 @@
   let xArr;
   let xLast;
 
+  const LOG_AFTER = 10000;
+  let bufferCounter;
+  let startTime;
+  const currentTime = () => {
+    return window.performance.now();
+  };
+  const resetLogVars = () => {
+    bufferCounter = 0;
+    startTime = currentTime();
+  };
+  resetLogVars();
+
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
     resizeCanvas();
@@ -60,10 +72,10 @@
     webGLPlot.clear();
   };
 
-  export const updateBuffer = (samples) => {
+  export const updateBuffer = (samples, startIndex, endIndex) => {
     for (
-      let channelIndex = 0;
-      channelIndex < channelSamples.length;
+      let channelIndex = startIndex;
+      channelIndex < endIndex;
       channelIndex++
     ) {
       if (!startStopLine[channelIndex]) {
@@ -87,6 +99,18 @@
       while (xArr[channelIndex] >= CANVAS_WIDTH) {
         xArr[channelIndex] -= CANVAS_WIDTH;
       }
+    }
+
+    bufferCounter++;
+    if (bufferCounter >= LOG_AFTER) {
+      console.log(
+        "Updated " +
+          LOG_AFTER +
+          " times in " +
+          (currentTime() - startTime) +
+          " ms."
+      );
+      resetLogVars();
     }
   };
 

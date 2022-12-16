@@ -23,9 +23,20 @@
   let btnOnOff;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
+  /** Websocket for connection to backend */
   let socket;
-
+  /** Flag for enabled and updating canvas */
   let isEnabled = false;
+  /** Number of received packages before they are computed */
+  let packageCounterPreCompute = 0;
+  /** Number of packages per second */
+  let pps = 0;
+  /** Duration of computing and updating one package */
+  let packageComputeTime = 0;
+  /** Duration of computing and updating one channel window within the package */
+  let windowComputeTime = 0;
+  /** Number of chunks in a package */
+  let chunkNumber = 0;
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -41,25 +52,78 @@
 
   // -----business logic functions -----
   const createSocket = () => {
+    console.log("Connecting to :" + import.meta.env.VITE_BACKEND_WEBSOCKET);
     let socket = new WebSocket(import.meta.env.VITE_BACKEND_WEBSOCKET);
     socket.binaryType = "arraybuffer";
 
     return socket;
   };
 
+  /**
+   * On receiving a socket message, update buffer of waves.
+   *
+   * @param {MessageEvent} messageEvent - has poperty (Float64Array) data
+   */
   const socketOnMessage = (messageEvent) => {
-    let samples = new Float64Array(messageEvent.data);
     if (!isEnabled) return;
-    waveElement.updateBuffer(samples);
-    indicatorElement.update(samples);
+    packageCounterPreCompute += 1;
+
+    var chunkCounter = 0;
+    var startPackage = window.performance.now();
+
+    let samples = new Float64Array(messageEvent.data);
+    for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
+      var startWindow = window.performance.now();
+      waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
+      if (index % 1000 == 0) indicatorElement.update(samples, index);
+      var endWindow = window.performance.now();
+
+      ++chunkCounter;
+      updateWindowComputeTime(startWindow, endWindow);
+    }
+
+    var endPackage = window.performance.now();
+    updatePackageComputeTime(startPackage, endPackage);
+    chunkNumber = chunkCounter;
   };
 
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
+
+  /**
+   * Calculates the packages per second received on the web socket
+   */
+  function calculatePackagesPerSecond() {
+    pps = packageCounterPreCompute;
+    packageCounterPreCompute = 0;
+  }
+
+  /**
+   * Calculate the duration between start and end of
+   * TODO implement historic average over e.g. last 20 packages
+   * @param start start timestamp
+   * @param end end timestamp
+   */
+  function updatePackageComputeTime(start, end) {
+    packageComputeTime = end - start;
+  }
+  /**
+   * Calculate the duration between start and end of single index windows on a package
+   * TODO implement historic average over e.g. last 20 packages
+   * @param start start timestamp
+   * @param end end timestamp
+   */
+  function updateWindowComputeTime(start, end) {
+    windowComputeTime = end - start;
+  }
+
+  setInterval(function () {
+    calculatePackagesPerSecond();
+  }, 1000);
 </script>
 
 <div
   class="wrapper"
-  style="--canvas-width: {CANVAS_WIDTH}px; --canvas-height: {CANVAS_HEIGHT}px; --indicators-width: {INDICATOR_SECTION_WIDTH}px"
+  style="--canvas-width: 1000px; --canvas-height: {CANVAS_HEIGHT}px; --indicators-width: {INDICATOR_SECTION_WIDTH}px"
   data-cy="oscilloscope"
 >
   <div class="grid-container">
@@ -95,10 +159,12 @@
           }}
         />
       </div>
-      <div class="slider-wrapper">
-        <div class="sliders">
+      <div class="control-panel">
+        <div class="switch">
           Start/Stop
+          <div class="placeholder" />
           <br />
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
               channel_id={index}
@@ -110,8 +176,11 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="switch">
           Thickness
+          <div class="placeholder" />
+          <br />
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <ThicknessSwitch
               channel={index}
@@ -121,8 +190,11 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Offset
+          <div class="placeholder" />
+          <br />
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <OffsetSlider
               onInput={(offsetY) => {
@@ -132,14 +204,21 @@
             />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Time Sweep
+          <br />
+          <small>Common</small>
+          <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <TimeSweepSlider channel={index} />
           {/each}
         </div>
-        <div class="sliders">
+        <div class="slider">
           Amplitude
+          <div class="placeholder" />
+          <br />
+          <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <AmplitudeSlider
               channel={index}
@@ -153,6 +232,13 @@
       </div>
     </div>
   </div>
+</div>
+<div style="grid-column: 3; margin: 1rem; text-align: end">
+  <p>
+    Package Size: {chunkNumber} | PPS: {pps * chunkNumber} | Updatetime/Window: {windowComputeTime.toFixed(
+      5
+    )} ms | Updatetime/Package: {packageComputeTime.toFixed(5)} ms
+  </p>
 </div>
 
 <style>
@@ -184,8 +270,9 @@
     justify-content: center;
   }
 
-  .slider-wrapper {
+  .control-panel {
     display: flex;
+    text-align: start;
   }
 
   .button-wrapper {
@@ -193,8 +280,15 @@
     margin: 1rem;
   }
 
-  .sliders {
+  .switch {
+    width: 24%;
+  }
+
+  .slider {
     width: 50%;
   }
 
+  .placeholder {
+    height: 32.4833px;
+  }
 </style>
