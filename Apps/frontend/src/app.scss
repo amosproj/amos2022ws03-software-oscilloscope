@@ -15,15 +15,6 @@
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
   min-width: 320px;
@@ -33,6 +24,12 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+img {
+  width: 8rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 #app {
@@ -73,16 +70,42 @@ button:focus-visible {
   }
 }
 
-#helloworld-canvas {
-  max-width: 80vw;
-  max-height: 80vh;
-}
-
-.control-panel-items {
-  display: flex;
-  align-content: space-around;
-}
-
+/*
 .control-panel-items > input {
   height: 1.6rem;
 }
+
+.control-panel {
+  display: flex;
+  text-align: start;
+  grid-column: 2;
+
+  &--items {
+    display: flex;
+    align-content: space-around;
+  }
+
+  &--button-wrapper {
+    display: flex;
+    margin: 1rem;
+  }
+
+  &--button {
+    &--wrapper {
+      display: flex;
+      margin: 1rem;
+    }
+  }
+
+  &--slider {
+    width: 50%;
+  }
+
+  &--switch {
+    width: 24%;
+  }
+
+  &--placeholder {
+    height: 32.4833px;
+  }
+}*/

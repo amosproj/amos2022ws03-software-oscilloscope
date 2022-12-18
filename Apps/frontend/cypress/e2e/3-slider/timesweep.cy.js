@@ -11,10 +11,7 @@ describe("timesweepSlider", () => {
 
   it("change value", () => {
     cy.get(":nth-child(1) > #btn-on-off").click();
-    cy.wait(2000);
     cy.get('[data-cy="timesweepSlider-0"]').invoke("val", 2).trigger("change");
-    cy.get('[data-cy="timesweepSlider-1"]')
-      .invoke("val", 7)
-      .trigger("change");
+    cy.get('[data-cy="timesweepSlider-1"]').invoke("val", 7).trigger("change");
   });
 });
