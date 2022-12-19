@@ -105,12 +105,14 @@
       {#each { length: NUM_CHANNELS } as _, index}
         <Slider
           id={`amplitudeSlider-${index}`}
+          className="amplitude-slider"
           onInput={(value) => {
             waveElement.updateChannelScaling(index, value);
             indicatorElement.updateChannelScaling(index, value);
           }}
           max={MAX_AMPLITUDE}
           min={MIN_AMPLITUDE}
+          calcDisplayValue={(value) => (1 / value).toFixed(2)}
         />
       {/each}
     </div>
@@ -118,6 +120,12 @@
 </div>
 
 <style>
+  .amplitude-slider {
+    display: grid;
+    grid-template-columns: 129px auto;
+    margin: 0 8%;
+  }
+
   .controls {
     grid-column: 2;
     justify-content: center;

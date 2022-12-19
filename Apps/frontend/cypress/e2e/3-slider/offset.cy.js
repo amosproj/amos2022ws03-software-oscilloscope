@@ -10,9 +10,9 @@ describe("offsetSlider", () => {
   });
 
   it("change value", () => {
-    cy.get(":nth-child(1) > #btn-on-off").click();
-    cy.wait(2000);
-    cy.get('[data-cy="offsetSlider-0"]').invoke("val", 2).trigger("change");
-    cy.get('[data-cy="offsetSlider-1"]').invoke("val", 7).trigger("change");
+    cy.get(`[data-cy="offsetSlider-0"]`).within(() => {
+      cy.get('[type="range"]').invoke("val", 2).trigger("change");
+      cy.get('[type="range"]').invoke("val", 7).trigger("change");
+    });
   });
 });
