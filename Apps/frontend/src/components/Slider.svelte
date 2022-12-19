@@ -23,5 +23,6 @@
     {min}
     {max}
     {step}
+    data-cy={id}
   />
 </div>

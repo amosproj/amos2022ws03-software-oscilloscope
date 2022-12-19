@@ -5,9 +5,8 @@
   import ResetButton from "../views/ResetButton.svelte";
   import Slider from "./Slider.svelte";
   import { timeSweep } from "../stores.js";
-  import ThicknessSwitch from "./ThicknessSwitch.svelte";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
-
+  import ThicknessSwitch from "./ThicknessSwitch.svelte";
   export let waveElement;
   export let isEnabled;
   export let indicatorElement;
@@ -72,7 +71,7 @@
       <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
         <Slider
-          id={`offset-slider-${index}`}
+          id={`offsetSlider-${index}`}
           onInput={(offsetY) => {
             waveElement.updateChannelOffsetY(index, offsetY);
             indicatorElement.updateChannelOffsetY(index, offsetY);
@@ -92,7 +91,7 @@
       <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
         <Slider
-          id={`time-sweep-slider-${index}`}
+          id={`timesweepSlider-${index}`}
           bind:value={$timeSweep[index]}
           onInput={() => {}}
         />
@@ -105,7 +104,7 @@
       <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
         <Slider
-          id={`amplitude-slider-${index}`}
+          id={`amplitudeSlider-${index}`}
           onInput={(value) => {
             waveElement.updateChannelScaling(index, value);
             indicatorElement.updateChannelScaling(index, value);
