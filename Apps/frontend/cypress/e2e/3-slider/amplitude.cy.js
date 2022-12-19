@@ -10,11 +10,16 @@ describe("amplitudeSlider", () => {
   });
 
   it("change value", () => {
-    cy.get(":nth-child(1) > #btn-on-off").click();
-    cy.wait(2000);
-    cy.get('[data-cy="amplitudeSlider-0"]').invoke("val", 2).trigger("change");
-    cy.get('[data-cy="amplitudeSlider-1"]')
-      .invoke("val", 0.5)
-      .trigger("change");
+    cy.get(`[data-cy="amplitudeSlider-0"]`).within(() => {
+      cy.get('[type="range"]').invoke("val", 2).trigger("change");
+      cy.get("span").should("have.text", "0.50");
+    });
+  });
+
+  it("change value to 0", () => {
+    cy.get(`[data-cy="amplitudeSlider-1"]`).within(() => {
+      cy.get('[type="range"]').invoke("val", 0).trigger("change");
+      cy.get("span").should("have.text", "Infinity");
+    });
   });
 });
