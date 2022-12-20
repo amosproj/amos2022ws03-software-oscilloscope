@@ -5,7 +5,7 @@ describe("amplitudeSlider", () => {
 
   it("is visible", () => {
     Cypress._.times(10, (i) => {
-      cy.get('[data-cy="amplitudeSlider-' + i + '"]').should("be.visible");
+      cy.get(`[data-cy="amplitudeSlider-${i}"]`).should("be.visible");
     });
   });
 
