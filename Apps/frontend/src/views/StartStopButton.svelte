@@ -2,24 +2,23 @@
   import { createEventDispatcher } from "svelte";
   import Switch from "svelte-toggle";
   import { LINE_COLORS_RGBA } from "../const.js";
-  export let channel_id;
+  import { channelConfig } from "../stores.js";
+  export let channel;
 
   const dispatch = createEventDispatcher();
 
-  let hasStarted = true;
-  let color = LINE_COLORS_RGBA[channel_id];
-  let channelLabel = `CH ${channel_id}`;
+  let color = LINE_COLORS_RGBA[channel];
+  let channelLabel = `CH ${channel}`;
 
   const handleStartStop = async () => {
-    hasStarted = !hasStarted;
-    dispatch("startStop", { buttonValue: hasStarted });
+    dispatch("startStop", { buttonValue: $channelConfig[channel].enabled });
   };
 </script>
 
 <div class="switch-wrapper">
   <small style="margin-right: 0.5vw;">{channelLabel}</small>
   <Switch
-    bind:value={hasStarted}
+    bind:toggled={$channelConfig[channel].enabled}
     hideLabel
     toggledColor={color}
     on:click={handleStartStop}

@@ -1,4 +1,7 @@
 <script>
+  import { channelConfig } from "../stores";
+  export let channel
+
   export let onInput = (offsetY) => {
     console.error(
       `Missing implementation of OffsetSlider.onInput(${offsetY})!`
@@ -10,7 +13,7 @@
 <div class="control-panel-items">
   <input
     type="range"
-    bind:value={offsetY}
+    bind:value={$channelConfig[channel].offset}
     on:input={() => {
       onInput(offsetY);
     }}
