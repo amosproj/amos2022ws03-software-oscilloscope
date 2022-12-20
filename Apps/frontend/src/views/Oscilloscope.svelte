@@ -21,7 +21,6 @@
   let waveElement;
   let btnOnOff;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
-  let indicatorElement;
   let socket;
 
   let isEnabled = false;
@@ -57,7 +56,6 @@
     let samples = new Float64Array(messageEvent.data);
     if (!isEnabled) return;
     waveElement.updateBuffer(samples);
-    indicatorElement.update(samples);
     pps = pps + 1;
   };
 
@@ -70,9 +68,6 @@
   data-cy="oscilloscope"
 >
   <div class="grid-container">
-    <div class="indicators">
-      <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
-    </div>
     <div class="oscilloscope">
       <div class="waves">
         <Waves_WebGL bind:this={waveElement} />
@@ -93,7 +88,6 @@
               btnOnOff.click();
             }
             // clear canvas and indicators
-            indicatorElement.clearCanvas();
             waveElement.resetPlot();
           }}
         />
@@ -108,7 +102,6 @@
               on:startStop={async (event) => {
                 let hasStarted = event.detail.buttonValue;
                 waveElement.startStopChannelI(index, hasStarted);
-                indicatorElement.startStopChannelI(index, hasStarted);
               }}
             />
           {/each}
@@ -130,7 +123,6 @@
             <OffsetSlider
               onInput={(offsetY) => {
                 waveElement.updateChannelOffsetY(index, offsetY);
-                indicatorElement.updateChannelOffsetY(index, offsetY);
               }}
             />
           {/each}
@@ -148,7 +140,6 @@
               channel={index}
               onInput={(scaling) => {
                 waveElement.updateChannelScaling(index, scaling);
-                indicatorElement.updateChannelScaling(index, scaling);
               }}
             />
           {/each}
