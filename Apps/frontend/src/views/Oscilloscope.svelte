@@ -29,6 +29,7 @@
   let isEnabled = false;
   /** Flag for enabled GND */
   let isGND = false;
+  let gndSample = null;
   /** Number of received packages before they are computed */
   let packageCounterPreCompute = 0;
   /** Number of packages per second */
@@ -74,7 +75,13 @@
     var startPackage = window.performance.now();
 
     let samples = new Float64Array(messageEvent.data);
-    if (isGND) {samples.fill(0.0);}
+    if (isGND) {
+      if (gndSample == null) {
+        gndSample = new Array(samples.length).fill(0.0);
+      }
+      samples = gndSample;
+    }
+    
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       var startWindow = window.performance.now();
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
