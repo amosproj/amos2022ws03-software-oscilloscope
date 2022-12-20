@@ -20,14 +20,14 @@ export class WebSocketInterface {
 
     
     this.metrics = new Metrics("Web Socket");
-    setupMetricMonitors(this.metrics);
+    this.logger = new Logger("WebSocket");
+    setupMetricMonitors(this.metrics, this.logger);
 
     /** Frontend client (WebSocket Connection) */
     this.client = undefined;
     /** Package which will be sent to client */
     this.deliveryPackage = new DeliveryPackage(DEFAULT_PACKAGE_SIZE);
 
-    this.logger = new Logger("WebSocket");
   }
 
   /** 

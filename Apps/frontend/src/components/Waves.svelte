@@ -18,7 +18,7 @@
     LINE_THICKNESS_SMALL,
     LINE_THICKNESS_BIG,
   } from "../const";
-  import { timeSweep } from "../stores";
+  import { channelConfig } from "../stores";
 
   export let scalesY;
 
@@ -33,18 +33,6 @@
   let startStopLine = [];
   let xArr;
   let xLast;
-
-  const LOG_AFTER = 10000;
-  let bufferCounter;
-  let startTime;
-  const currentTime = () => {
-    return window.performance.now();
-  };
-  const resetLogVars = () => {
-    bufferCounter = 0;
-    startTime = currentTime();
-  };
-  resetLogVars();
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -91,7 +79,7 @@
       }
       xLast[channelIndex] = xNew;
 
-      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0;
+      let sweep = $channelConfig[channelIndex].sweepSpeed / 5.0 - 1.0;
       let fac = sweep < 0 ? MIN_SWEEP : MAX_SWEEP;
       let delta = fac * sweep + 1.0;
 
@@ -101,17 +89,6 @@
       }
     }
 
-    bufferCounter++;
-    if (bufferCounter >= LOG_AFTER) {
-      console.log(
-        "Updated " +
-          LOG_AFTER +
-          " times in " +
-          (currentTime() - startTime) +
-          " ms."
-      );
-      resetLogVars();
-    }
   };
 
   // Sets the scaling of a individual wave according to the voltage intervals

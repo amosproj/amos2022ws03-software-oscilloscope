@@ -1,5 +1,6 @@
 <script>
   import { onMount, onDestroy } from "svelte";
+  import { channelConfig } from "../stores";
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
@@ -17,6 +18,8 @@
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
+  import ChannelConfigPreset from "../components/ChannelConfigPreset.svelte";
+  import { EVENT_LOADED_CHANNEL_CONFIG } from "../events";
 
   let waveElement;
   let btnOnOff;
@@ -88,6 +91,28 @@
 
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
 
+  function updateChannelConfig() {
+    for (let index = 0 ; index < NUM_CHANNELS; index++) {      
+
+      /* StartStop */
+      waveElement.startStopChannelI(index, $channelConfig[index].enabled);
+      indicatorElement.startStopChannelI(index, $channelConfig[index].enabled);
+
+      /* Thickness */
+      waveElement.updateChannelThickness(index, ($channelConfig[index].thickness));
+
+      /* Offset */
+      waveElement.updateChannelOffsetY(index, $channelConfig[index].offset);
+      indicatorElement.updateChannelOffsetY(index, $channelConfig[index].offset);
+
+      /* Sweepseed is automatically updated */
+
+      /* Amplitude */       
+      waveElement.updateChannelScaling(index, $channelConfig[index].amplitude);
+      indicatorElement.updateChannelScaling(index, $channelConfig[index].amplitude);
+    }
+  }
+
   /**
    * Calculates the packages per second received on the web socket
    */
@@ -156,6 +181,10 @@
             waveElement.resetPlot();
           }}
         />
+        <ChannelConfigPreset 
+          on:event_loaded_channel_config_from_rest={() => {
+            updateChannelConfig()
+        }}/>
       </div>
       <div class="control-panel">
         <div class="switch">
@@ -165,9 +194,9 @@
           <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
-              channel_id={index}
+              channel={index}
               on:startStop={async (event) => {
-                let hasStarted = event.detail.buttonValue;
+                let hasStarted = ! event.detail.buttonValue;
                 waveElement.startStopChannelI(index, hasStarted);
                 indicatorElement.startStopChannelI(index, hasStarted);
               }}
@@ -182,8 +211,8 @@
           {#each { length: NUM_CHANNELS } as _, index}
             <ThicknessSwitch
               channel={index}
-              onClick={(isThick) => {
-                waveElement.updateChannelThickness(index, !isThick);
+              onClick={() => {
+                waveElement.updateChannelThickness(index, ! ($channelConfig[index].thickness));
               }}
             />
           {/each}
@@ -195,9 +224,10 @@
           <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <OffsetSlider
-              onInput={(offsetY) => {
-                waveElement.updateChannelOffsetY(index, offsetY);
-                indicatorElement.updateChannelOffsetY(index, offsetY);
+              channel={index}
+              onInput={() => {
+                waveElement.updateChannelOffsetY(index, $channelConfig[index].offset);
+                indicatorElement.updateChannelOffsetY(index, $channelConfig[index].offset);
               }}
             />
           {/each}
@@ -206,10 +236,10 @@
           Time Sweep
           <br />
           <small>Common</small>
-          <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
+          <TimeSweepSlider channel={NUM_CHANNELS} isCommon={true} />
           <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
-            <TimeSweepSlider channel={index} />
+            <TimeSweepSlider channel={index}/>
           {/each}
         </div>
         <div class="slider">

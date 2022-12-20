@@ -93,6 +93,15 @@ paths:
             application/xml:
               schema:
                 $ref: "#/components/schemas/ChannelConfig"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:   
+                  message:
+                    type: string
         "405":
           description: Invalid input
       security:
@@ -106,7 +115,10 @@ components:
         channelId:
           type: integer
           format: int64
-          example: 1
+          example: 1        
+        enabled:
+          type: boolean
+          example: false
         thickness:
           type: boolean
           example: false
@@ -125,6 +137,7 @@ components:
       example:
         amplitude: 1
         offset: 0
+        enabled: true
         thickness: false
         sweepSpeed: 1
         channelId: 1
@@ -145,11 +158,13 @@ components:
           - amplitude: 1
             offset: 0
             thickness: false
+            enabled: true
             sweepSpeed: 1
             channelId: 1
           - amplitude: 1
             offset: 0
             thickness: false
+            enabled: true
             sweepSpeed: 1
             channelId: 1
       xml:

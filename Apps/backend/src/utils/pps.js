@@ -24,6 +24,6 @@ export function setupMetricMonitors(metrics, logger) {
  * @memberof PPS
  */
 function calculatePackagesPerSecond(metrics, logger) {
-  logger.log(`${metrics.name} PPS:  ${metrics.pps}`)
+  //logger.log(`${metrics.name} PPS:  ${metrics.pps}`)
   metrics.pps = 0;
 }

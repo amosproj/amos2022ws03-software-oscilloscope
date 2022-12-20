@@ -19,8 +19,8 @@ export class UdpSocket {
     this.callback = callback;
 
     this.metrics = new Metrics("UDP Socket");
-    setupMetricMonitors(this.metrics);
     this.logger = new Logger("UDP Socket");
+    setupMetricMonitors(this.metrics, this.logger);
   }
 
   /**

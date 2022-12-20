@@ -1,6 +1,7 @@
 <script>
-  import { amplitudeAdjustment } from "../stores.js";
+  import { channelConfig } from "../stores.js";
   import { MIN_AMPLITUDE, MAX_AMPLITUDE } from "../const.js";
+  
   export let onInput = (amplitude) => {
     console.error(
       `Missing implementation of AmplitudeSlider.onInput(${amplitude})!`
@@ -16,10 +17,9 @@
 <div class="control-panel-items" data-cy="amplitudeSlider-{channel}">
   <input
     type="range"
-    bind:value={amplitude}
+    bind:value={$channelConfig[channel].amplitude}
     on:input={() => {
-      $amplitudeAdjustment[channel] = amplitude;
-      onInput(amplitude);
+      onInput($channelConfig[channel].amplitude);
     }}
     min={MIN_AMPLITUDE}
     max={MAX_AMPLITUDE}

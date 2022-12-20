@@ -5,6 +5,7 @@ import { initialize } from "express-openapi";
 import { Logger } from "../utils/logger.js";
 
 import configServiceV1 from "../rest/service/ConfigServiceV1.js";
+import metricServiceV1 from "./service/MetricServiceV1.js";
 
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
@@ -37,13 +38,35 @@ export class RestApi {
       ),
       dependencies: {
         configService: configServiceV1,
+        metricService: metricServiceV1
       },
       paths: path.resolve(__dirname, "./controllers"),
     });
     app.listen(this.port);
 
     app.use(express.json());
+    app.use(cors);
 
     this.logger.log(`Listening on ${this.address}:${this.port}`);
   }
+}
+
+function cors(req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,api_key');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+
+  // Pass to next layer of middleware
+  next();
 }
