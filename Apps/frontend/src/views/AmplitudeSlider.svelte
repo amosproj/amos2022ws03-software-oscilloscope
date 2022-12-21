@@ -1,7 +1,7 @@
 <script>
   import { channelConfig } from "../stores.js";
   import { MIN_AMPLITUDE, MAX_AMPLITUDE } from "../const.js";
-  
+
   export let onInput = (amplitude) => {
     console.error(
       `Missing implementation of AmplitudeSlider.onInput(${amplitude})!`

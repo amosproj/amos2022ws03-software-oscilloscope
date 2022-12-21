@@ -18,7 +18,7 @@
     type="range"
     min="0"
     max="10"
-    bind:value={$channelConfig[channel].sweepSpeed} 
+    bind:value={$channelConfig[channel].sweepSpeed}
     on:change={handleChange}
     data-cy="timesweepSlider-{channel}"
   />

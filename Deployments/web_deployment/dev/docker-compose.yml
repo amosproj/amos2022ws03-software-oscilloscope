@@ -52,7 +52,7 @@ services:
       - WS_PORT=9000
       - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
-    ports: 
+    ports:
       - 34255:34255
     networks:
       - internal

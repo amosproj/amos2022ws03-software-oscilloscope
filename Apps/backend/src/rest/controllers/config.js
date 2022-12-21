@@ -15,11 +15,11 @@ export default function (configService) {
 
   /**
    * Handle a GET request
-   * 
+   *
    * @param {*} req request object
    * @param {*} res response object
-   * @param {*} next 
-   * @returns |- 
+   * @param {*} next
+   * @returns |-
    *  - HTTP 200 & JSON object if there a valid channel config file
    *  - HTTP 404 If there is no channel config file
    * @memberof ConfigController
@@ -35,7 +35,7 @@ export default function (configService) {
    * Handle a POST request
    * @param {*} req request object
    * @param {*} res response object
-   * @param {*} next 
+   * @param {*} next
    * @memberof ConfigController
    */
   function POST(req, res, next) {

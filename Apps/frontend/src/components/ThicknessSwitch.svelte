@@ -4,9 +4,7 @@
   import { channelConfig } from "../stores.js";
 
   export let onClick = (event) => {
-    console.error(
-      `Missing implementation for thickness)!`
-    );
+    console.error(`Missing implementation for thickness)!`);
   };
 
   export let channel;
@@ -16,7 +14,9 @@
   <Switch
     hideLabel
     bind:toggled={$channelConfig[channel].thickness}
-    on:click={(event) => {onClick(event)}}
+    on:click={(event) => {
+      onClick(event);
+    }}
     toggledColor={LINE_COLORS_RGBA[channel]}
   />
 </div>

@@ -6,7 +6,7 @@ on:
       - 'Apps/frontend/**.*'
       - '.github/workflows/test-frontend-automation.yml'
   pull_request:
-    branches: 
+    branches:
       - "dev"
       - "int"
       - "main"
@@ -26,10 +26,10 @@ jobs:
           # Disable running of tests within install job
           runTests: false
           build: npm run build
-      
+
       - name: Cypress Test Execution
         uses: cypress-io/github-action@v4
-        with:        
+        with:
           working-directory: ./Apps/frontend
           start: npm run dev
           wait-on: 'http://127.0.0.1:5173'

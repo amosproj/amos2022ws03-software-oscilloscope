@@ -4,7 +4,7 @@ services:
   generator:
     image: sosci/generator
     hostname: generator
-    build: 
+    build:
       context: ./generator
       dockerfile: Dockerfile
     restart: unless-stopped
@@ -46,7 +46,7 @@ services:
       - WS_PORT=9000
       - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
-    ports: 
+    ports:
       - 34255:34255
       - 9000:9000
       - 8081:8080

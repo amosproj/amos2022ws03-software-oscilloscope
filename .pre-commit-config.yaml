@@ -1,0 +1,13 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.3
+    hooks:
+    -   id: trailing-whitespace
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+-   repo: local
+    hooks:
+    -   id: npm-lint-frontend
+        name: npm-lint-frontend
+        entry: bash -c 'cd Apps/frontend && npm run format'
+        language: node

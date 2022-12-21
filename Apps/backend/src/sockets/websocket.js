@@ -18,7 +18,7 @@ export class WebSocketInterface {
     this.port = port;
     this.address = address;
 
-    
+
     this.metrics = new Metrics("Web Socket");
     this.logger = new Logger("WebSocket");
     setupMetricMonitors(this.metrics, this.logger);
@@ -30,7 +30,7 @@ export class WebSocketInterface {
 
   }
 
-  /** 
+  /**
    * Setup the Websocket server frontend connecton
    * @memberof WebSocketInterface
    */

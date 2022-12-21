@@ -23,7 +23,6 @@
     "connect": "^3.2.0",
     "express-openapi": "^12.1.0",
     "js-yaml": "^3.3.0",
-    "oas3-tools": "^2.2.3",
     "ws": "^8.11.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",

@@ -1,12 +1,12 @@
 openapi: 3.0.3
 info:
   title: SOSCI - OpenAPI 3.0
-  description: |-   
+  description: |-
     Some useful links:
     - [The SOSCI repository](https://github.com/amosproj/amos2022ws03-software-oscilloscope)
     - [The API definition](https://github.com/amosproj/amos2022ws03-software-oscilloscope/tree/main/Documentation/openapi.yaml)
     - [Web Application](https://amos-sosci.die-degens.eu/ui/)
-    
+
   license:
     name: MIT License
     url: https://github.com/amosproj/amos2022ws03-software-oscilloscope/blob/dev/LICENSE
@@ -23,7 +23,7 @@ tags:
     description: Rest api for interaction between frontend & backend
   - name: WebSocket
     description: WebSocket of the backend for signal transmission
-  
+
 paths:
   /config:
     post:
@@ -58,7 +58,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChannelConfig'          
+                $ref: '#/components/schemas/ChannelConfig'
             application/xml:
               schema:
                 $ref: '#/components/schemas/ChannelConfig'
@@ -85,10 +85,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChannelConfig'           
+                $ref: '#/components/schemas/ChannelConfig'
             application/xml:
               schema:
-                $ref: '#/components/schemas/ChannelConfig' 
+                $ref: '#/components/schemas/ChannelConfig'
         '404':
           description: No channel config found
       security:
@@ -98,26 +98,26 @@ paths:
       tags:
         - WebSocket
       summary: Connect to websocket to retrieve channel signals
-      description: |- 
+      description: |-
         The websocket is served from root while the port depends on the backend configuration. <br/>
         Maximum of connections is 1. A new connection will disconnect the previous client and sends signal only to the new client.
       responses:
         default:
-          description: |- 
+          description: |-
             Float64Array of channel signals <br/>
             The array can contain several appended ChannelSignal into one package to optimize the network traffic. <br/>
             It is still delivered as one Float64Array, so use the number of channels to iterate over the array.
           content:
             Float64Array:
               schema:
-                  $ref: '#/components/schemas/ChannelSignal' 
+                  $ref: '#/components/schemas/ChannelSignal'
 
 components:
   schemas:
     Channel:
       type: object
       properties:
-        channelId: 
+        channelId:
           type: integer
           format: int64
           example: 1
@@ -149,7 +149,7 @@ components:
           items:
             $ref: '#/components/schemas/Channel'
       xml:
-        name: channelconfig 
+        name: channelconfig
     ChannelSignal:
       description: Signals for all 10 channels
       type: array
@@ -160,7 +160,7 @@ components:
           type: number
           format: float
           example: 0.5
-      example: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]        
+      example: [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 
   securitySchemes:
     api_key:

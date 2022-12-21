@@ -1,6 +1,6 @@
 <script>
   import { channelConfig } from "../stores";
-  export let channel
+  export let channel;
 
   export let onInput = (offsetY) => {
     console.error(

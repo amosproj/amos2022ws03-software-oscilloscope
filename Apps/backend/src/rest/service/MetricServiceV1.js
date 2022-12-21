@@ -13,13 +13,13 @@ const metricService = {
       try {
         var raw = fs.readFileSync(PATH_PRESET);
         var preset = JSON.parse(raw);
-  
+
         return preset;
       } catch (error) {
         return undefined;
       }
     },
-  
+
   };
-  
+
   export default metricService;

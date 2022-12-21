@@ -39,12 +39,11 @@ export const MAX_AMPLITUDE = NUM_INTERVALS_HORIZONTAL / 2;
 export const WAVE_CURSOR_SIZE = 50;
 
 /* FRONTEND CONFIG */
-export const BASE_URL = import.meta.env.VITE_BASE_URL
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
 /* END FRONTEND CONFIG */
 
 /* REST API CONFIG */
-export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL
-export const BACKEND_API_URL = `${BACKEND_BASE_URL}`
-export const REST_ENDPOINT_CONFIG = `${BACKEND_API_URL}/config`
- /* END REST API CONFIG */
-
+export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+export const BACKEND_API_URL = `${BACKEND_BASE_URL}`;
+export const REST_ENDPOINT_CONFIG = `${BACKEND_API_URL}/config`;
+/* END REST API CONFIG */

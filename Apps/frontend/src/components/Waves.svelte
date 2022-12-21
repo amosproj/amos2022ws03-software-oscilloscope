@@ -88,7 +88,6 @@
         xArr[channelIndex] -= CANVAS_WIDTH;
       }
     }
-
   };
 
   // Sets the scaling of a individual wave according to the voltage intervals

@@ -99,7 +99,7 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:   
+                properties:
                   message:
                     type: string
         "405":
@@ -115,7 +115,7 @@ components:
         channelId:
           type: integer
           format: int64
-          example: 1        
+          example: 1
         enabled:
           type: boolean
           example: false

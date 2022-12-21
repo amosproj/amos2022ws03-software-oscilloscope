@@ -11,14 +11,14 @@ export default function (metricService) {
     let operations = {
       GET
     };
-  
+
     /**
      * Handle a GET request
-     * 
+     *
      * @param {*} req request object
      * @param {*} res response object
-     * @param {*} next 
-     * @returns |- 
+     * @param {*} next
+     * @returns |-
      *  - HTTP 200 & JSON object if there a valid channel config file
      *  - HTTP 404 If there is no channel config file
      * @memberof MetricController
@@ -26,7 +26,7 @@ export default function (metricService) {
      */
     function GET(req, res, next) {
       var preset = configService.getConfig();
-  
+
       if (preset === undefined) res.status(404).json();
       else res.status(200).json(preset);
     }
@@ -34,13 +34,12 @@ export default function (metricService) {
      * Handle a POST request
      * @param {*} req request object
      * @param {*} res response object
-     * @param {*} next 
+     * @param {*} next
      * @memberof ConfigController
      */
     function POST(req, res, next) {
       res.status(200).json(configService.postConfig(req.body));
     }
-  
+
     return operations;
   }
-  

@@ -92,24 +92,32 @@
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
 
   function updateChannelConfig() {
-    for (let index = 0 ; index < NUM_CHANNELS; index++) {      
-
+    for (let index = 0; index < NUM_CHANNELS; index++) {
       /* StartStop */
       waveElement.startStopChannelI(index, $channelConfig[index].enabled);
       indicatorElement.startStopChannelI(index, $channelConfig[index].enabled);
 
       /* Thickness */
-      waveElement.updateChannelThickness(index, ($channelConfig[index].thickness));
+      waveElement.updateChannelThickness(
+        index,
+        $channelConfig[index].thickness
+      );
 
       /* Offset */
       waveElement.updateChannelOffsetY(index, $channelConfig[index].offset);
-      indicatorElement.updateChannelOffsetY(index, $channelConfig[index].offset);
+      indicatorElement.updateChannelOffsetY(
+        index,
+        $channelConfig[index].offset
+      );
 
       /* Sweepseed is automatically updated */
 
-      /* Amplitude */       
+      /* Amplitude */
       waveElement.updateChannelScaling(index, $channelConfig[index].amplitude);
-      indicatorElement.updateChannelScaling(index, $channelConfig[index].amplitude);
+      indicatorElement.updateChannelScaling(
+        index,
+        $channelConfig[index].amplitude
+      );
     }
   }
 
@@ -181,10 +189,11 @@
             waveElement.resetPlot();
           }}
         />
-        <ChannelConfigPreset 
+        <ChannelConfigPreset
           on:event_loaded_channel_config_from_rest={() => {
-            updateChannelConfig()
-        }}/>
+            updateChannelConfig();
+          }}
+        />
       </div>
       <div class="control-panel">
         <div class="switch">
@@ -196,7 +205,7 @@
             <StartStopButton
               channel={index}
               on:startStop={async (event) => {
-                let hasStarted = ! event.detail.buttonValue;
+                let hasStarted = !event.detail.buttonValue;
                 waveElement.startStopChannelI(index, hasStarted);
                 indicatorElement.startStopChannelI(index, hasStarted);
               }}
@@ -212,7 +221,10 @@
             <ThicknessSwitch
               channel={index}
               onClick={() => {
-                waveElement.updateChannelThickness(index, ! ($channelConfig[index].thickness));
+                waveElement.updateChannelThickness(
+                  index,
+                  !$channelConfig[index].thickness
+                );
               }}
             />
           {/each}
@@ -226,8 +238,14 @@
             <OffsetSlider
               channel={index}
               onInput={() => {
-                waveElement.updateChannelOffsetY(index, $channelConfig[index].offset);
-                indicatorElement.updateChannelOffsetY(index, $channelConfig[index].offset);
+                waveElement.updateChannelOffsetY(
+                  index,
+                  $channelConfig[index].offset
+                );
+                indicatorElement.updateChannelOffsetY(
+                  index,
+                  $channelConfig[index].offset
+                );
               }}
             />
           {/each}
@@ -239,7 +257,7 @@
           <TimeSweepSlider channel={NUM_CHANNELS} isCommon={true} />
           <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
-            <TimeSweepSlider channel={index}/>
+            <TimeSweepSlider channel={index} />
           {/each}
         </div>
         <div class="slider">

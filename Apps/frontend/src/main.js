@@ -9,7 +9,7 @@ const app = new App({
   target: document.getElementById("app"),
 });
 
-console.log(`Starting frontend on ${BASE_URL}`)
+console.log(`Starting frontend on ${BASE_URL}`);
 //console.log(channelConfig)
 
 export default app;
