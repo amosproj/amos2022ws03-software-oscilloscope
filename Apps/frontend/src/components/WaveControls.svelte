@@ -7,6 +7,7 @@
   import { timeSweep } from "../stores.js";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
   import ThicknessSwitch from "./ThicknessSwitch.svelte";
+  import DistributeOffsetButton from "./DistributeOffsetButton.svelte";
   export let waveElement;
   export let isEnabled;
   export let indicatorElement;
@@ -30,6 +31,18 @@
         // clear canvas and indicators
         indicatorElement.clearCanvas();
         waveElement.resetPlot();
+      }}
+    />
+    <DistributeOffsetButton
+      on:distributeOffset={(event) => {
+        let offset = event.detail.offset;
+        // loop over all channels and set offset
+        let offsetY = 1 - offset;
+        for (let index = 0; index < NUM_CHANNELS; index++) {
+          waveElement.updateChannelOffsetY(index, offsetY);
+          indicatorElement.updateChannelOffsetY(index, offsetY);
+          offsetY -= offset;
+        }
       }}
     />
   </div>
