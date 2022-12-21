@@ -170,8 +170,6 @@
 
   .oscilloscope .coordinate-system,
   .oscilloscope .waves {
-    position: absolute;
-    inset: 0;
   }
   .controls {
     grid-column: 2;
