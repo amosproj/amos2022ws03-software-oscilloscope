@@ -6,12 +6,9 @@
     console.error(
       `Missing implementation of AmplitudeSlider.onInput(${amplitude})!`
     );
-    return amplitude;
   };
 
   export let channel;
-  // default amplification
-  let amplitude = 1.0;
 </script>
 
 <div class="control-panel-items" data-cy="amplitudeSlider-{channel}">
@@ -25,5 +22,5 @@
     max={MAX_AMPLITUDE}
     step="0.01"
   />
-  <span>{(1 / amplitude).toFixed(2)}</span>
+  <span>{(1 / $channelConfig[channel].amplitude).toFixed(2)}</span>
 </div>

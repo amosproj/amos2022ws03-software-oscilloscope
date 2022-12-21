@@ -269,8 +269,8 @@
             <AmplitudeSlider
               channel={index}
               onInput={(scaling) => {
-                waveElement.updateChannelScaling(index, scaling);
-                indicatorElement.updateChannelScaling(index, scaling);
+                waveElement.updateChannelScaling(index, $channelConfig[index].amplitude);
+                indicatorElement.updateChannelScaling(index, $channelConfig[index].amplitude);
               }}
             />
           {/each}
