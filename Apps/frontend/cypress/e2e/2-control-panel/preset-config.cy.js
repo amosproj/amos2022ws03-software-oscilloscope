@@ -6,7 +6,7 @@ describe("everything visible on front page", () => {
   });
 
   it("displays btn", () => {
-    cy.get(".getChannelConfig").should("be.visible");
-    cy.get(".storeChannelConfig").should("be.visible");
+    cy.get("#getChannelConfig").should("be.visible");
+    cy.get("#storeChannelConfig").should("be.visible");
   });
 });
