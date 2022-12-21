@@ -161,11 +161,11 @@
           on:distributeOffset={(event) => {
             let offset = event.detail.offset;
             // loop over all channels and set offset
-            let offsetY = -1 + offset;
+            let offsetY = 1 - offset;
             for (let index = 0; index < NUM_CHANNELS; index++) {
               waveElement.updateChannelOffsetY(index, offsetY);
               indicatorElement.updateChannelOffsetY(index, offsetY);
-              offsetY += offset;
+              offsetY -= offset;
             }
           }}
         />
