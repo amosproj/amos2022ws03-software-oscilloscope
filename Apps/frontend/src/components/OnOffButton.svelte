@@ -3,12 +3,12 @@
 
   const dispatch = createEventDispatcher();
 
-  let isOn = false;
-  $: label = "Turn " + (isOn ? "off" : "on") + ".";
+  let wavesFreezed = true;
+  $: label = "Turn " + (wavesFreezed ? "on" : "off") + ".";
 
   const handleClick = async () => {
-    isOn = !isOn;
-    dispatch("switch-plot-enabled", { enabled: isOn });
+    wavesFreezed = !wavesFreezed;
+    dispatch("switch-plot-enabled", { enabled: !wavesFreezed });
   };
 
   export const click = () => {
@@ -17,10 +17,10 @@
 </script>
 
 <br />
-<button id="btn-on-off" on:click={handleClick}>{label}</button>
+<button id="button-waves-freezed" on:click={handleClick}>{label}</button>
 
 <style>
-  #btn-on-off {
+  #button-waves-freezed {
     border-style: solid;
     border-color: grey;
   }

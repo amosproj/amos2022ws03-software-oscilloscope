@@ -245,6 +245,3 @@
 </script>
 
 <canvas data-cy="indicators" bind:this={canvasElement} />
-
-<style>
-</style>

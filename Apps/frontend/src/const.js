@@ -9,7 +9,7 @@ export const INDICATOR_MARGIN = 4;
 export const INDICATOR_WIDTH = 8;
 export const INDICATOR_FONT_SIZE = 11;
 export const INDICATOR_DECIMAL_PLACES = 3;
-export const INDICATOR_SECTION_WIDTH = 235;
+export const INDICATOR_SECTION_WIDTH = 200;
 export const INDICATOR_ZERO_LINE_COLOR = "#000000";
 
 export const COORDINATE_LINE_COLOR = "#FFFFFF80";

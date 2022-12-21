@@ -2,30 +2,23 @@
   import { onMount, onDestroy } from "svelte";
   import {
     CANVAS_HEIGHT,
-    CANVAS_WIDTH,
     NUM_CHANNELS,
     INDICATOR_SECTION_WIDTH,
   } from "../const";
-  import CoordinateSystem from "../components/CoordinateSystem.svelte";
+  import CoordinateSystem from "./CoordinateSystem.svelte";
   import Waves from "../components/Waves.svelte";
-  import OffsetSlider from "../components/OffsetSlider.svelte";
-  import StartStopButton from "./StartStopButton.svelte";
+  import ControlPanel from "./ControlPanel.svelte";
   import Indicators from "./Indicators.svelte";
-  import OnOffButton from "../components/OnOffButton.svelte";
-  import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
-  import ResetButton from "./ResetButton.svelte";
-  import AmplitudeSlider from "./AmplitudeSlider.svelte";
+  import Log from "./Log.svelte";
   import { logSocketCloseCode } from "../helper";
-  import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
+  import { wavesFreezed } from "../stores";
+  import Buttons from "./WaveButtons.svelte";
 
   let waveElement;
-  let btnOnOff;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
   /** Websocket for connection to backend */
   let socket;
-  /** Flag for enabled and updating canvas */
-  let isEnabled = false;
   /** Number of received packages before they are computed */
   let packageCounterPreCompute = 0;
   /** Number of packages per second */
@@ -64,7 +57,7 @@
    * @param {MessageEvent} messageEvent - has poperty (Float64Array) data
    */
   const socketOnMessage = (messageEvent) => {
-    if (!isEnabled) return;
+    if (!wavesFreezed) return;
     packageCounterPreCompute += 1;
 
     var chunkCounter = 0;
@@ -122,7 +115,6 @@
 
 <div
   class="wrapper"
-  style="--canvas-width: 1000px; --canvas-height: {CANVAS_HEIGHT}px; --indicators-width: {INDICATOR_SECTION_WIDTH}px"
   data-cy="oscilloscope"
 >
   <div class="grid-container">
@@ -137,107 +129,13 @@
         <Waves bind:this={waveElement} {scalesY} />
       </div>
     </div>
-    <div class="controls">
-      <div class="button-wrapper">
-        <OnOffButton
-          on:switch-plot-enabled={(e) => {
-            isEnabled = e.detail.enabled;
-          }}
-          bind:this={btnOnOff}
-        />
-        <ResetButton
-          on:reset={() => {
-            // if oscilloscope is running, click stop button
-            if (isEnabled) {
-              btnOnOff.click();
-            }
-            // clear canvas and indicators
-            indicatorElement.clearCanvas();
-            waveElement.resetPlot();
-          }}
-        />
-      </div>
-      <div class="control-panel">
-        <div class="switch">
-          Start/Stop
-          <div class="placeholder" />
-          <br />
-          <small>Channels</small>
-          {#each { length: NUM_CHANNELS } as _, index}
-            <StartStopButton
-              channel_id={index}
-              on:startStop={async (event) => {
-                let hasStarted = event.detail.buttonValue;
-                waveElement.startStopChannelI(index, hasStarted);
-                indicatorElement.startStopChannelI(index, hasStarted);
-              }}
-            />
-          {/each}
-        </div>
-        <div class="switch">
-          Thickness
-          <div class="placeholder" />
-          <br />
-          <small>Channels</small>
-          {#each { length: NUM_CHANNELS } as _, index}
-            <ThicknessSwitch
-              channel={index}
-              onClick={(isThick) => {
-                waveElement.updateChannelThickness(index, !isThick);
-              }}
-            />
-          {/each}
-        </div>
-        <div class="slider">
-          Offset
-          <div class="placeholder" />
-          <br />
-          <small>Channels</small>
-          {#each { length: NUM_CHANNELS } as _, index}
-            <OffsetSlider
-              onInput={(offsetY) => {
-                waveElement.updateChannelOffsetY(index, offsetY);
-                indicatorElement.updateChannelOffsetY(index, offsetY);
-              }}
-            />
-          {/each}
-        </div>
-        <div class="slider">
-          Time Sweep
-          <br />
-          <small>Common</small>
-          <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
-          <small>Channels</small>
-          {#each { length: NUM_CHANNELS } as _, index}
-            <TimeSweepSlider channel={index} />
-          {/each}
-        </div>
-        <div class="slider">
-          Amplitude
-          <div class="placeholder" />
-          <br />
-          <small>Channels</small>
-          {#each { length: NUM_CHANNELS } as _, index}
-            <AmplitudeSlider
-              channel={index}
-              onInput={(scaling) => {
-                waveElement.updateChannelScaling(index, scaling);
-                indicatorElement.updateChannelScaling(index, scaling);
-              }}
-            />
-          {/each}
-        </div>
-      </div>
+    <ControlPanel waveElement indicatorElement />
+    <div style="grid-column: 3;">
+      <Buttons waveElement indicatorElement />
     </div>
   </div>
 </div>
-<div style="grid-column: 3; margin: 1rem; text-align: end">
-  <p>
-    Package Size: {chunkNumber} | PPS: {pps * chunkNumber} | Updatetime/Window: {windowComputeTime.toFixed(
-      5
-    )} ms | Updatetime/Package: {packageComputeTime.toFixed(5)} ms
-  </p>
-</div>
+<Log waveElement indicatorElement/>
 
 <style>
   .wrapper {
@@ -262,31 +160,5 @@
   .oscilloscope .waves {
     position: absolute;
     inset: 0;
-  }
-  .controls {
-    grid-column: 2;
-    justify-content: center;
-  }
-
-  .control-panel {
-    display: flex;
-    text-align: start;
-  }
-
-  .button-wrapper {
-    display: flex;
-    margin: 1rem;
-  }
-
-  .switch {
-    width: 24%;
-  }
-
-  .slider {
-    width: 50%;
-  }
-
-  .placeholder {
-    height: 32.4833px;
   }
 </style>
