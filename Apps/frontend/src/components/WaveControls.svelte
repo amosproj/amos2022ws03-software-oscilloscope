@@ -41,6 +41,7 @@
         for (let index = 0; index < NUM_CHANNELS; index++) {
           waveElement.updateChannelOffsetY(index, offsetY);
           indicatorElement.updateChannelOffsetY(index, offsetY);
+          document.getElementById(`offsetSlider-${index}`).value = offsetY;
           offsetY -= offset;
         }
       }}
