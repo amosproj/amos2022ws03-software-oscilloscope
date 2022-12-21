@@ -9,20 +9,13 @@
   } from "../const";
   import CoordinateSystem from "../components/CoordinateSystem.svelte";
   import Waves from "../components/Waves.svelte";
-  import OffsetSlider from "../components/OffsetSlider.svelte";
-  import StartStopButton from "./StartStopButton.svelte";
   import Indicators from "./Indicators.svelte";
-  import OnOffButton from "../components/OnOffButton.svelte";
-  import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
-  import ResetButton from "./ResetButton.svelte";
-  import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
   import ChannelConfigPreset from "../components/ChannelConfigPreset.svelte";
   import { EVENT_LOADED_CHANNEL_CONFIG } from "../events";
 
   let waveElement;
-  let btnOnOff;
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
   let indicatorElement;
   /** Websocket for connection to backend */
@@ -189,11 +182,6 @@
             waveElement.resetPlot();
           }}
         />
-        <ChannelConfigPreset
-          on:event_loaded_channel_config_from_rest={() => {
-            updateChannelConfig();
-          }}
-        />
       </div>
       <div class="control-panel">
         <div class="switch">
@@ -203,9 +191,9 @@
           <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <StartStopButton
-              channel={index}
+              channel_id={index}
               on:startStop={async (event) => {
-                let hasStarted = !event.detail.buttonValue;
+                let hasStarted = event.detail.buttonValue;
                 waveElement.startStopChannelI(index, hasStarted);
                 indicatorElement.startStopChannelI(index, hasStarted);
               }}
@@ -220,11 +208,8 @@
           {#each { length: NUM_CHANNELS } as _, index}
             <ThicknessSwitch
               channel={index}
-              onClick={() => {
-                waveElement.updateChannelThickness(
-                  index,
-                  !$channelConfig[index].thickness
-                );
+              onClick={(isThick) => {
+                waveElement.updateChannelThickness(index, !isThick);
               }}
             />
           {/each}
@@ -236,16 +221,9 @@
           <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <OffsetSlider
-              channel={index}
-              onInput={() => {
-                waveElement.updateChannelOffsetY(
-                  index,
-                  $channelConfig[index].offset
-                );
-                indicatorElement.updateChannelOffsetY(
-                  index,
-                  $channelConfig[index].offset
-                );
+              onInput={(offsetY) => {
+                waveElement.updateChannelOffsetY(index, offsetY);
+                indicatorElement.updateChannelOffsetY(index, offsetY);
               }}
             />
           {/each}
@@ -254,7 +232,7 @@
           Time Sweep
           <br />
           <small>Common</small>
-          <TimeSweepSlider channel={NUM_CHANNELS} isCommon={true} />
+          <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
           <small>Channels</small>
           {#each { length: NUM_CHANNELS } as _, index}
             <TimeSweepSlider channel={index} />
@@ -269,8 +247,8 @@
             <AmplitudeSlider
               channel={index}
               onInput={(scaling) => {
-                waveElement.updateChannelScaling(index, $channelConfig[index].amplitude);
-                indicatorElement.updateChannelScaling(index, $channelConfig[index].amplitude);
+                waveElement.updateChannelScaling(index, scaling);
+                indicatorElement.updateChannelScaling(index, scaling);
               }}
             />
           {/each}
@@ -310,31 +288,5 @@
   .oscilloscope .waves {
     position: absolute;
     inset: 0;
-  }
-  .controls {
-    grid-column: 2;
-    justify-content: center;
-  }
-
-  .control-panel {
-    display: flex;
-    text-align: start;
-  }
-
-  .button-wrapper {
-    display: flex;
-    margin: 1rem;
-  }
-
-  .switch {
-    width: 24%;
-  }
-
-  .slider {
-    width: 50%;
-  }
-
-  .placeholder {
-    height: 32.4833px;
   }
 </style>

@@ -34,6 +34,7 @@ export const LINE_THICKNESS_BIG = 0.008;
 export const NUM_CHANNELS = 10;
 export const MIN_SWEEP = 0.1; // <= 1
 export const MAX_SWEEP = 2.0; // >= 1
+export const DEFAULT_STEP_SIZE = 1.0;
 export const MIN_AMPLITUDE = 0.0;
 export const MAX_AMPLITUDE = NUM_INTERVALS_HORIZONTAL / 2;
 export const WAVE_CURSOR_SIZE = 50;
