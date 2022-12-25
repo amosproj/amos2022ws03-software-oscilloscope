@@ -11,7 +11,7 @@
   import Indicators from "./Indicators.svelte";
   import Log from "./Log.svelte";
   import { logSocketCloseCode } from "../helper";
-  import { wavesFreezed } from "../stores";
+  import { osciEnabled } from "../stores";
   import Buttons from "./WaveButtons.svelte";
 
   let waveElement;
@@ -57,7 +57,7 @@
    * @param {MessageEvent} messageEvent - has poperty (Float64Array) data
    */
   const socketOnMessage = (messageEvent) => {
-    if (!wavesFreezed) return;
+    if (!osciEnabled) return;
     packageCounterPreCompute += 1;
 
     var chunkCounter = 0;

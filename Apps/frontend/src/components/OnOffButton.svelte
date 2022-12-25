@@ -1,14 +1,18 @@
 <script>
+  import clsx from "clsx";
   import { createEventDispatcher } from "svelte";
+  import mui_play_arrow from "../assets/mui_play_arrow.svg";
+  import mui_stop from "../assets/mui_stop.svg";
 
   const dispatch = createEventDispatcher();
 
-  let wavesFreezed = true;
-  $: label = "Turn " + (wavesFreezed ? "on" : "off") + ".";
+  let osciEnabled = false;
+  $: url = osciEnabled ? mui_play_arrow : mui_stop;
+
 
   const handleClick = async () => {
-    wavesFreezed = !wavesFreezed;
-    dispatch("switch-plot-enabled", { enabled: !wavesFreezed });
+    osciEnabled = !osciEnabled;
+    dispatch("switch-plot-enabled", { enabled: osciEnabled });
   };
 
   export const click = () => {
@@ -16,12 +20,10 @@
   };
 </script>
 
-<br />
-<button id="button-waves-freezed" on:click={handleClick}>{label}</button>
-
-<style>
-  #button-waves-freezed {
-    border-style: solid;
-    border-color: grey;
-  }
-</style>
+<button id="button-on-off"
+class={clsx(
+  {"icon-button": true},
+  {"mui-icon--off": osciEnabled},
+  {"mui-icon--on": !osciEnabled}
+)}
+  on:click={handleClick} />

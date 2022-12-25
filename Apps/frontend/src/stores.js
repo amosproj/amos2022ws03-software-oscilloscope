@@ -11,4 +11,4 @@ export const thicknessAdjustment = writable(
 );
 
 /** Flag for freezing and starting canvas */
-export const wavesFreezed = writable(true);
+export const osciEnabled = writable(true);

@@ -2,20 +2,11 @@
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
-
-  $: label = "Reset";
+  $: url = "../assets/mui_reset.svg";
 
   const handleClick = async () => {
     dispatch("reset", {});
   };
 </script>
 
-<br />
-<button id="button-reset" on:click={handleClick}>{label}</button>
-
-<style>
-  #button-reset {
-    border-style: solid;
-    border-color: grey;
-  }
-</style>
+<button id="button-reset" class="icon-button mui-icon--reset" on:click={handleClick} />
