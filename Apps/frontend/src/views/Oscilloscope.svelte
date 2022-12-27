@@ -81,7 +81,7 @@
       }
       samples = gndSample;
     }
-    
+
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       var startWindow = window.performance.now();
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
@@ -168,9 +168,9 @@
           }}
         />
         <GNDButton
-        on:gnd={(e) => {
-          isGND = e.detail.down;
-        }}          
+          on:set-gnd={(e) => {
+            isGND = e.detail.down;
+          }}
         />
       </div>
       <div class="control-panel">
