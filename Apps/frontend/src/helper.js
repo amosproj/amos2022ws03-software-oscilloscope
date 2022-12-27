@@ -1,4 +1,4 @@
-import { INDICATOR_DECIMAL_PLACES } from "./const";
+import { INDICATOR_DECIMAL_PLACES, MIN_SWEEP, MAX_SWEEP } from "./const";
 
 /**
  * Returns hex string for array of rgb values.
@@ -67,4 +67,11 @@ export const logSocketCloseCode = (code) => {
     default:
       console.log("Socket closed due to unknown reason.");
   }
+};
+
+// time sweep (https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Development-Documentation#time-sweep-calculation)
+export const computeStepsizeFromTimeSweep = (sliderValue) => {
+  let sweep = sliderValue / 5.0 - 1.0; // in [-1,1]
+  let step = 1.0 + sweep * (sweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP);
+  return step;
 };

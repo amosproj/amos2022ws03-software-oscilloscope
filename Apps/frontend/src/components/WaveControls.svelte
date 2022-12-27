@@ -1,5 +1,6 @@
 <script>
   import { MAX_AMPLITUDE, MIN_AMPLITUDE, NUM_CHANNELS } from "../const.js";
+  import { computeStepsizeFromTimeSweep } from "../helper.js";
   import StartStopButton from "../views/StartStopButton.svelte";
   import OnOffButton from "./OnOffButton.svelte";
   import ResetButton from "../views/ResetButton.svelte";
@@ -94,6 +95,8 @@
           id={`timesweepSlider-${index}`}
           bind:value={$timeSweep[index]}
           onInput={() => {}}
+          calcDisplayValue={(value) =>
+            computeStepsizeFromTimeSweep(value).toFixed(2)}
         />
       {/each}
     </div>

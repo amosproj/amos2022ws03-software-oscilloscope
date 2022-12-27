@@ -20,6 +20,7 @@
     LINE_THICKNESS_BIG,
   } from "../const";
   import { timeSweep } from "../stores";
+  import { computeStepsizeFromTimeSweep } from "../helper";
 
   export let scalesY;
 
@@ -91,11 +92,9 @@
         ] = undefined;
       }
       xLast[channelIndex] = xNew;
-
-      // time sweep (https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Development-Documentation#time-sweep-calculation)
-      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0;// in [-1,1]
-      let delta = DEFAULT_STEP_SIZE * (1.0 + sweep * (sweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
-
+      let delta =
+        DEFAULT_STEP_SIZE *
+        computeStepsizeFromTimeSweep($timeSweep[channelIndex]);
       xArr[channelIndex] = xCurr + delta;
       while (xArr[channelIndex] >= CANVAS_WIDTH) {
         xArr[channelIndex] -= CANVAS_WIDTH;
