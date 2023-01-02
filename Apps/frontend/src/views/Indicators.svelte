@@ -12,6 +12,7 @@
     NUM_INTERVALS_HORIZONTAL,
   } from "../const";
   import { roundVoltage } from "../helper";
+  import { channelEnabled } from "../stores";
 
   let canvasElement;
   let canvasContext;
@@ -20,7 +21,6 @@
   let max = Array(NUM_CHANNELS).fill(0.0);
   let offsets = Array(NUM_CHANNELS).fill(0.0);
   let scalings = Array(NUM_CHANNELS).fill(1.0);
-  let startStopLine = Array(NUM_CHANNELS).fill(true);
 
   export let scaleY;
 
@@ -34,7 +34,7 @@
     drawGlobalZeroLine();
 
     for (let channel = 0; channel < NUM_CHANNELS; channel++) {
-      if (startStopLine[channel]) {
+      if ($channelEnabled[channel]) {
         updateCurrentMinMax(samples[startIndex + channel], channel);
       }
       const transformedCurrent = transformSampleToYCoord(
@@ -57,7 +57,7 @@
         offsets[channel],
         scalings[channel]
       );
-      //drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
+      drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
       drawMinMaxZeroLines(
         channel,
         transformedMin,
@@ -89,16 +89,6 @@
   export const updateChannelScaling = (channelIndex, scaling) => {
     scalings[channelIndex] = scaling;
     update(current);
-  };
-
-  /**
-   * Start or stop indicator updates of a channel.
-   *
-   * @param {number} channelIndex
-   * @param {boolean} hasStarted
-   */
-  export const startStopChannelI = (channelIndex, hasStarted) => {
-    startStopLine[channelIndex] = hasStarted;
   };
 
   // ----- Svelte lifecycle hooks -----
