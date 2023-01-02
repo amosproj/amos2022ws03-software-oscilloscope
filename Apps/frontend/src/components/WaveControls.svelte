@@ -1,12 +1,18 @@
 <script>
-  import { MAX_AMPLITUDE, MIN_AMPLITUDE, NUM_CHANNELS } from "../const.js";
+  import {
+    LINE_COLORS_RGBA,
+    MAX_AMPLITUDE,
+    MIN_AMPLITUDE,
+    NUM_CHANNELS,
+  } from "../const.js";
   import StartStopButton from "../views/StartStopButton.svelte";
   import OnOffButton from "./OnOffButton.svelte";
   import ResetButton from "../views/ResetButton.svelte";
   import Slider from "./Slider.svelte";
-  import { timeSweep } from "../stores.js";
+  import { timeSweep, channelEnabled, thicknessAdjustment } from "../stores.js";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
   import ThicknessSwitch from "./ThicknessSwitch.svelte";
+  import SwitchButton from "./SwitchButton.svelte";
   export let waveElement;
   export let isEnabled;
   export let indicatorElement;
@@ -40,13 +46,11 @@
       <br />
       <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
-        <StartStopButton
-          channel_id={index}
-          on:startStop={async (event) => {
-            let hasStarted = event.detail.buttonValue;
-            waveElement.startStopChannelI(index, hasStarted);
-            indicatorElement.startStopChannelI(index, hasStarted);
-          }}
+        <SwitchButton
+          data_cy={`startStopSwitch-${index}`}
+          writableStore={channelEnabled}
+          writableStoreIndex={index}
+          color={LINE_COLORS_RGBA[index]}
         />
       {/each}
     </div>
@@ -56,11 +60,11 @@
       <br />
       <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
-        <ThicknessSwitch
-          channel={index}
-          onClick={(isThick) => {
-            waveElement.updateChannelThickness(index, !isThick);
-          }}
+        <SwitchButton
+          data_cy={`thicknessSwitch-${index}`}
+          writableStore={thicknessAdjustment}
+          writableStoreIndex={index}
+          color={LINE_COLORS_RGBA[index]}
         />
       {/each}
     </div>
