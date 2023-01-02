@@ -19,7 +19,7 @@
     LINE_THICKNESS_SMALL,
     LINE_THICKNESS_BIG,
   } from "../const";
-  import { timeSweep } from "../stores";
+  import { timeSweep, channelEnabled, thicknessAdjustment } from "../stores";
 
   export let scalesY;
 
@@ -31,7 +31,6 @@
   let channelSamples;
   let lines = [];
   let heads = [];
-  let startStopLine = [];
   let xArr;
   let xLast;
 
@@ -52,6 +51,7 @@
     resizeCanvas();
     initializePlot();
     resetPlot();
+    startSubscribers();
   });
 
   beforeUpdate(() => {
@@ -59,6 +59,20 @@
   });
 
   // ----- business logic -----
+
+  /**
+   * Listen for changes in the time sweep store and update the plot accordingly.
+   */
+  const startSubscribers = () => {
+    thicknessAdjustment.subscribe((newValues) => {
+      for (let i = 0; i < newValues.length; i++) {
+        const thickness = newValues[i]
+          ? LINE_THICKNESS_BIG
+          : LINE_THICKNESS_SMALL;
+        lines[i].setThickness(thickness);
+      }
+    });
+  };
 
   const initChannelSamples = () => {
     channelSamples = Array.from(Array(NUM_CHANNELS), () =>
@@ -79,7 +93,7 @@
       channelIndex < endIndex;
       channelIndex++
     ) {
-      if (!startStopLine[channelIndex]) {
+      if (!$channelEnabled[channelIndex]) {
         continue;
       }
       let xCurr = xArr[channelIndex];
@@ -93,8 +107,10 @@
       xLast[channelIndex] = xNew;
 
       // time sweep (https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Development-Documentation#time-sweep-calculation)
-      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0;// in [-1,1]
-      let delta = DEFAULT_STEP_SIZE * (1.0 + sweep * (sweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
+      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0; // in [-1,1]
+      let delta =
+        DEFAULT_STEP_SIZE *
+        (1.0 + sweep * (sweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
 
       xArr[channelIndex] = xCurr + delta;
       while (xArr[channelIndex] >= CANVAS_WIDTH) {
@@ -135,15 +151,6 @@
     setScaling(channelIndex, scaling);
   };
 
-  export const updateChannelThickness = (channelIndex, isThick) => {
-    const thickness = isThick ? LINE_THICKNESS_BIG : LINE_THICKNESS_SMALL;
-    lines[channelIndex].setThickness(thickness);
-  };
-
-  export const startStopChannelI = (channelIndex, hasStarted) => {
-    startStopLine[channelIndex] = hasStarted;
-  };
-
   const update = () => {
     for (let i = 0; i < channelSamples.length; i++) {
       for (let x = 0; x < CANVAS_WIDTH; ++x) {
@@ -182,7 +189,6 @@
       line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addThickLine(line);
       lines.push(line);
-      startStopLine[i] = true;
 
       let head = new WebglSquare(color);
       heads.push(head);
