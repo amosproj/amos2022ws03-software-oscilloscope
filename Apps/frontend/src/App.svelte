@@ -10,6 +10,6 @@
   />
   <link rel="stylesheet" href="node_modules/svelte-material-ui/bare.css" />
 </svelte:head>
-<main>
+<main data-cy="layout">
   <Layout />
 </main>

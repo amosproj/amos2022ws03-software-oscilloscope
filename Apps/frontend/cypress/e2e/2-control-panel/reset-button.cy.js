@@ -7,6 +7,7 @@ describe("everything visible on front page", () => {
 
   it("click btn", () => {
     // We use the `cy.get()` to get the canvas element
-    cy.get("#button-reset").click();
+    cy.get('[data-cy="reset-button"]').should("be.visible");
+    cy.get('[data-cy="reset-button"]').click();
   });
 });

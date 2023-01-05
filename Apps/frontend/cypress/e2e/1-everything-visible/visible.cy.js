@@ -6,14 +6,17 @@ describe("everything visible on front page", () => {
     cy.visit("http://localhost:5173/");
   });
 
-  it("displays logo", () => {
-    cy.get(".canvas").should("be.visible");
-    // We use the `cy.get()` to get the logo element
-    cy.get('[data-cy="logo"]').should("be.visible");
+  it("layout visible", () => {
+    cy.get('[data-cy="layout"]').should("be.visible");
   });
 
-  it("canvas", () => {
-    // We use the `cy.get()` to get the canvas element
-    cy.get('[data-cy="oscilloscope"]');
+  it("screen not landscaoe", () => {
+    cy.viewport(550, 750);
+    cy.get(".screen-size-warning").should("be.visible");
+  });
+
+  it("screen landscaoe", () => {
+    cy.viewport(900, 750);
+    cy.get(".wrapper").should("be.visible");
   });
 });

@@ -6,9 +6,9 @@
 
   const dispatch = createEventDispatcher();
 
-  let hasStarted = false;
+  let hasStarted = true;
   let color = LINE_COLORS_RGBA[channel_id];
-  let channelLabel = `Channel ${channel_id}`;
+  let channelLabel = `Ch. ${channel_id}`;
 
   const handleStartStop = async () => {
     hasStarted = !hasStarted;
@@ -17,7 +17,7 @@
 </script>
 
 <div>
-  <!--<small>{channelLabel}</small>-->
+  <small>{channelLabel}</small>
   <Switch
     bind:value={hasStarted}
     hideLabel

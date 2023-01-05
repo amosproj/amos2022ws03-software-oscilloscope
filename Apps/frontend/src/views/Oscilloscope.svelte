@@ -7,7 +7,7 @@
   } from "../const";
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import Waves from "../components/Waves.svelte";
-  import ControlPanel from "./ControlPanel.svelte";
+  import ControlPanel from "./ControlPanelBottom.svelte";
   import Indicators from "./Indicators.svelte";
   import Log from "./Log.svelte";
   import { logSocketCloseCode } from "../helper";
