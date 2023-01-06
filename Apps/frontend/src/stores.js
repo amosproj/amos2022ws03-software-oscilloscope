@@ -14,3 +14,5 @@ export const amplitudeAdjustment = writable(new Array(NUM_CHANNELS).fill(1));
 export const thicknessAdjustment = writable(
   new Array(NUM_CHANNELS).fill(false)
 );
+
+export const expandedPanelOpen = writable(false);

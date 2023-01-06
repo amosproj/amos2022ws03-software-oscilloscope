@@ -1,18 +1,18 @@
 <script>
   import { fly } from "svelte/transition";
   import clsx from "clsx";
-  import { NUM_CHANNELS } from "../const";
-  import ControlPanelBottom from "../views/ControlPanelBottom.svelte";
+  import ControlPanelBottom from "./ControlPanelBottom.svelte";
+  import { expandedPanelOpen } from "../stores";
 
   $: panelHeight = 0;
-  let expandedIndex = -1;
   export let waveElement;
   export let indicatorElement;
 
-  const toggleExpand = (index) => {
-    expandedIndex = expandedIndex === index ? -1 : index;
-  };
-
+  /**
+   * The function introduces an event handler to check if there is a click
+   * event outside the chosen element.
+   * To attach the handler add `use:clickOutside` to the node properties.
+   */
   const clickOutside = (element) => {
     const handleClick = (event) => {
       if (
@@ -32,24 +32,26 @@
   };
 </script>
 
-{#each { length: NUM_CHANNELS } as _, index}
+<button
+  class="control-panel--bottom_expand-accordion"
+  on:click={() => ($expandedPanelOpen = true)}
+>
   <button
     class={clsx(
-      { "icon-button control-panel--top_expand": true },
-      { "mui-icon--expand-less": expandedIndex === index },
-      { "mui-icon--expand-more": expandedIndex !== index }
+      { "icon-button": true },
+      { "mui-icon--expand-less": $expandedPanelOpen },
+      { "mui-icon--expand-more": !$expandedPanelOpen }
     )}
-    on:click={() => toggleExpand(index)}
     data-cy="expand-button"
   />
-{/each}
-{#if expandedIndex > -1 && expandedIndex < NUM_CHANNELS}
+</button>
+{#if $expandedPanelOpen}
   <nav
     class="control-panel--bottom"
+    transition:fly={{ y: panelHeight, opacity: 1 }}
     bind:clientHeight={panelHeight}
-    transition:fly={{ y: -panelHeight, opacity: 1 }}
     use:clickOutside
-    on:click-outside={toggleExpand(expandedIndex)}
+    on:click-outside={() => ($expandedPanelOpen = false)}
   >
     <ControlPanelBottom {waveElement} {indicatorElement} />
   </nav>

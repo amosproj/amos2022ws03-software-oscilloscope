@@ -13,7 +13,7 @@
   };
 </script>
 
-<div class="control-panel-items">
+<div class="control-panel--entry">
   <input
     type="range"
     min="0"

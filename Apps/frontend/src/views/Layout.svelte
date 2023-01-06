@@ -1,21 +1,20 @@
 <script>
+  import { onDestroy, onMount } from "svelte";
   import Logo from "./Logo.svelte";
+  import Indicators from "./Indicators.svelte";
+  import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
+  import ControlPanelBottom from "./ControlPanelBottom.svelte";
   import GeneralButtons from "../components/GeneralButtons.svelte";
   import StartStopButton from "../components/StartStopButton.svelte";
-  import Indicators from "./Indicators.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import { NUM_CHANNELS } from "../const";
-  import { onDestroy, onMount } from "svelte";
   import { osciEnabled } from "../stores";
   import { logSocketCloseCode } from "../helper";
-  import ExtendedControlPanelTop from "../components/ExtendedControlPanelTop.svelte";
-  import ControlPanelBottom from "./ControlPanelBottom.svelte";
 
   $: innerWidth = 0;
   $: innerHeight = 0;
   $: controlPanelBottomHeight = 0;
-  $: controlPanelBottomWidth = 0;
 
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
 
@@ -87,11 +86,6 @@
         />
       {/each}
     </div>
-    {#if true} <!--controlPanelBottomHeight < 240 && 6 * controlPanelBottomHeight < controlPanelBottomWidth-->
-      <div class="control-panel--top_expansion">
-        <ExtendedControlPanelTop {waveElement} {indicatorElement}/>
-      </div>
-    {/if}
     <div class="indicators">
       <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
     </div>
@@ -109,9 +103,12 @@
     <div
       class="control-panel--bottom"
       bind:clientHeight={controlPanelBottomHeight}
-      bind:clientWidth={controlPanelBottomWidth}
     >
-      <ControlPanelBottom {waveElement} {indicatorElement} /> 
+      {#if controlPanelBottomHeight > 300}
+        <ControlPanelBottom {waveElement} {indicatorElement} />
+      {:else}
+        <ExpandableControlPanel {waveElement} {indicatorElement} />
+      {/if}
     </div>
   </div>
 {/if}

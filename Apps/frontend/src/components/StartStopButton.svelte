@@ -19,9 +19,10 @@
 <div>
   <small>{channelLabel}</small>
   <Switch
-    bind:value={hasStarted}
     hideLabel
+    small
     toggledColor={color}
+    bind:value={hasStarted}
     on:click={handleStartStop}
   />
 </div>
