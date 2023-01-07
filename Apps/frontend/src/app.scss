@@ -40,10 +40,10 @@ img {
 }
 
 input[type="range"] {
-  width: 48%;
+  width: 40%;
   appearance: none;
   -webkit-appearance: none;
-  height: .5vh;
+  height: .4em;
 }
 
 nav {
@@ -51,11 +51,10 @@ nav {
   bottom: 0;
   right: 0;
   padding: 0 1%;
-  width: 98%;
+  width: 100%;
   height: 20em;
   box-shadow: 0 0 2em rgba(80, 80, 80, 1);
   background-color: #242424;
-  overflow: hidden;
   z-index: 3;
 }
 
@@ -139,7 +138,7 @@ nav {
   &--bottom {
     grid-column: 1/6;
     grid-row: 3;
-    padding-top: .5%;
+    padding: .5% 0;
 
     &_thickness {
       width: 28px;
@@ -228,7 +227,7 @@ nav {
 /* Icon definitions */
 .mui-icon {
   &--on {
-    background-image: url("./assets/mui_play_arrow.svg");
+    background-image: url("./assets/mui_play.svg");
   }
 
   &--off {

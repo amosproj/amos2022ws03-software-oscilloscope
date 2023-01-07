@@ -15,7 +15,7 @@ describe("everything visible on front page", () => {
     cy.get(".screen-size-warning").should("be.visible");
   });
 
-  it("screen landscaoe", () => {
+  it("screen landscape", () => {
     cy.viewport(900, 750);
     cy.get(".wrapper").should("be.visible");
   });

@@ -46,6 +46,7 @@
       </td>
       <td>
         <OffsetSlider
+          channel={index}
           onInput={(offsetY) => {
             waveElement.updateChannelOffsetY(index, offsetY);
             indicatorElement.updateChannelOffsetY(index, offsetY);

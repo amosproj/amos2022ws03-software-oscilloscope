@@ -2,13 +2,13 @@
   import { createEventDispatcher } from "svelte";
   import Switch from "svelte-toggle";
   import { LINE_COLORS_RGBA } from "../const.js";
-  export let channel_id;
+  export let channel;
 
   const dispatch = createEventDispatcher();
 
   let hasStarted = true;
-  let color = LINE_COLORS_RGBA[channel_id];
-  let channelLabel = `Ch. ${channel_id}`;
+  let color = LINE_COLORS_RGBA[channel];
+  let channelLabel = `Ch. ${channel}`;
 
   const handleStartStop = async () => {
     hasStarted = !hasStarted;
@@ -16,7 +16,7 @@
   };
 </script>
 
-<div>
+<div data-cy="startStopSwitch-{channel}">
   <small>{channelLabel}</small>
   <Switch
     hideLabel

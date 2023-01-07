@@ -16,7 +16,7 @@
 </script>
 
 <button
-  id="button-on-off"
+  data-cy="on-off-button"
   class={clsx(
     { "icon-button": true },
     { "mui-icon--off": $osciEnabled },

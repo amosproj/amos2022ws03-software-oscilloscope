@@ -35,6 +35,7 @@
 <button
   class="control-panel--bottom_expand-accordion"
   on:click={() => ($expandedPanelOpen = true)}
+  data-cy="expand-accordion"
 >
   <button
     class={clsx(
@@ -42,7 +43,6 @@
       { "mui-icon--expand-less": $expandedPanelOpen },
       { "mui-icon--expand-more": !$expandedPanelOpen }
     )}
-    data-cy="expand-button"
   />
 </button>
 {#if $expandedPanelOpen}

@@ -154,7 +154,6 @@
    * Resize the canvas.
    */
   const resizeCanvas = () => {
-    canvasElement.width = INDICATOR_SECTION_WIDTH;
     canvasElement.height = CANVAS_HEIGHT;
     canvasContext = canvasElement.getContext("2d");
     // Translate coordinates to have zero point at the right center
@@ -168,12 +167,12 @@
     canvasContext.beginPath();
     canvasContext.strokeStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.moveTo(0, 0);
-    canvasContext.lineTo(-canvasElement.width, 0);
+    canvasContext.lineTo(-INDICATOR_SECTION_WIDTH, 0);
     canvasContext.stroke();
     canvasContext.font = `${INDICATOR_FONT_SIZE}px Arial`;
     canvasContext.fillStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.textAlign = "left";
-    canvasContext.fillText("0", -canvasElement.width, INDICATOR_FONT_SIZE);
+    canvasContext.fillText("0", -INDICATOR_SECTION_WIDTH, INDICATOR_FONT_SIZE);
   };
 
   /**

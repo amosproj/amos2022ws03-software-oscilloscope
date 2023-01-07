@@ -1,13 +1,16 @@
 /// <reference types="cypress" />
 
-describe("everything visible on front page", () => {
+describe("resetButton", () => {
   beforeEach(() => {
     cy.visit("http://localhost:5173/");
   });
 
-  it("click btn", () => {
-    // We use the `cy.get()` to get the canvas element
+  it("is visible", () => {
+    cy.get(".control-panel--top_general").should("be.visible");
     cy.get('[data-cy="reset-button"]').should("be.visible");
+  });
+
+  it("is clickable", () => {
     cy.get('[data-cy="reset-button"]').click();
   });
 });

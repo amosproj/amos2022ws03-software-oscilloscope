@@ -4,7 +4,7 @@
   import Indicators from "./Indicators.svelte";
   import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
   import ControlPanelBottom from "./ControlPanelBottom.svelte";
-  import GeneralButtons from "../components/GeneralButtons.svelte";
+  import GeneralButtons from "./GeneralButtons.svelte";
   import StartStopButton from "../components/StartStopButton.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
@@ -77,7 +77,7 @@
     <div class="control-panel--top_waves">
       {#each { length: NUM_CHANNELS } as _, index}
         <StartStopButton
-          channel_id={index}
+          channel={index}
           on:startStop={async (event) => {
             let hasStarted = event.detail.buttonValue;
             waveElement.startStopChannelI(index, hasStarted);
@@ -104,7 +104,7 @@
       class="control-panel--bottom"
       bind:clientHeight={controlPanelBottomHeight}
     >
-      {#if controlPanelBottomHeight > 300}
+      {#if controlPanelBottomHeight > 308}
         <ControlPanelBottom {waveElement} {indicatorElement} />
       {:else}
         <ExpandableControlPanel {waveElement} {indicatorElement} />

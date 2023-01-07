@@ -9,14 +9,14 @@ describe("amplitudeSlider", () => {
     });
   });
 
-  it("change value", () => {
+  it("changes value", () => {
     cy.get(`[data-cy="amplitudeSlider-0"]`).within(() => {
       cy.get('[type="range"]').invoke("val", 2).trigger("change");
       cy.get("span").should("have.text", "0.50");
     });
   });
 
-  it("change value to 0", () => {
+  it("changes value to 0", () => {
     cy.get(`[data-cy="amplitudeSlider-1"]`).within(() => {
       cy.get('[type="range"]').invoke("val", 0).trigger("change");
       cy.get("span").should("have.text", "Infinity");
