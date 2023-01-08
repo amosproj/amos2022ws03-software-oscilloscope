@@ -14,4 +14,14 @@ describe("expandAccordion", () => {
   it("is clickable", () => {
     cy.get('[data-cy="expand-accordion"]').click();
   });
+
+  it("is closable with X-button", () => {
+    cy.get('[data-cy="expand-accordion"]').click();
+    cy.get('[data-cy="expanded-control-panel-close-button"]').click();
+  });
+
+  it("is closeable with outside click", () => {
+    cy.get('[data-cy="expand-accordion"]').click();
+    cy.get("body").not('[data-cy="expanded-control-panel"]').click();
+  });
 });

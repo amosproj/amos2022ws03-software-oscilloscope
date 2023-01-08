@@ -19,4 +19,17 @@ describe("offsetSlider", () => {
       .invoke("val", -0.7)
       .trigger("change");
   });
+
+  it("respects range", () => {
+    cy.get('[data-cy="offsetSlider-0"]')
+      .find('[type="range"]')
+      .invoke("val", -2)
+      .trigger("change")
+      .should("have.value", -1);
+    cy.get('[data-cy="offsetSlider-1"]')
+      .find('[type="range"]')
+      .invoke("val", 20)
+      .trigger("change")
+      .should("have.value", 1);
+  });
 });

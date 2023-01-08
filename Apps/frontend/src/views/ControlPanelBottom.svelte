@@ -1,10 +1,15 @@
 <script>
-  import AmplitudeSlider from "../components/AmplitudeSlider.svelte";
-  import OffsetSlider from "../components/OffsetSlider.svelte";
+  import Slider from "../components/Slider.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
-  import { NUM_CHANNELS } from "../const";
-  import { expandedPanelOpen } from "../stores";
+  import {
+    MAX_AMPLITUDE,
+    MAX_SWEEP_SLIDER_VALUE,
+    MIN_AMPLITUDE,
+    MIN_SWEEP_SLIDER_VALUE,
+    NUM_CHANNELS,
+  } from "../const";
+  import { expandedPanelOpen, timeSweep } from "../stores";
 
   export let waveElement;
   export let indicatorElement;
@@ -16,7 +21,7 @@
       <button
         class="icon-button icon-button--small mui-icon--close"
         on:click={() => ($expandedPanelOpen = false)}
-        data-cy="reset-button"
+        data-cy="expanded-control-panel-close-button"
       />
     {/if}
   </th>
@@ -45,24 +50,40 @@
         />
       </td>
       <td>
-        <OffsetSlider
-          channel={index}
+        <Slider
+          className="control-panel--entry"
           onInput={(offsetY) => {
             waveElement.updateChannelOffsetY(index, offsetY);
             indicatorElement.updateChannelOffsetY(index, offsetY);
           }}
+          value={0}
+          min={-1.0}
+          max={1.0}
+          step={0.01}
+          dataCy={`offsetSlider-${index}`}
         />
       </td>
       <td>
-        <TimeSweepSlider channel={index} />
+        <Slider
+          className="control-panel--entry"
+          onInput={() => {}}
+          min={MIN_SWEEP_SLIDER_VALUE}
+          max={MAX_SWEEP_SLIDER_VALUE}
+          bind:value={$timeSweep[index]}
+          dataCy={`timesweepSlider-${index}`}
+        />
       </td>
       <td>
-        <AmplitudeSlider
-          channel={index}
-          onInput={(scaling) => {
-            waveElement.updateChannelScaling(index, scaling);
-            indicatorElement.updateChannelScaling(index, scaling);
+        <Slider
+          className="control-panel--entry"
+          onInput={(value) => {
+            waveElement.updateChannelScaling(index, value);
+            indicatorElement.updateChannelScaling(index, value);
           }}
+          min={MIN_AMPLITUDE}
+          max={MAX_AMPLITUDE}
+          calculateDisplayedValue={(value) => (1 / value).toFixed(2)}
+          dataCy={`amplitudeSlider-${index}`}
         />
       </td>
     </tr>

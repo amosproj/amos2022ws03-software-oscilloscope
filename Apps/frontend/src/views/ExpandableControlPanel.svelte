@@ -52,6 +52,7 @@
     bind:clientHeight={panelHeight}
     use:clickOutside
     on:click-outside={() => ($expandedPanelOpen = false)}
+    data-cy="expanded-control-panel"
   >
     <ControlPanelBottom {waveElement} {indicatorElement} />
   </nav>
