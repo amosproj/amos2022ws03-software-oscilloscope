@@ -8,10 +8,49 @@
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
   import ThicknessSwitch from "./ThicknessSwitch.svelte";
   import DistributeOffsetButton from "./DistributeOffsetButton.svelte";
+  import startStopLine from "./Waves.svelte"
   export let waveElement;
   export let isEnabled;
   export let indicatorElement;
   let btnOnOff;
+
+  let activeChannels = [];
+  let activeChannelCounter = NUM_CHANNELS;
+
+  let distributed = false;
+
+  const setActiveChannels = () => {
+    for (let i = 0; i < NUM_CHANNELS; i++){
+        activeChannels[i] = true;
+      }
+  }
+
+  setActiveChannels();
+
+  const countActiveChannels = () => {
+    let count = 0;
+    for (let i = 0; i < NUM_CHANNELS; i++){
+      if(activeChannels[i]) count++;
+    }
+      activeChannelCounter = count;
+  }
+
+  const distributeChannels = () => {
+    let offset = 2 / (activeChannelCounter + 1);
+    // loop over all channels and set offset
+    let offsetY = 1 - offset;
+    for (let index = 0; index < NUM_CHANNELS; index++) {
+      console.log(offsetY);
+      if(activeChannels[index]){
+        waveElement.updateChannelOffsetY(index, offsetY);
+        indicatorElement.updateChannelOffsetY(index, offsetY);
+        document.getElementById(`offsetSlider-${index}`).value = offsetY;
+        offsetY -= offset;
+      }
+    }
+  }
+
+
 </script>
 
 <div class="controls">
@@ -34,16 +73,12 @@
       }}
     />
     <DistributeOffsetButton
+      activeChannelCount={activeChannelCounter}
       on:distributeOffset={(event) => {
         let offset = event.detail.offset;
         // loop over all channels and set offset
-        let offsetY = 1 - offset;
-        for (let index = 0; index < NUM_CHANNELS; index++) {
-          waveElement.updateChannelOffsetY(index, offsetY);
-          indicatorElement.updateChannelOffsetY(index, offsetY);
-          document.getElementById(`offsetSlider-${index}`).value = offsetY;
-          offsetY -= offset;
-        }
+        distributed = true;
+        distributeChannels();
       }}
     />
   </div>
@@ -60,6 +95,11 @@
             let hasStarted = event.detail.buttonValue;
             waveElement.startStopChannelI(index, hasStarted);
             indicatorElement.startStopChannelI(index, hasStarted);
+            activeChannels[index] = hasStarted;
+            console.log(hasStarted);
+            countActiveChannels();
+            console.log(activeChannelCounter);
+            if(distributed) distributeChannels();
           }}
         />
       {/each}
