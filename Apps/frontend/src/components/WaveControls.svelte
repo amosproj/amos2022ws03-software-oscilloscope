@@ -96,7 +96,7 @@
           bind:value={$timeSweep[index]}
           onInput={() => {}}
           calcDisplayValue={(value) =>
-            computeStepsizeFromTimeSweep(value).toFixed(2)}
+            '×' + computeStepsizeFromTimeSweep(value).toFixed(2)}
         />
       {/each}
     </div>

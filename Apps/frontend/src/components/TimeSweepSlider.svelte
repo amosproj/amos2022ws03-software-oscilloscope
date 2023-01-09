@@ -1,7 +1,9 @@
 <script>
   import { timeSweep } from "../stores";
   import { NUM_CHANNELS } from "../const";
+  import { computeStepsizeFromTimeSweep } from "../helper.js";
   export let channel;
+  $timeSweep[channel] = 5;
 
   export let isCommon = false;
   const handleChange = () => {
@@ -22,4 +24,7 @@
     on:change={handleChange}
     data-cy="timesweepSlider-{channel}"
   />
+  <span>
+    {'×' + computeStepsizeFromTimeSweep($timeSweep[channel]).toFixed(2)}
+  </span>
 </div>
