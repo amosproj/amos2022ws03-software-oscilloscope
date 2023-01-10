@@ -183,7 +183,7 @@
       line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addThickLine(line);
       lines.push(line);
-      startStopLine[i] = true;
+      startStopLine[i] = false;
 
       let head = new WebglSquare(color);
       heads.push(head);

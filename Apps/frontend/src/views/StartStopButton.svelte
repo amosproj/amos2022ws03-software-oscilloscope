@@ -6,23 +6,24 @@
 
   const dispatch = createEventDispatcher();
 
-  let hasStarted = true;
+  let hasStarted = false;
   let color = LINE_COLORS_RGBA[channel_id];
   let channelLabel = `CH ${channel_id}`;
 
   const handleStartStop = async () => {
-    hasStarted = !hasStarted;
-    dispatch("startStop", { buttonValue: hasStarted });
+    console.log("erstes hasStarted " + hasStarted);
+    //hasStarted = !hasStarted;
+    dispatch("startStop", { buttonValue: !hasStarted });
   };
 </script>
 
 <div class="switch-wrapper">
   <small style="margin-right: 0.5vw;">{channelLabel}</small>
   <Switch
-    bind:value={hasStarted}
     hideLabel
-    toggledColor={color}
+    bind:toggled={hasStarted}
     on:click={handleStartStop}
+    toggledColor={color}
   />
 </div>
 

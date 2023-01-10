@@ -21,7 +21,7 @@
 
   const setActiveChannels = () => {
     for (let i = 0; i < NUM_CHANNELS; i++){
-        activeChannels[i] = true;
+        activeChannels[i] = false;
       }
   }
 
