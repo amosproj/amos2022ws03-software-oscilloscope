@@ -1,23 +1,17 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-  import {
-    CANVAS_HEIGHT,
-    CANVAS_WIDTH,
-    NUM_CHANNELS,
-    INDICATOR_SECTION_WIDTH,
-  } from "../const";
+  import { onDestroy, onMount } from "svelte";
+  import { CANVAS_HEIGHT, INDICATOR_SECTION_WIDTH, NUM_CHANNELS } from "../const";
   import CoordinateSystem from "../components/CoordinateSystem.svelte";
   import Waves from "../components/Waves.svelte";
   import OffsetSlider from "../components/OffsetSlider.svelte";
   import StartStopButton from "./StartStopButton.svelte";
-  import Indicators from "./Indicators.svelte";
+  import IndicatorsPixi from "./IndicatorsPixi.svelte";
   import OnOffButton from "../components/OnOffButton.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import ResetButton from "./ResetButton.svelte";
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
-  import IndicatorsPixi from "./IndicatorsPixi.svelte";
 
   let waveElement;
   let btnOnOff;
@@ -75,7 +69,7 @@
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       var startWindow = window.performance.now();
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
-      if (index % 1000 == 0) indicatorElement.update(samples, index);
+      if (index % 1000 === 0) indicatorElement.update(samples, index);
       var endWindow = window.performance.now();
 
       ++chunkCounter;
@@ -128,6 +122,7 @@
 >
   <div class="grid-container">
     <div class="indicators">
+<!--      <div style="width:300px; height:500px" />-->
 <!--      <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />-->
       <IndicatorsPixi bind:this={indicatorElement} scaleY={Math.max(...scalesY)}/>
     </div>
