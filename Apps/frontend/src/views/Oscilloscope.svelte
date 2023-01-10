@@ -12,6 +12,7 @@
   import AmplitudeSlider from "./AmplitudeSlider.svelte";
   import { logSocketCloseCode } from "../helper";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
+  import Indicators from "./Indicators.svelte";
 
   let waveElement;
   let btnOnOff;

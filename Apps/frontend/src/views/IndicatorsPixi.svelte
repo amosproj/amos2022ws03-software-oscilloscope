@@ -13,6 +13,7 @@
     NUM_INTERVALS_HORIZONTAL,
   } from "../const.js";
   import { onMount } from "svelte";
+  import { roundVoltage } from "../helper.js";
 
   export let scaleY;
   let samples = Array(NUM_CHANNELS).fill(0);
@@ -79,18 +80,27 @@
     }
   };
 
-  const addMinIndicators = (pixiApp) => {
+  const addMinMaxIndicators = (pixiApp) => {
     for (let i = 0; i < NUM_CHANNELS; i++) {
       const xOffset = pixiApp.view.width - (i + 1) * (INDICATOR_WIDTH + INDICATOR_MARGIN);
-      const container = new PIXI.Container();
-      container.position.x = xOffset;
-      const graphics = new PIXI.Graphics();
-      graphics.beginFill(LINE_COLORS_NUMBER[i]);
-      graphics.drawRect(0, 0, INDICATOR_WIDTH, 1);
-      graphics.endFill();
+
+      const minContainer = new PIXI.Container();
+      minContainer.position.x = xOffset;
+      const minGraphics = new PIXI.Graphics();
+      minGraphics.beginFill(LINE_COLORS_NUMBER[i]);
+      minGraphics.drawRect(0, 0, INDICATOR_WIDTH, 1);
+      minGraphics.endFill();
+
+      const maxContainer = new PIXI.Container();
+      maxContainer.position.x = xOffset;
+      const maxGraphics = new PIXI.Graphics();
+      maxGraphics.beginFill(LINE_COLORS_NUMBER[i]);
+      maxGraphics.drawRect(0, 0, INDICATOR_WIDTH, 1);
+      maxGraphics.endFill();
 
       pixiApp.ticker.add(() => {
-        const raw = new PIXI.Point(container.x, samples[i]);
+        const oldMinPoint = new PIXI.Point(minContainer.x, samples[i]);
+        const oldMaxPoint = new PIXI.Point(maxContainer.x, samples[i]);
 
         const invertYVec = new PIXI.Point(0, -1);
         const channelScalingVec = new PIXI.Point(0, scalings[i]);
@@ -99,16 +109,52 @@
         const offsetVec = new PIXI.Point(0, offsets[i])
           .multiply(new PIXI.Point(0, CANVAS_HEIGHT / 2));
 
-        const point = raw
+        const newMinPoint = oldMinPoint
           .multiply(invertYVec)
           .multiply(channelScalingVec)
           .multiply(intervalScalingVec)
           .multiply(globalScalingVec)
           .subtract(offsetVec);
-        container.position.set(raw.x, point.y);
+
+        const newMaxPoint = oldMaxPoint
+          .multiply(invertYVec)
+          .multiply(channelScalingVec)
+          .multiply(intervalScalingVec)
+          .multiply(globalScalingVec)
+          .subtract(offsetVec);
+
+        minContainer.position.set(oldMinPoint.x, Math.max(newMinPoint.y, minContainer.position.y));
+        maxContainer.position.set(oldMaxPoint.x, Math.min(newMaxPoint.y, maxContainer.position.y));
       });
 
-      container.addChild(graphics);
+      minContainer.addChild(maxGraphics);
+      maxContainer.addChild(minGraphics);
+      pixiApp.stage.addChild(minContainer);
+      pixiApp.stage.addChild(maxContainer);
+    }
+  };
+
+  const addTextIndicators = (pixiApp) => {
+    for (let i = 0; i < NUM_CHANNELS; i++) {
+      const yPosition = -(pixiApp.view.height / 2) + (INDICATOR_FONT_SIZE * i * 2);
+      const container = new PIXI.Container();
+      container.position.y = yPosition;
+
+      const minMax = new PIXI.Point(0, 0);
+
+
+      const indicatorTextStyle = new PIXI.TextStyle({
+        fontFamily: INDICATOR_FONT_FAMILY,
+        fontSize: INDICATOR_FONT_SIZE,
+        fill: LINE_COLORS_NUMBER[i],
+      });
+      const textIndicator = new PIXI.Text(`Min:${minMax.x}\nMax:${minMax.y}`, indicatorTextStyle);
+      pixiApp.ticker.add(() => {
+        minMax.set(Math.min(minMax.x, samples[i]), Math.max(minMax.y, samples[i]));
+        textIndicator.text = `Min:${roundVoltage(minMax.x)}\nMax:${roundVoltage(minMax.y)}`;
+
+      });
+      container.addChild(textIndicator);
       pixiApp.stage.addChild(container);
     }
   };
@@ -122,7 +168,8 @@
 
     addStaticGrapics(pixiApp);
     addBallIndicators(pixiApp);
-    addMinIndicators(pixiApp);
+    addMinMaxIndicators(pixiApp);
+    addTextIndicators(pixiApp);
 
     wrapper.appendChild(pixiApp.view);
   };
