@@ -1,7 +1,8 @@
 <script>
-  import { osciEnabled } from "../stores";
+  import { osciEnabled, isGND } from "../stores";
   import OnOffButton from "../components/OnOffButton.svelte";
   import ResetButton from "../components/ResetButton.svelte";
+  import GNDButton from "../components/GNDButton.svelte";
 
   let onOffButton;
   export let indicatorElement;
@@ -23,5 +24,10 @@
     // clear canvas and indicators
     indicatorElement.clearCanvas();
     waveElement.resetPlot();
+  }}
+/>
+<GNDButton
+  on:set-gnd={(e) => {
+    $isGND = e.detail.down;
   }}
 />
