@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("resetButton", () => {
+describe("gndButton", () => {
   beforeEach(() => {
     cy.visit("http://localhost:5173/");
   });
