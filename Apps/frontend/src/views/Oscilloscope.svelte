@@ -8,7 +8,7 @@
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
   import { MIN_CONTROL_PANEL_BOTTOM_HEIGHT, NUM_CHANNELS } from "../const";
-  import { osciEnabled } from "../stores";
+  import { osciEnabled, isGND } from "../stores";
   import { logSocketCloseCode } from "../helper";
 
   $: innerWidth = 0;
@@ -21,6 +21,8 @@
   let indicatorElement;
 
   let socket;
+
+  let gndSample = null;
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -51,6 +53,12 @@
   const socketOnMessage = (messageEvent) => {
     if (!$osciEnabled) return;
     let samples = new Float64Array(messageEvent.data);
+    if ($isGND) {
+      if (gndSample == null) {
+        gndSample = new Array(samples.length).fill(0.0);
+      }
+      samples = gndSample;
+    }
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
       if (index % 1000 == 0) indicatorElement.update(samples, index);
@@ -84,9 +92,7 @@
         <Waves bind:this={waveElement} {scalesY} />
       </div>
     </div>
-    <div class="control-panel--right">
-      Overall Buttons
-    </div>
+    <div class="control-panel--right">Overall Buttons</div>
     <div
       class="control-panel--bottom"
       bind:clientHeight={controlPanelBottomHeight}
