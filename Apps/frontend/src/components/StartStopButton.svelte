@@ -8,7 +8,6 @@
 
   let hasStarted = true;
   let color = LINE_COLORS_RGBA[channel];
-  let channelLabel = `Ch. ${channel}`;
 
   const handleStartStop = async () => {
     hasStarted = !hasStarted;
@@ -16,8 +15,7 @@
   };
 </script>
 
-<div data-cy="startStopSwitch-{channel}">
-  <small>{channelLabel}</small>
+<div class="control-panel--bottom_switch" data-cy="startStopSwitch-{channel}">
   <Switch
     hideLabel
     small

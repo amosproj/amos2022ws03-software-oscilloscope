@@ -1,7 +1,6 @@
 <script>
-  import Layout from "./views/Layout.svelte";
+  import Layout from "./views/Oscilloscope.svelte";
 </script>
-
 
 <svelte:head>
   <link
@@ -10,6 +9,6 @@
   />
   <link rel="stylesheet" href="node_modules/svelte-material-ui/bare.css" />
 </svelte:head>
-<main data-cy="layout">
+<main data-cy="oscilloscope">
   <Layout />
 </main>

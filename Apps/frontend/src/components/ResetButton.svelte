@@ -9,4 +9,8 @@
   };
 </script>
 
-<button class="icon-button mui-icon--reset" on:click={handleClick} data-cy="reset-button" />
+<button
+  class="icon-button mui-icon--reset"
+  on:click={handleClick}
+  data-cy="reset-button"
+/>

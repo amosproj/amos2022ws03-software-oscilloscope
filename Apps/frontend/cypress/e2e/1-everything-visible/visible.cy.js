@@ -7,7 +7,7 @@ describe("everything visible on front page", () => {
   });
 
   it("layout visible", () => {
-    cy.get('[data-cy="layout"]').should("be.visible");
+    cy.get('[data-cy="oscilloscope"]').should("be.visible");
   });
 
   it("screen not landscaoe", () => {

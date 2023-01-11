@@ -1,11 +1,13 @@
 <script>
   import Slider from "../components/Slider.svelte";
+  import StartStopButton from "../components/StartStopButton.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import {
     MAX_AMPLITUDE,
     MAX_SWEEP_SLIDER_VALUE,
     MIN_AMPLITUDE,
+    MIN_CONTROL_PANEL_BOTTOM_HEIGHT,
     MIN_SWEEP_SLIDER_VALUE,
     NUM_CHANNELS,
   } from "../const";
@@ -13,11 +15,12 @@
 
   export let waveElement;
   export let indicatorElement;
+  export let controlPanelBottomHeight = 0;
 </script>
 
 <table>
   <th>
-    {#if $expandedPanelOpen}
+    {#if $expandedPanelOpen && controlPanelBottomHeight <= MIN_CONTROL_PANEL_BOTTOM_HEIGHT}
       <button
         class="icon-button icon-button--small mui-icon--close"
         on:click={() => ($expandedPanelOpen = false)}
@@ -25,12 +28,14 @@
       />
     {/if}
   </th>
+  <th>Start/Stop</th>
   <th>Thickness</th>
   <th>Offset</th>
   <th>Time Sweep</th>
   <th>Amplitude</th>
   <tr>
     <td> Common </td>
+    <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td>
@@ -41,6 +46,16 @@
   {#each { length: NUM_CHANNELS } as _, index}
     <tr>
       <td>Ch. {index}</td>
+      <td>
+        <StartStopButton
+          channel={index}
+          on:startStop={async (event) => {
+            let hasStarted = event.detail.buttonValue;
+            waveElement.startStopChannelI(index, hasStarted);
+            indicatorElement.startStopChannelI(index, hasStarted);
+          }}
+        />
+      </td>
       <td>
         <ThicknessSwitch
           channel={index}

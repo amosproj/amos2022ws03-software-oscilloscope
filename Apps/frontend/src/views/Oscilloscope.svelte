@@ -5,10 +5,9 @@
   import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
   import ControlPanelBottom from "./ControlPanelBottom.svelte";
   import GeneralButtons from "./GeneralButtons.svelte";
-  import StartStopButton from "../components/StartStopButton.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
-  import { NUM_CHANNELS } from "../const";
+  import { MIN_CONTROL_PANEL_BOTTOM_HEIGHT, NUM_CHANNELS } from "../const";
   import { osciEnabled } from "../stores";
   import { logSocketCloseCode } from "../helper";
 
@@ -74,18 +73,6 @@
     <div class="control-panel--top_general">
       <GeneralButtons {waveElement} {indicatorElement} />
     </div>
-    <div class="control-panel--top_waves">
-      {#each { length: NUM_CHANNELS } as _, index}
-        <StartStopButton
-          channel={index}
-          on:startStop={async (event) => {
-            let hasStarted = event.detail.buttonValue;
-            waveElement.startStopChannelI(index, hasStarted);
-            indicatorElement.startStopChannelI(index, hasStarted);
-          }}
-        />
-      {/each}
-    </div>
     <div class="indicators">
       <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
     </div>
@@ -98,14 +85,18 @@
       </div>
     </div>
     <div class="control-panel--right">
-      Overall Buttons such as Save Presets,...
+      Overall Buttons
     </div>
     <div
       class="control-panel--bottom"
       bind:clientHeight={controlPanelBottomHeight}
     >
-      {#if controlPanelBottomHeight > 308}
-        <ControlPanelBottom {waveElement} {indicatorElement} />
+      {#if controlPanelBottomHeight > MIN_CONTROL_PANEL_BOTTOM_HEIGHT}
+        <ControlPanelBottom
+          {waveElement}
+          {indicatorElement}
+          {controlPanelBottomHeight}
+        />
       {:else}
         <ExpandableControlPanel {waveElement} {indicatorElement} />
       {/if}

@@ -9,14 +9,14 @@ describe("amplitudeSlider", () => {
     });
   });
 
-  it("changes value", () => {
+  it(`has label that displays reciprocal value "Infinity"`, () => {
     cy.get(`[data-cy="amplitudeSlider-0"]`).within(() => {
       cy.get('[type="range"]').invoke("val", 2).trigger("change");
       cy.get("span").should("have.text", "0.50");
     });
   });
 
-  it("changes value to 0", () => {
+  it(`has label that displays reciprocal value "Infinity" for value 0`, () => {
     cy.get(`[data-cy="amplitudeSlider-1"]`).within(() => {
       cy.get('[type="range"]').invoke("val", 0).trigger("change");
       cy.get("span").should("have.text", "Infinity");

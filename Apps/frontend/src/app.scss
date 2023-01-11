@@ -1,7 +1,7 @@
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: min(1em, 2vw);
+  line-height: min(1.6em, 2vw);
   font-weight: 400;
 
   color-scheme: light dark;
@@ -19,6 +19,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 #app {
@@ -35,24 +36,30 @@ canvas {
 img {
   width: 92%;
   height: 92%;
-  padding: 1em;
-  max-height: 3.6em;
 }
 
 input[type="range"] {
   width: 40%;
   appearance: none;
   -webkit-appearance: none;
-  height: .4em;
+  height: 0.2em;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: calc(0.5vmax + 0.5em);
+    width: calc(0.5vmax + 0.5em);
+    border-radius: 100%;
+    background: #efefef;
+    cursor: pointer;
+  }
 }
 
 nav {
   position: fixed;
   bottom: 0;
   right: 0;
-  padding: 0 1%;
   width: 100%;
-  height: 20em;
+  height: calc(14vmax + 8em);
   box-shadow: 0 0 2em rgba(80, 80, 80, 1);
   background-color: #242424;
   z-index: 3;
@@ -75,17 +82,24 @@ nav {
 
 .wrapper {
   display: grid;
-  grid-template-columns: 8% 14% 56vw 14% 8%;
-  grid-template-rows: 4em 28vw 1fr;
-  height: 100vh;
+  grid-template-columns:
+  8vmax
+  calc(16vw - 2em)
+  calc(100vw - 2 * (8vmax + 16vw - 2em))
+  calc(16vw - 2em)
+  8vmax;
+  grid-template-rows:
+  calc(1 / 2 * (8vmax))
+  calc(1 / 2 * (100vw - 2 * (8vmax + 16vw - 2em)))
+  calc(100vh - 1 / 2 * (8vmax + 100vw - 2 * (8vmax + 16vw - 2em)));
   width: 100%;
-  overflow: hidden;
+  height: 100%;
+  overflow: auto;
 }
 
 .logo {
   grid-column: 1;
   grid-row: 1;
-  align-self: center;
 }
 
 .indicators {
@@ -102,6 +116,11 @@ nav {
   &--coordinate-system {
     position: absolute;
     inset: 0;
+
+    & > canvas {
+      border: 0.1vw solid #efefef;
+      background-color: black;
+    }
   }
 
   &--waves {
@@ -118,15 +137,6 @@ nav {
       display: flex;
       align-self: center;
       justify-content: space-evenly;
-      font-size: small;
-    }
-
-    &_waves {
-      grid-column: 3/6;
-      grid-row: 1;
-      align-self: center;
-      justify-content: space-around;
-      display: flex;
     }
   }
 
@@ -138,16 +148,20 @@ nav {
   &--bottom {
     grid-column: 1/6;
     grid-row: 3;
-    padding: .5% 0;
+    padding: 0.5% 0;
 
-    &_thickness {
+    &_switch {
       width: 28px;
+      height: 16px;
       margin: 0 auto;
     }
 
     &_expand-accordion {
       width: 100%;
       padding: 1vh 0;
+      display: flex;
+      justify-content: center;
+      align-content: center;
       background: none;
       border: none;
 
@@ -158,7 +172,7 @@ nav {
 
       & > button {
         &:hover {
-          background-color: rgba(0, 0, 0, 0.0) !important;
+          background-color: rgba(0, 0, 0, 0) !important;
         }
       }
     }
@@ -166,18 +180,18 @@ nav {
     & > table {
       width: 100%;
       text-align: center;
-      font-size: small;
       border-collapse: collapse;
+      table-layout: fixed;
 
       & > th {
         vertical-align: middle;
         font-weight: normal;
-        border-bottom: 0.2em solid rgba(127, 127, 127, 0.1);
       }
 
       & > * {
         padding: 0;
         margin: 0;
+        width: auto;
 
         & > * {
           padding: 0;
@@ -197,19 +211,16 @@ nav {
 .icon-button {
   border-radius: 100%;
   border: 0;
-  padding: 1em;
+  padding: 1.6vmax;
   cursor: pointer;
   filter: invert(1);
-  min-width: 40px;
-  min-height: 40px;
   background-color: transparent;
   background-position: center;
   background-repeat: no-repeat;
   background-size: 64%;
 
   &--small {
-    min-width: 32px;
-    min-height: 32px;
+    padding: 2vmax !important;
   }
 
   &:hover {

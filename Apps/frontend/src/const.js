@@ -9,7 +9,7 @@ export const INDICATOR_MARGIN = 4;
 export const INDICATOR_WIDTH = 8;
 export const INDICATOR_FONT_SIZE = 11;
 export const INDICATOR_DECIMAL_PLACES = 3;
-export const INDICATOR_SECTION_WIDTH = 200;
+export const INDICATOR_SECTION_WIDTH = 240;
 export const INDICATOR_ZERO_LINE_COLOR = "#000000";
 
 export const COORDINATE_LINE_COLOR = "#FFFFFF80";
@@ -40,3 +40,5 @@ export const DEFAULT_STEP_SIZE = 1.0;
 export const MIN_AMPLITUDE = 0.0;
 export const MAX_AMPLITUDE = NUM_INTERVALS_HORIZONTAL / 2;
 export const WAVE_CURSOR_SIZE = 50;
+
+export const MIN_CONTROL_PANEL_BOTTOM_HEIGHT = 280; //px

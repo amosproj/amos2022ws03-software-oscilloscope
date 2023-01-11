@@ -14,10 +14,7 @@
   let isThick = false;
 </script>
 
-<div
-  class="control-panel--bottom_thickness"
-  data-cy="thicknessSwitch-{channel}"
->
+<div class="control-panel--bottom_switch" data-cy="thicknessSwitch-{channel}">
   <Switch
     hideLabel
     small
