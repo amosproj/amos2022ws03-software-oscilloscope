@@ -5,8 +5,7 @@
   import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
   import ControlPanelBottom from "./ControlPanelBottom.svelte";
   import GeneralButtons from "./GeneralButtons.svelte";
-  import Waves from "../components/Waves.svelte";
-  import CoordinateSystem from "./CoordinateSystem.svelte";
+  import Screen from "../components/Screen.svelte";
   import { MIN_CONTROL_PANEL_BOTTOM_HEIGHT, NUM_CHANNELS } from "../const";
   import { osciEnabled, isGND } from "../stores";
   import { logSocketCloseCode } from "../helper";
@@ -51,6 +50,7 @@
    * @param {MessageEvent} messageEvent - has poperty (Float64Array) data
    */
   const socketOnMessage = (messageEvent) => {
+    /*
     if (!$osciEnabled) return;
     let samples = new Float64Array(messageEvent.data);
     if ($isGND) {
@@ -63,6 +63,9 @@
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
       if (index % 1000 == 0) indicatorElement.update(samples, index);
     }
+    */
+    let samples = new Float64Array(messageEvent.data);
+    waveElement.updateChannels(samples);
   };
 
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
@@ -85,11 +88,8 @@
       <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
     </div>
     <div class="oscilloscope">
-      <div class="oscilloscope--coordinate-system">
-        <CoordinateSystem scaleY={Math.max(...scalesY)} />
-      </div>
       <div class="oscilloscope--waves">
-        <Waves bind:this={waveElement} {scalesY} />
+        <Screen bind:this={waveElement} />
       </div>
     </div>
     <div class="control-panel--right">Overall Buttons</div>
