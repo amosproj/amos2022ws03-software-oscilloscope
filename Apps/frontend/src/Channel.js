@@ -10,6 +10,7 @@ export class Channel {
         this.gl = gl;
         this.vertices = new Float32Array(2 * vertexBufferLength);
         this.vertexBuffer = this.gl.createBuffer();
+        this.headVertexBuffer = this.gl.createBuffer();
         this.nextXToUpdate = 0;
         this.offsetY = 0.0;
         this.scaleY = 1.0;
@@ -69,5 +70,42 @@ export class Channel {
         this.gl.uniform1f(scaleYUniform, this.scaleY);
 
         this.gl.drawArrays(this.gl.LINE_STRIP, 0, this.vertices.length / 2);
+
+        this.drawHead(shaderProgram);
     }
+
+    drawHead(shaderProgram) {
+      let x = this.vertices[this.nextXToUpdate]
+      let y = this.vertices[this.nextXToUpdate + 1]
+
+
+      let squareVertices = new Float32Array([x + 0.01, y + 0.01,
+                            x + 0.01, y - 0.01,
+                            x - 0.01, y + 0.01,
+                            x - 0.01, y - 0.01,
+                          ]);
+
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.headVertexBuffer);
+      this.gl.bufferData(this.gl.ARRAY_BUFFER, squareVertices, this.gl.STATIC_DRAW);
+
+      let aVertexPosition  = this.gl.getAttribLocation(shaderProgram, "aVertexPosition");
+      this.gl.vertexAttribPointer(
+        aVertexPosition,
+        2,
+        this.gl.FLOAT,
+        false,
+        0,
+        0
+      );
+      let colorUniform = this.gl.getUniformLocation(shaderProgram, 'u_colour');
+      this.gl.uniform4fv(colorUniform, new Float32Array(this.color));
+
+      let offsetYUniform = this.gl.getUniformLocation(shaderProgram, 'u_offsetY');
+      this.gl.uniform1f(offsetYUniform, this.offsetY);
+
+      let scaleYUniform = this.gl.getUniformLocation(shaderProgram, 'u_scaleY');
+      this.gl.uniform1f(scaleYUniform, this.scaleY);
+
+      this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, squareVertices.length / 2);
+  }
 }
