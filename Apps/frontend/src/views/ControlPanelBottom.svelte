@@ -11,7 +11,7 @@
     MIN_SWEEP_SLIDER_VALUE,
     NUM_CHANNELS,
   } from "../const";
-  import { expandedPanelOpen, timeSweep } from "../stores";
+  import { expandedPanelOpen, timeSweep, displaySpeed } from "../stores";
 
   export let waveElement;
   export let indicatorElement;
@@ -85,6 +85,10 @@
           min={MIN_SWEEP_SLIDER_VALUE}
           max={MAX_SWEEP_SLIDER_VALUE}
           bind:value={$timeSweep[index]}
+          calculateDisplayedValue={(_) => {
+            let speed = $displaySpeed[index];
+            return (speed != null ? speed.toFixed(2) : "-") + " sec/div";
+          }}
           dataCy={`timesweepSlider-${index}`}
         />
       </td>

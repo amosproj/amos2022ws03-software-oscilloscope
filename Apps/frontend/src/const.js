@@ -36,6 +36,7 @@ export const MIN_SWEEP = 0.1; // <= 1
 export const MAX_SWEEP = 2.0; // >= 1
 export const MIN_SWEEP_SLIDER_VALUE = 0;
 export const MAX_SWEEP_SLIDER_VALUE = 10;
+export const UPDATE_DISPLAY_SPEED_AFTER_UPDATES = 10000;
 export const DEFAULT_STEP_SIZE = 1.0;
 export const MIN_AMPLITUDE = 0.0;
 export const MAX_AMPLITUDE = NUM_INTERVALS_HORIZONTAL / 2;

@@ -11,6 +11,7 @@
     CANVAS_WIDTH,
     NUM_CHANNELS,
     NUM_INTERVALS_HORIZONTAL,
+    NUM_INTERVALS_VERTICAL,
     MIN_SWEEP,
     MAX_SWEEP,
     DEFAULT_STEP_SIZE,
@@ -18,8 +19,9 @@
     WAVE_CURSOR_SIZE,
     LINE_THICKNESS_SMALL,
     LINE_THICKNESS_BIG,
+    UPDATE_DISPLAY_SPEED_AFTER_UPDATES,
   } from "../const";
-  import { timeSweep } from "../stores";
+  import { timeSweep, displaySpeed } from "../stores";
 
   export let scalesY;
 
@@ -46,6 +48,10 @@
     startTime = currentTime();
   };
   resetLogVars();
+
+  let displaySpeedUpdateCounter = 0;
+  const pixelsPerDiv = CANVAS_WIDTH / NUM_INTERVALS_VERTICAL;
+  let updateTimeStorage = new Array(NUM_CHANNELS).fill(null);
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -74,12 +80,21 @@
   };
 
   export const updateBuffer = (samples, startIndex, endIndex) => {
+    let updateDisplaySpeedBuffer =
+      displaySpeedUpdateCounter++ % UPDATE_DISPLAY_SPEED_AFTER_UPDATES == 0;
+    let now;
+    if (updateDisplaySpeedBuffer) {
+      now = Date.now();
+    }
+    displaySpeedUpdateCounter %= UPDATE_DISPLAY_SPEED_AFTER_UPDATES;
+
     for (
       let channelIndex = startIndex;
       channelIndex < endIndex;
       channelIndex++
     ) {
       if (!startStopLine[channelIndex]) {
+        $displaySpeed[channelIndex] = null;
         continue;
       }
       let xCurr = xArr[channelIndex];
@@ -101,6 +116,17 @@
       xArr[channelIndex] = xCurr + delta;
       while (xArr[channelIndex] >= CANVAS_WIDTH) {
         xArr[channelIndex] -= CANVAS_WIDTH;
+      }
+
+      // update display speed
+      if (updateDisplaySpeedBuffer) {
+        let last = updateTimeStorage[channelIndex];
+        updateTimeStorage[channelIndex] = now;
+        if (last != null) {
+          let timePerPixel = (now - last) / 1000.0 / delta;
+          let timePerDiv = timePerPixel * pixelsPerDiv;
+          $displaySpeed[channelIndex] = timePerDiv;
+        }
       }
     }
 

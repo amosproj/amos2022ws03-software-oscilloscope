@@ -17,3 +17,4 @@ export const thicknessAdjustment = writable(
 
 export const expandedPanelOpen = writable(false);
 export const isGND = writable(false);
+export const displaySpeed = writable(new Array(NUM_CHANNELS).fill(null));
