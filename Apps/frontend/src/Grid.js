@@ -5,27 +5,27 @@ export class Grid {
     color;
     verticalLines;
     horizontalLines;
-    constructor(gl) {
+    constructor(gl, verticalDevisions, horizontalDevisions) {
         this.color = [1.0, 1.0, 1.0, 1.0];
         this.gl = gl;
         this.vertexBuffer = this.gl.createBuffer();
-        this.verticalLines = 20;
-        this.horizontalLines = 10;
+        this.verticalDevisions = verticalDevisions;
+        this.horizontalDevisions = horizontalDevisions;
         this.initGridVertices();
     }
 
     initGridVertices()
     {
-        let verticalLines = this.initVerticalLines(this.verticalLines);
-        let horizontalLines = this.initHorizontalLines(this.horizontalLines);
+        let verticalLines = this.initVerticalLines();
+        let horizontalLines = this.initHorizontalLines();
         let lines = verticalLines.concat(horizontalLines);
         this.gridVertices = new Float32Array(lines);
     }
 
-    initVerticalLines(lines)
+    initVerticalLines()
     {
         let verticalLines = [];
-        let stepSize = 2.0 / lines;
+        let stepSize = 2.0 / this.verticalDevisions;
         for (let x = -1.0; x <= 1.0; x += stepSize) 
         {
             verticalLines.push(x);
@@ -36,10 +36,10 @@ export class Grid {
         return verticalLines;
     }
 
-    initHorizontalLines(lines)
+    initHorizontalLines()
     {
         let horizontalLines = [];
-        let stepSize = 2.0 / lines;
+        let stepSize = 2.0 / this.horizontalDevisions;
         for (let y = -1.0; y <= 1.0; y += stepSize) 
         {
             horizontalLines.push(-1.0);

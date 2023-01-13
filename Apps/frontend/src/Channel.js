@@ -1,3 +1,5 @@
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./const";
+
 export class Channel {
     vertexBuffer;
     vertices;
@@ -48,41 +50,51 @@ export class Channel {
     }
 
     draw(shaderProgram) {
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, this.vertices, this.gl.STATIC_DRAW);
+      this.drawLine(shaderProgram);
+      this.drawHead(shaderProgram);
+    }
 
-        let aVertexPosition  = this.gl.getAttribLocation(shaderProgram, "aVertexPosition");
-        this.gl.vertexAttribPointer(
-          aVertexPosition,
-          2,
-          this.gl.FLOAT,
-          false,
-          0,
-          0
-        );
-        let colorUniform = this.gl.getUniformLocation(shaderProgram, 'u_colour');
-        this.gl.uniform4fv(colorUniform, new Float32Array(this.color));
+    drawLine(shaderProgram) {
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
+      this.gl.bufferData(this.gl.ARRAY_BUFFER, this.vertices, this.gl.STATIC_DRAW);
 
-        let offsetYUniform = this.gl.getUniformLocation(shaderProgram, 'u_offsetY');
-        this.gl.uniform1f(offsetYUniform, this.offsetY);
+      let aVertexPosition  = this.gl.getAttribLocation(shaderProgram, "aVertexPosition");
+      this.gl.vertexAttribPointer(
+        aVertexPosition,
+        2,
+        this.gl.FLOAT,
+        false,
+        0,
+        0
+      );
+      let colorUniform = this.gl.getUniformLocation(shaderProgram, 'u_colour');
+      this.gl.uniform4fv(colorUniform, new Float32Array(this.color));
 
-        let scaleYUniform = this.gl.getUniformLocation(shaderProgram, 'u_scaleY');
-        this.gl.uniform1f(scaleYUniform, this.scaleY);
+      let offsetYUniform = this.gl.getUniformLocation(shaderProgram, 'u_offsetY');
+      this.gl.uniform1f(offsetYUniform, this.offsetY);
 
-        this.gl.drawArrays(this.gl.LINE_STRIP, 0, this.vertices.length / 2);
+      let scaleYUniform = this.gl.getUniformLocation(shaderProgram, 'u_scaleY');
+      this.gl.uniform1f(scaleYUniform, this.scaleY);
 
-        this.drawHead(shaderProgram);
+      this.gl.drawArrays(this.gl.LINE_STRIP, 0, this.vertices.length / 2);
     }
 
     drawHead(shaderProgram) {
       let x = this.vertices[this.nextXToUpdate]
       let y = this.vertices[this.nextXToUpdate + 1]
 
+      // TODO: don't caluclate every draw call. Maybe calculate in shader
+      // (x,y) to [-1.0;1.0]
+      let yCoordinateToNDC = 2.0 / CANVAS_HEIGHT;
+      let xCoordinateToNDC = 2.0 / CANVAS_WIDTH;
+      let headWidthPixels = 5;
+      let headXWidthNDC = headWidthPixels * xCoordinateToNDC
+      let headYWidthNDC = headWidthPixels * yCoordinateToNDC   
 
-      let squareVertices = new Float32Array([x + 0.01, y + 0.01,
-                            x + 0.01, y - 0.01,
-                            x - 0.01, y + 0.01,
-                            x - 0.01, y - 0.01,
+      let squareVertices = new Float32Array([x + headXWidthNDC, y + headYWidthNDC,
+                            x + headXWidthNDC, y - headYWidthNDC,
+                            x - headXWidthNDC, y + headYWidthNDC,
+                            x - headXWidthNDC, y - headYWidthNDC,
                           ]);
 
       this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.headVertexBuffer);

@@ -5,12 +5,10 @@
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
   } from "../const";
-  import { createShaderProgram } from "../shader/shaderHelper";
-  import { fragmentShader, vertexShader} from  "../shader/shader";
   import { Oscilloscope } from "../Oscilloscope";
 
   let canvasElement;
-  let gl;
+  let webgl;
   let shaderProgram;
   let oscilloscope;
 
@@ -28,8 +26,8 @@
   };
 
   export const updateChannelThickness = (channelIndex, isThick) => {
-    //const thickness = isThick ? LINE_THICKNESS_BIG : LINE_THICKNESS_SMALL;
-    //lines[channelIndex].setThickness(thickness);
+    // TODO
+    // currently not supported
   };
 
   export const startStopChannelI = (channelIndex, hasStarted) => {
@@ -39,17 +37,15 @@
     // ----- Svelte lifecycle hooks -----
     onMount(() => {
       resizeCanvas();
-      initializGL();
-      initShader();
-      initData();
+      initialize();
     });
   
     beforeUpdate(() => {
       window.requestAnimationFrame(newFrame);
     });
   
-    export const updateChannels = (samples) => {
-      oscilloscope.updateChannels(samples);
+    export const updateChannels = (samplesInVolts) => {
+      oscilloscope.updateChannels(samplesInVolts);
     };
   
     const resizeCanvas = () => {
@@ -57,42 +53,18 @@
       canvasElement.height = CANVAS_HEIGHT;
     };
   
-    const initData = () => {
-      oscilloscope = new Oscilloscope(gl, shaderProgram);
-    }
-  
-    const initializGL = () => {
-      // Initialize the GL context
-      gl = canvasElement.getContext("webgl2");
-  
-      // Only continue if WebGL is available and working
-      if (gl === null) {
+    const initialize = () => {
+      webgl = canvasElement.getContext("webgl2");
+      if (webgl === null) {
         alert(
           "Unable to initialize WebGL. Your browser or machine may not support it."
         );
         return;
       }
-  
-      // Set clear color to black, fully opaque
-      gl.clearColor(0.0, 0.0, 0.0, 1.0);
-      // Clear the color buffer with specified clear color
-      gl.clear(gl.COLOR_BUFFER_BIT);
-    };
-  
-    function initShader() {
-      shaderProgram = createShaderProgram(gl, vertexShader, fragmentShader);
-  
-      gl.useProgram(shaderProgram);
-      let aVertexPosition  = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-      gl.vertexAttribPointer(
-        aVertexPosition,
-        2,
-        gl.FLOAT,
-        false,
-        0,
-        0
-      );
-      gl.enableVertexAttribArray(aVertexPosition);
+      webgl.clearColor(0.0, 0.0, 0.0, 1.0);
+      webgl.clear(webgl.COLOR_BUFFER_BIT);
+
+      oscilloscope = new Oscilloscope(webgl)
     }
   
     const newFrame = () => {
