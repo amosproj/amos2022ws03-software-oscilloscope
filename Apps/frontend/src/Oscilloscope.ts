@@ -24,11 +24,7 @@ export class Oscilloscope {
       vertexShader,
       fragmentShader
     );
-    this.grid = new Grid(
-      webgl,
-      NUM_INTERVALS_VERTICAL,
-      NUM_INTERVALS_HORIZONTAL
-    );
+    this.grid = new Grid(webgl);
     this.initializeProgram();
     this.createChannels();
   }
@@ -61,12 +57,8 @@ export class Oscilloscope {
   }
 
   updateChannels(samplesInVolts) {
-    // TOPO: calculation to normalized device coordinates can be done in shader(GPU)
-    // volts -> [-1.0;1.0] (horizontalDevision == 1 Volt)
-    let voltsToNDC = 2.0 / this.grid.horizontalDevisions;
-
     for (let i = 0; i < this.channels.length; i++) {
-      this.channels[i].update(samplesInVolts[i] * voltsToNDC);
+      this.channels[i].update(samplesInVolts[i]);
     }
   }
 
@@ -77,7 +69,7 @@ export class Oscilloscope {
         LINE_COLORS[i][1],
         LINE_COLORS[i][2],
       ];
-      this.channels.push(new Channel(this.webgl, CANVAS_WIDTH, color));
+      this.channels.push(new Channel(this.webgl, color));
     }
   }
 }

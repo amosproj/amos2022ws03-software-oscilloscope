@@ -1,17 +1,15 @@
+import { NUM_INTERVALS_HORIZONTAL, NUM_INTERVALS_VERTICAL } from "./const";
+
 export class Grid {
   webgl: WebGLRenderingContext;
   vertexBuffer: WebGLBuffer;
   gridVertices: Float32Array;
   color: [number, number, number, number];
-  verticalDevisions: number;
-  horizontalDevisions: number;
 
-  constructor(gl, verticalDevisions, horizontalDevisions) {
+  constructor(gl) {
     this.webgl = gl;
     this.color = [1.0, 1.0, 1.0, 1.0];
     this.vertexBuffer = this.webgl.createBuffer() as WebGLBuffer;
-    this.verticalDevisions = verticalDevisions;
-    this.horizontalDevisions = horizontalDevisions;
     this.initializeGridVertices();
   }
 
@@ -24,7 +22,7 @@ export class Grid {
 
   createVerticalLineVertices() {
     let verticalLines: number[] = [];
-    let stepSize = 2.0 / this.verticalDevisions;
+    let stepSize = 2.0 / NUM_INTERVALS_VERTICAL;
     for (let x = -1.0; x <= 1.0; x += stepSize) {
       verticalLines.push(x);
       verticalLines.push(-1.0);
@@ -36,7 +34,7 @@ export class Grid {
 
   createHorizontalLineVertices() {
     let horizontalLines: number[] = [];
-    let stepSize = 2.0 / this.horizontalDevisions;
+    let stepSize = 2.0 / NUM_INTERVALS_HORIZONTAL;
     for (let y = -1.0; y <= 1.0; y += stepSize) {
       horizontalLines.push(-1.0);
       horizontalLines.push(y);

@@ -1,4 +1,9 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./const";
+import {
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  NUM_INTERVALS_HORIZONTAL,
+  NUM_INTERVALS_VERTICAL,
+} from "./const";
 
 export class Channel {
   webgl: WebGLRenderingContext;
@@ -11,22 +16,18 @@ export class Channel {
   active: boolean = true;
   color: [number, number, number, number];
 
-  constructor(
-    webgl,
-    sampleBufferSize: number,
-    color: [number, number, number]
-  ) {
+  constructor(webgl, color: [number, number, number]) {
     this.webgl = webgl;
     this.vertexBuffer = this.webgl.createBuffer() as WebGLBuffer;
     this.headVertexBuffer = this.webgl.createBuffer() as WebGLBuffer;
-    this.vertices = new Float32Array(2 * sampleBufferSize);
+    this.vertices = new Float32Array(2 * CANVAS_WIDTH);
     this.color = [color[0] / 255, color[1] / 255, color[2] / 255, 1.0];
     this.initializeVertices();
   }
 
   initializeVertices() {
     let xNDC = -1.0;
-    let xStepNDC = 2.0 / (this.vertices.length / 2);
+    let xStepNDC = 2.0 / CANVAS_WIDTH;
     for (let i = 0; i < this.vertices.length; i = i + 2) {
       this.vertices[i] = xNDC;
       xNDC += xStepNDC;
@@ -36,7 +37,8 @@ export class Channel {
   update(sample) {
     if (!this.active) return;
 
-    this.vertices[this.nextXToUpdate + 1] = sample;
+    let voltsToNDC = 2.0 / NUM_INTERVALS_HORIZONTAL;
+    this.vertices[this.nextXToUpdate + 1] = sample * voltsToNDC;
     this.nextXToUpdate = (this.nextXToUpdate + 2) % this.vertices.length;
   }
 
