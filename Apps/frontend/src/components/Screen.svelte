@@ -9,20 +9,16 @@
 
   let canvasElement;
   let webgl;
-  let shaderProgram;
   let oscilloscope;
 
   
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     oscilloscope.channels[channelIndex].offsetY = offsetY;
-    //lines[channelIndex].offsetY = offsetY;
-    //heads[channelIndex].offsetY = offsetY;
   };
 
   // Update the amplification of wave
   export const updateChannelScaling = (channelIndex, scaling) => {
     oscilloscope.channels[channelIndex].scaleY = scaling;
-    //setScaling(channelIndex, scaling);
   };
 
   export const updateChannelThickness = (channelIndex, isThick) => {
