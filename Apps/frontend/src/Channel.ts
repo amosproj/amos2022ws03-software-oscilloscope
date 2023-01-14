@@ -2,6 +2,7 @@ import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
   DEFAULT_STEP_SIZE,
+  HEAD_PIXEL_WIDTH,
   MAX_SWEEP,
   MIN_SWEEP,
   NUM_INTERVALS_HORIZONTAL,
@@ -124,16 +125,14 @@ export class Channel {
   }
 
   drawHead(shaderProgram) {
-    let x: number = this.vertices[2 * this.xCurr + 1];
-    let y: number = this.scaleY * this.vertices[2 * this.xCurr + 1];
-
+    let x: number = this.vertices[2 * Math.round(this.xCurr)];
+    let y: number = this.scaleY * this.vertices[2 * Math.round(this.xCurr) + 1];
     // TODO: don't caluclate every draw call. Maybe calculate in shader
     // (x,y) to [-1.0;1.0]
     let yCoordinateToNDC = 2.0 / CANVAS_HEIGHT;
     let xCoordinateToNDC = 2.0 / CANVAS_WIDTH;
-    let headWidthPixels = 5;
-    let headXWidthNDC = headWidthPixels * xCoordinateToNDC;
-    let headYWidthNDC = headWidthPixels * yCoordinateToNDC;
+    let headXWidthNDC = HEAD_PIXEL_WIDTH * xCoordinateToNDC;
+    let headYWidthNDC = HEAD_PIXEL_WIDTH * yCoordinateToNDC;
 
     let squareVertices = new Float32Array([
       x + headXWidthNDC,
