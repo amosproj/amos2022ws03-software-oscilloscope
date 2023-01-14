@@ -24,6 +24,7 @@ export class Oscilloscope {
       vertexShader,
       fragmentShader
     );
+
     this.grid = new Grid(webgl);
     this.initializeProgram();
     this.createChannels();

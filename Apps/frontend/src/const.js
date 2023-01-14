@@ -31,6 +31,7 @@ export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
 export const LINE_THICKNESS_SMALL = 0.002;
 export const LINE_THICKNESS_BIG = 0.008;
 
+export const UPDATES_PER_SECOND = 100_000; // same as recieved packages from backend
 export const NUM_CHANNELS = 10;
 export const MIN_SWEEP = 0.1; // <= 1
 export const MAX_SWEEP = 2.0; // >= 1

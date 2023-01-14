@@ -29,13 +29,13 @@
    *
    * @param {number[]} samples
    */
-  export const update = (samples, startIndex) => {
+  export const update = (samples) => {
     clearCanvas();
     drawGlobalZeroLine();
 
     for (let channel = 0; channel < NUM_CHANNELS; channel++) {
       if (startStopLine[channel]) {
-        updateCurrentMinMax(samples[startIndex + channel], channel);
+        updateCurrentMinMax(samples[channel], channel);
       }
       const transformedMin = transformSampleToYCoord(
         min[channel],

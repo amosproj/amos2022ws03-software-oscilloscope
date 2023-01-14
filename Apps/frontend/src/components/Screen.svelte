@@ -11,7 +11,11 @@
   let webgl;
   let oscilloscope;
 
-  
+  export const updateChannelSweep = (channelIndex, sweep) => {
+    console.log(sweep);
+    oscilloscope.channels[channelIndex].sweep = sweep;
+  };
+
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     oscilloscope.channels[channelIndex].offsetY = offsetY;
   };

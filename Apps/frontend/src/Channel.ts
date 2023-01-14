@@ -1,8 +1,13 @@
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
+  DEFAULT_STEP_SIZE,
+  MAX_SWEEP,
+  MIN_SWEEP,
   NUM_INTERVALS_HORIZONTAL,
   NUM_INTERVALS_VERTICAL,
+  UPDATES_PER_SECOND,
+  WAVE_CURSOR_SIZE,
 } from "./const";
 
 export class Channel {
@@ -10,12 +15,17 @@ export class Channel {
   vertexBuffer: WebGLBuffer;
   headVertexBuffer: WebGLBuffer;
   vertices: Float32Array;
+  samples: (number | undefined)[];
   nextXToUpdate: number = 0;
   offsetY: number = 0.0;
   scaleY: number = 1.0;
   active: boolean = true;
+  // sec/div
+  sweep: number = 1.0;
   color: [number, number, number, number];
-
+  xCurr: number = 0.0;
+  xLast: number = 0.0;
+  xDelta: number = 1.0;
   constructor(webgl, color: [number, number, number]) {
     this.webgl = webgl;
     this.vertexBuffer = this.webgl.createBuffer() as WebGLBuffer;
@@ -23,9 +33,19 @@ export class Channel {
     this.vertices = new Float32Array(2 * CANVAS_WIDTH);
     this.color = [color[0] / 255, color[1] / 255, color[2] / 255, 1.0];
     this.initializeVertices();
+    this.computeXDelta();
+  }
+
+  computeXDelta() {
+    let timePerScreen = CANVAS_WIDTH / UPDATES_PER_SECOND;
+    let timePerDiv = timePerScreen / NUM_INTERVALS_VERTICAL;
+
+    this.xDelta = timePerDiv * this.sweep;
   }
 
   initializeVertices() {
+    this.samples = new Array(CANVAS_WIDTH).fill(undefined);
+
     let xNDC = -1.0;
     let xStepNDC = 2.0 / CANVAS_WIDTH;
     for (let i = 0; i < this.vertices.length; i = i + 2) {
@@ -37,9 +57,19 @@ export class Channel {
   update(sample) {
     if (!this.active) return;
 
-    let voltsToNDC = 2.0 / NUM_INTERVALS_HORIZONTAL;
-    this.vertices[this.nextXToUpdate + 1] = sample * voltsToNDC;
-    this.nextXToUpdate = (this.nextXToUpdate + 2) % this.vertices.length;
+    let xNew = Math.round(this.xCurr);
+    for (let x = this.xLast + 1; x < xNew + 1; x++) {
+      this.samples[x] = sample;
+      this.samples[(x + WAVE_CURSOR_SIZE) % CANVAS_WIDTH] = undefined;
+    }
+    this.xLast = xNew;
+
+    // time sweep (https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Development-Documentation#time-sweep-calculation)
+
+    this.xCurr = this.xCurr + this.xDelta;
+    while (this.xCurr >= CANVAS_WIDTH) {
+      this.xCurr -= CANVAS_WIDTH;
+    }
   }
 
   setScaling(scaleY) {
@@ -52,6 +82,11 @@ export class Channel {
   }
 
   drawLine(shaderProgram) {
+    let voltsToNDC = 2.0 / NUM_INTERVALS_HORIZONTAL;
+    for (let i = 0; i < this.samples.length; i++) {
+      this.vertices[i * 2 + 1] = (this.samples[i] as number) * voltsToNDC;
+    }
+
     this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.vertexBuffer);
     this.webgl.bufferData(
       this.webgl.ARRAY_BUFFER,
@@ -89,8 +124,8 @@ export class Channel {
   }
 
   drawHead(shaderProgram) {
-    let x: number = this.vertices[this.nextXToUpdate];
-    let y: number = this.scaleY * this.vertices[this.nextXToUpdate + 1];
+    let x: number = this.vertices[2 * this.xCurr + 1];
+    let y: number = this.scaleY * this.vertices[2 * this.xCurr + 1];
 
     // TODO: don't caluclate every draw call. Maybe calculate in shader
     // (x,y) to [-1.0;1.0]

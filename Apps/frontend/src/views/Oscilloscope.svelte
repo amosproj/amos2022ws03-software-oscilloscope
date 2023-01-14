@@ -50,8 +50,8 @@
    * @param {MessageEvent} messageEvent - has poperty (Float64Array) data
    */
   const socketOnMessage = (messageEvent) => {
-    /*
     if (!$osciEnabled) return;
+
     let samples = new Float64Array(messageEvent.data);
     if ($isGND) {
       if (gndSample == null) {
@@ -59,13 +59,14 @@
       }
       samples = gndSample;
     }
+
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
-      waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
-      if (index % 1000 == 0) indicatorElement.update(samples, index);
+      let subSamples = samples.subarray(index, index + NUM_CHANNELS);
+      waveElement.updateChannels(subSamples);
+      if (index % 1000 == 0) {
+        indicatorElement.update(subSamples);
+      }
     }
-    */
-    let samples = new Float64Array(messageEvent.data);
-    waveElement.updateChannels(samples);
   };
 
   const socketOnClose = (closeEvent) => logSocketCloseCode(closeEvent.code);
