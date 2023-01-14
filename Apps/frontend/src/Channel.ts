@@ -90,7 +90,7 @@ export class Channel {
 
   drawHead(shaderProgram) {
     let x: number = this.vertices[this.nextXToUpdate];
-    let y: number = this.vertices[this.nextXToUpdate + 1];
+    let y: number = this.scaleY * this.vertices[this.nextXToUpdate + 1];
 
     // TODO: don't caluclate every draw call. Maybe calculate in shader
     // (x,y) to [-1.0;1.0]
@@ -143,7 +143,7 @@ export class Channel {
       shaderProgram,
       "u_scaleY"
     );
-    this.webgl.uniform1f(scaleYUniform, this.scaleY);
+    this.webgl.uniform1f(scaleYUniform, 1.0);
 
     this.webgl.drawArrays(
       this.webgl.TRIANGLE_STRIP,
