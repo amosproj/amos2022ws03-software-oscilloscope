@@ -5,6 +5,9 @@ export const osciData = writable([]);
 
 export const timeSweep = writable(new Array(NUM_CHANNELS + 1).fill(5));
 
+export const /** @type {Array<import("svelte/store").Writable<number>>} */ offsetAdjustment =
+    new Array(NUM_CHANNELS).fill(writable(0));
+
 // store for the amplification factors of each channel
 export const amplitudeAdjustment = writable(new Array(NUM_CHANNELS).fill(1));
 
