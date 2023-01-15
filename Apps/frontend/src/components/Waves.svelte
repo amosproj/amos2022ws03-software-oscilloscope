@@ -19,7 +19,7 @@
     LINE_THICKNESS_SMALL,
     LINE_THICKNESS_BIG,
   } from "../const";
-  import { offsetAdjustment, timeSweep } from "../stores";
+  import { timeSweep } from "../stores";
 
   export let scalesY;
 
@@ -93,10 +93,8 @@
       xLast[channelIndex] = xNew;
 
       // time sweep (https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Development-Documentation#time-sweep-calculation)
-      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0; // in [-1,1]
-      let delta =
-        DEFAULT_STEP_SIZE *
-        (1.0 + sweep * (sweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
+      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0;// in [-1,1]
+      let delta = DEFAULT_STEP_SIZE * (1.0 + sweep * (sweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
 
       xArr[channelIndex] = xCurr + delta;
       while (xArr[channelIndex] >= CANVAS_WIDTH) {
@@ -128,19 +126,9 @@
   };
 
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
-    if (lines[channelIndex] !== undefined)
-      lines[channelIndex].offsetY = offsetY;
-    if (heads[channelIndex] !== undefined)
-      heads[channelIndex].offsetY = offsetY;
+    lines[channelIndex].offsetY = offsetY;
+    heads[channelIndex].offsetY = offsetY;
   };
-
-  // Subscribe to the offsetAdjustment store
-  for (let i = 0; i < NUM_CHANNELS; i++) {
-    offsetAdjustment[i].subscribe((offset) => {
-      if (lines[i] !== undefined) lines[i].offsetY = offset;
-      if (heads[i] !== undefined) heads[i].offsetY = offset;
-    });
-  }
 
   // Update the amplification of wave
   export const updateChannelScaling = (channelIndex, scaling) => {

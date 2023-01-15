@@ -4,10 +4,11 @@
   import OnOffButton from "./OnOffButton.svelte";
   import ResetButton from "../views/ResetButton.svelte";
   import Slider from "./Slider.svelte";
-  import { offsetAdjustment, timeSweep } from "../stores.js";
+  import { timeSweep } from "../stores.js";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
   import ThicknessSwitch from "./ThicknessSwitch.svelte";
   import DistributeOffsetButton from "./DistributeOffsetButton.svelte";
+  import startStopLine from "./Waves.svelte";
   export let waveElement;
   export let isEnabled;
   export let indicatorElement;
@@ -15,6 +16,8 @@
 
   let activeChannels = [];
   let activeChannelCounter = NUM_CHANNELS;
+
+  let distributed = false;
 
   const setActiveChannels = () => {
     for (let i = 0; i < NUM_CHANNELS; i++) {
@@ -32,14 +35,16 @@
     activeChannelCounter = count;
   };
 
-  const distributeActiveChannelsEvenly = () => {
-    // offset is calculated based on the number of channels between -1 and 1
+  const distributeChannels = () => {
     let offset = 2 / (activeChannelCounter + 1);
     // loop over all channels and set offset
     let offsetY = 1 - offset;
     for (let index = 0; index < NUM_CHANNELS; index++) {
+      console.log(offsetY);
       if (activeChannels[index]) {
-        offsetAdjustment[index].set(offsetY);
+        waveElement.updateChannelOffsetY(index, offsetY);
+        indicatorElement.updateChannelOffsetY(index, offsetY);
+        document.getElementById(`offsetSlider-${index}`).value = offsetY;
         offsetY -= offset;
       }
     }
@@ -66,7 +71,13 @@
       }}
     />
     <DistributeOffsetButton
-      on:distributeOffset={() => distributeActiveChannelsEvenly()}
+      activeChannelCount={activeChannelCounter}
+      on:distributeOffset={(event) => {
+        let offset = event.detail.offset;
+        // loop over all channels and set offset
+        distributed = true;
+        distributeChannels();
+      }}
     />
   </div>
   <div class="slider-wrapper">
@@ -110,11 +121,13 @@
       <br />
       <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
-        <!-- @ts-ignore -->
         <Slider
           id={`offsetSlider-${index}`}
-          bind:value={$(offsetAdjustment[index])}
-          onInput={() => {}}
+          onInput={(offsetY) => {
+            waveElement.updateChannelOffsetY(index, offsetY);
+            indicatorElement.updateChannelOffsetY(index, offsetY);
+          }}
+          value={0}
           min={-1.0}
           max={1.0}
           step={0.01}
