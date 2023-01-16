@@ -10,21 +10,15 @@
   export let channel;
 </script>
 
-<div class="switch-wrapper" data-cy="thicknessSwitch-{channel}">
+<div class="control-panel--bottom_switch" data-cy="thicknessSwitch-{channel}">
   <Switch
     hideLabel
-    bind:toggled={$channelConfig[channel].thickness}
-    on:click={(event) => {
-      onClick(event);
+    small
+    bind:toggled={isThick}
+    on:click={() => {
+      $thicknessAdjustment[channel] = isThick;
+      onClick(isThick);
     }}
     toggledColor={LINE_COLORS_RGBA[channel]}
   />
 </div>
-
-<style>
-  .switch-wrapper {
-    display: flex;
-    justify-content: start;
-    margin: 0.56rem;
-  }
-</style>

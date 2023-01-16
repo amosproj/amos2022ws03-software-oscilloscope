@@ -7,10 +7,11 @@
       `Missing implementation of OffsetSlider.onInput(${offsetY})!`
     );
   };
+  export let channel;
   let offsetY;
 </script>
 
-<div class="control-panel-items">
+<div class="control-panel--entry" data-cy="offsetSlider-{channel}">
   <input
     type="range"
     bind:value={$channelConfig[channel].offset}

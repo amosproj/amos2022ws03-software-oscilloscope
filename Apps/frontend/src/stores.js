@@ -1,6 +1,9 @@
 import { writable } from "svelte/store";
 import { NUM_CHANNELS } from "./const";
 
+/** Flag for freezing and starting canvas */
+export const osciEnabled = writable(false);
+
 export const osciData = writable([]);
 
 export const channelConfig = writable(
@@ -15,3 +18,6 @@ export const channelConfig = writable(
       amplitude: 1,
     }))
 );
+
+export const expandedPanelOpen = writable(false);
+export const isGND = writable(false);

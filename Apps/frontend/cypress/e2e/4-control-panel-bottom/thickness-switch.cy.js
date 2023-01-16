@@ -11,7 +11,7 @@ describe("thicknessSwitch", () => {
     });
   });
 
-  it("toggle switch", () => {
+  it("toggles switch", () => {
     cy.get(`[data-cy="thicknessSwitch-0"]`).within(() => {
       cy.get('[role="switch"]').should("have.attr", "aria-checked", "false");
       cy.get('[role="switch"]')
