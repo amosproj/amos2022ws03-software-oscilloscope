@@ -1,6 +1,6 @@
 <script>
   import Slider from "../components/Slider.svelte";
-  import StartStopButton from "../components/StartStopButton.svelte";
+  import OnOffButton from "../components/OnOffButton.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import {
@@ -11,7 +11,7 @@
     MIN_SWEEP_SLIDER_VALUE,
     NUM_CHANNELS,
   } from "../const";
-  import { expandedPanelOpen, timeSweep } from "../stores";
+  import { expandedPanelOpen, channelConfig } from "../stores";
 
   export let waveElement;
   export let indicatorElement;
@@ -47,7 +47,7 @@
     <tr>
       <td>Ch. {index}</td>
       <td>
-        <StartStopButton
+        <OnOffButton
           channel={index}
           on:startStop={async (event) => {
             let hasStarted = event.detail.buttonValue;
@@ -84,7 +84,7 @@
           onInput={() => {}}
           min={MIN_SWEEP_SLIDER_VALUE}
           max={MAX_SWEEP_SLIDER_VALUE}
-          bind:value={$timeSweep[index]}
+          bind:value={$channelConfig[index].sweepSpeed}
           dataCy={`timesweepSlider-${index}`}
         />
       </td>

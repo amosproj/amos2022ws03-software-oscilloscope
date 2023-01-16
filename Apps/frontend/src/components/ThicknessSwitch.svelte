@@ -14,10 +14,10 @@
   <Switch
     hideLabel
     small
-    bind:toggled={isThick}
+    bind:toggled={$channelConfig[channel].thickness}
     on:click={() => {
-      $thicknessAdjustment[channel] = isThick;
-      onClick(isThick);
+      $channelConfig[channel].thickness = !channelConfig[channel].thickness;
+      onClick();
     }}
     toggledColor={LINE_COLORS_RGBA[channel]}
   />

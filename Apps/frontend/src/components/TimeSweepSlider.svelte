@@ -1,5 +1,5 @@
 <script>
-  import { timeSweep } from "../stores";
+  import { channelConfig } from "../stores";
   import {
     MAX_SWEEP_SLIDER_VALUE,
     MIN_SWEEP_SLIDER_VALUE,
@@ -23,7 +23,7 @@
     type="range"
     min={MIN_SWEEP_SLIDER_VALUE}
     max={MAX_SWEEP_SLIDER_VALUE}
-    bind:value={$timeSweep[channel]}
+    bind:value={$channelConfig[channel].sweepSpeed}
     on:change={handleChange}
     data-cy="timesweepSlider-{channel}"
   />
