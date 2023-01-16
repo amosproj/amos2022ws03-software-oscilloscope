@@ -120,6 +120,7 @@
 
   export const startStopChannelI = (channelIndex, hasStarted) => {
     startStopLine[channelIndex] = hasStarted;
+    lines[channelIndex].visible = hasStarted;
   };
 
   const update = () => {
@@ -160,7 +161,7 @@
       line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addThickLine(line);
       lines.push(line);
-      startStopLine[i] = true;
+      startStopLine[i] = false;
 
       let head = new WebglSquare(color);
       heads.push(head);
