@@ -67,10 +67,7 @@
         <Slider
           id={`offsetSlider-${index}`}
           bind:value={$offsetAdjustment[index]}
-          onInput={(offsetY) => {
-            waveElement.updateChannelOffsetY(index, offsetY);
-            indicatorElement.updateChannelOffsetY(index, offsetY);
-          }}
+          onInput={() => {}}
           min={-1.0}
           max={1.0}
           step={0.01}
