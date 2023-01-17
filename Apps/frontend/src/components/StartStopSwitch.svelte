@@ -5,7 +5,6 @@
   export let channel;
 
   let color = LINE_COLORS_RGBA[channel];
-  let channelLabel = `CH ${channel}`;
 </script>
 
 <div class="control-panel--bottom_switch" data-cy="startStopSwitch-{channel}">

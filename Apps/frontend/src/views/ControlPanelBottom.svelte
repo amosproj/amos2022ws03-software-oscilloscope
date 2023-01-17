@@ -1,6 +1,6 @@
 <script>
   import Slider from "../components/Slider.svelte";
-  import StartStopButton from "../components/StartStopButton.svelte";
+  import StartStopButton from "../components/StartStopSwitch.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import {
@@ -59,7 +59,6 @@
         <Slider
           className="control-panel--entry"
           bind:value={$offsetAdjustment[index]}
-          onInput={() => {}}
           min={-1.0}
           max={1.0}
           step={0.01}
@@ -79,7 +78,6 @@
         <Slider
           className="control-panel--entry"
           bind:value={$amplitudeAdjustment[index]}
-          onInput={() => {}}
           min={MIN_AMPLITUDE}
           max={MAX_AMPLITUDE}
           calculateDisplayedValue={(value) => (1 / value).toFixed(2)}

@@ -9,7 +9,7 @@
 </script>
 
 <button
-  id="distribute-button"
+  class="icon-button mui-icon--ditribute"
   on:click={() => {
     let baseOffset = calculateOffset();
     let offsetY = 1 - baseOffset;
@@ -19,12 +19,6 @@
         offsetY -= baseOffset;
       }
     }
-  }}>Distribute waves</button
->
-
-<style>
-  #distribute-button {
-    border-style: solid;
-    border-color: grey;
-  }
-</style>
+  }}
+  data-cy="distribute-button"
+/>
