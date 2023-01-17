@@ -22,7 +22,7 @@
       onOffButton.click();
     }
     // clear canvas and indicators
-    indicatorElement.clearCanvas();
+    indicatorElement.reset();
     waveElement.resetPlot();
   }}
 />

@@ -23,6 +23,11 @@
     }
   };
 
+  export const reset = () => {
+    min = Array(NUM_CHANNELS).fill(0.0);
+    max = Array(NUM_CHANNELS).fill(0.0);
+  }
+
   /**
    * Start or stop indicator updates of a channel.
    *
