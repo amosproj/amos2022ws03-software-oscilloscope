@@ -8,7 +8,7 @@ on:
       - 'Apps/generator/**.*'
       - '.github/workflows/build-generator-automation.yml'
   pull_request:
-    branches: 
+    branches:
       - "dev"
       - "int"
       - "main"

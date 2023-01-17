@@ -2,7 +2,6 @@
   import Slider from "../components/Slider.svelte";
   import StartStopSwitch from "../components/StartStopSwitch.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
-  import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import {
     MAX_AMPLITUDE,
     MAX_SWEEP_SLIDER_VALUE,
@@ -42,7 +41,18 @@
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td>
-      <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
+      <Slider
+        className="control-panel--entry"
+        onInput={() => {
+          for (let index = 0; index < NUM_CHANNELS; index++) {
+            $timeSweep[index] = $timeSweep[NUM_CHANNELS];
+          }
+        }}
+        bind:value={$timeSweep[NUM_CHANNELS]}
+        min={MIN_SWEEP_SLIDER_VALUE}
+        max={MAX_SWEEP_SLIDER_VALUE}
+        dataCy={`timesweepSlider-${NUM_CHANNELS}`}
+      />
     </td>
     <td><!--Placeholder--></td>
   </tr>

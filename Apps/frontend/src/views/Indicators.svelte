@@ -23,7 +23,6 @@
   let current = Array(NUM_CHANNELS).fill(0.0);
   let min = Array(NUM_CHANNELS).fill(0.0);
   let max = Array(NUM_CHANNELS).fill(0.0);
-  let startStopLine = Array(NUM_CHANNELS).fill(true);
 
   export let scaleY;
 
@@ -64,27 +63,6 @@
       );
       writeText(channel, min[channel], max[channel]);
     }
-  };
-
-  /**
-   * Update the offset of a channel by a voltage.
-   *
-   * @param {number} channelIndex
-   * @param {number} offsetY
-   */
-  export const updateChannelOffsetY = (channelIndex, offsetY) => {
-    $offsetAdjustment[channelIndex] = offsetY;
-    update(current);
-  };
-
-  /**
-   * Start or stop indicator updates of a channel.
-   *
-   * @param {number} channelIndex
-   * @param {boolean} hasStarted
-   */
-  export const startStopChannelI = (channelIndex, hasStarted) => {
-    startStopLine[channelIndex] = hasStarted;
   };
 
   // ----- Svelte lifecycle hooks -----
