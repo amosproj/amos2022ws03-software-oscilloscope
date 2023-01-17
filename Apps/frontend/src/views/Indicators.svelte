@@ -11,7 +11,7 @@
     NUM_CHANNELS,
     NUM_INTERVALS_HORIZONTAL,
   } from "../const";
-  import { amplitudeAdjustment } from "../stores";
+  import { amplitudeAdjustment, offsetAdjustment } from "../stores";
   import { roundVoltage } from "../helper";
 
   let canvasElement;
@@ -19,7 +19,6 @@
   let current = Array(NUM_CHANNELS).fill(0.0);
   let min = Array(NUM_CHANNELS).fill(0.0);
   let max = Array(NUM_CHANNELS).fill(0.0);
-  let offsets = Array(NUM_CHANNELS).fill(0.0);
   let startStopLine = Array(NUM_CHANNELS).fill(true);
 
   export let scaleY;
@@ -39,22 +38,22 @@
       }
       const transformedCurrent = transformSampleToYCoord(
         current[channel],
-        offsets[channel],
+        $offsetAdjustment[channel],
         $amplitudeAdjustment[channel]
       );
       const transformedMin = transformSampleToYCoord(
         min[channel],
-        offsets[channel],
+        $offsetAdjustment[channel],
         $amplitudeAdjustment[channel]
       );
       const transformedMax = transformSampleToYCoord(
         max[channel],
-        offsets[channel],
+        $offsetAdjustment[channel],
         $amplitudeAdjustment[channel]
       );
       const transformedZero = transformSampleToYCoord(
         0,
-        offsets[channel],
+        $offsetAdjustment[channel],
         $amplitudeAdjustment[channel]
       );
       //drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
@@ -76,7 +75,7 @@
    * @param {number} offsetY
    */
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
-    offsets[channelIndex] = offsetY;
+    $offsetAdjustment[channelIndex] = offsetY;
     update(current);
   };
 
