@@ -61,10 +61,10 @@
         <StartStopButton
           channel={index}
           on:startStop={async (event) => {
-            waveElement.startStopChannelI(index, $channelConfig[index].enabled);
+            waveElement.startStopChannelI(index, !$channelConfig[index].enabled);
             indicatorElement.startStopChannelI(
               index,
-              $channelConfig[index].enabled
+              !$channelConfig[index].enabled
             );
           }}
         />

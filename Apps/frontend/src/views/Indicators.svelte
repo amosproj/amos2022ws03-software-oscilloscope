@@ -20,7 +20,7 @@
   let max = Array(NUM_CHANNELS).fill(0.0);
   let offsets = Array(NUM_CHANNELS).fill(0.0);
   let scalings = Array(NUM_CHANNELS).fill(1.0);
-  let startStopLine = Array(NUM_CHANNELS).fill(true);
+  let startStopLine = Array(NUM_CHANNELS).fill(false);
 
   export let scaleY;
 

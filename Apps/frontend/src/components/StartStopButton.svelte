@@ -10,13 +10,14 @@
   let color = LINE_COLORS_RGBA[channel];
 
   const handleStartStop = async () => {
-    dispatch("startStop", { buttonValue: !$channelConfig[channel].enabled });
+    dispatch("startStop", { buttonValue: $channelConfig[channel].enabled });
   };
 </script>
 
 <div class="control-panel--bottom_switch" data-cy="startStopSwitch-{channel}">
   <Switch
     hideLabel
+    small
     bind:toggled={$channelConfig[channel].enabled}
     on:click={handleStartStop}
     toggledColor={color}
