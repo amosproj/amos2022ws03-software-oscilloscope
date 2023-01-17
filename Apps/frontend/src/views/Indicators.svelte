@@ -40,11 +40,6 @@
       if ($channelActivated[channel]) {
         updateCurrentMinMax(samples[startIndex + channel], channel);
       }
-      const transformedCurrent = transformSampleToYCoord(
-        current[channel],
-        $offsetAdjustment[channel],
-        $amplitudeAdjustment[channel]
-      );
       const transformedMin = transformSampleToYCoord(
         min[channel],
         $offsetAdjustment[channel],
@@ -60,7 +55,6 @@
         $offsetAdjustment[channel],
         $amplitudeAdjustment[channel]
       );
-      //drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
       drawMinMaxZeroLines(
         channel,
         transformedMin,
@@ -146,7 +140,6 @@
    * Resize the canvas.
    */
   const resizeCanvas = () => {
-    canvasElement.width = INDICATOR_SECTION_WIDTH;
     canvasElement.height = CANVAS_HEIGHT;
     canvasContext = canvasElement.getContext("2d");
     // Translate coordinates to have zero point at the right center
@@ -160,28 +153,12 @@
     canvasContext.beginPath();
     canvasContext.strokeStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.moveTo(0, 0);
-    canvasContext.lineTo(-canvasElement.width, 0);
+    canvasContext.lineTo(-INDICATOR_SECTION_WIDTH, 0);
     canvasContext.stroke();
     canvasContext.font = `${INDICATOR_FONT_SIZE}px Arial`;
     canvasContext.fillStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.textAlign = "left";
-    canvasContext.fillText("0", -canvasElement.width, INDICATOR_FONT_SIZE);
-  };
-
-  /**
-   * Draw an indicator of the current voltage of a channel.
-   *
-   * @param {number} channel
-   * @param {number} voltage
-   * @param {string} color
-   */
-  const drawIndicator = (channel, voltage, color) => {
-    const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
-    const y = voltage;
-    canvasContext.fillStyle = color;
-    canvasContext.beginPath();
-    canvasContext.arc(x, y, INDICATOR_WIDTH / 2, 0, 2 * Math.PI);
-    canvasContext.fill();
+    canvasContext.fillText("0", -INDICATOR_SECTION_WIDTH, INDICATOR_FONT_SIZE);
   };
 
   /**
@@ -237,6 +214,3 @@
 </script>
 
 <canvas data-cy="indicators" bind:this={canvasElement} />
-
-<style>
-</style>

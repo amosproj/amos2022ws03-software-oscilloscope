@@ -4,6 +4,6 @@ describe("indicators", () => {
   });
 
   it("is visible", () => {
-    cy.get('[data-cy="indicators"]');
+    cy.get('[data-cy="indicators"]').should("be.visible");
   });
 });

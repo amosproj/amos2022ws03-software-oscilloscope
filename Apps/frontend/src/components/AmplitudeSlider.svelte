@@ -13,7 +13,7 @@
   let amplitude = 1.0;
 </script>
 
-<div class="control-panel-items" data-cy="amplitudeSlider-{channel}">
+<div class="control-panel--entry" data-cy="amplitudeSlider-{channel}">
   <input
     type="range"
     bind:value={amplitude}

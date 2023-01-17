@@ -12,9 +12,7 @@
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
   import ThicknessSwitch from "./ThicknessSwitch.svelte";
   import DistributeOffsetButton from "./DistributeOffsetButton.svelte";
-  export let waveElement;
   export let isEnabled;
-  export let indicatorElement;
   let btnOnOff;
 </script>
 
