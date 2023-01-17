@@ -34,6 +34,7 @@
   };
 </script>
 
+<div data-cy="indicators">
 {#each min as _, i}
     <div style="color: {LINE_COLORS_RGBA[i]}">
       [{i}]
@@ -42,3 +43,4 @@
       Max: {roundVoltage(max[i])} V
     </div>
 {/each}
+</div>
