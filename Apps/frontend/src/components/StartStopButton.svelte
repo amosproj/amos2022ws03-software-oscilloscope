@@ -14,7 +14,7 @@
   };
 </script>
 
-<div class="control-panel--bottom_switch">
+<div class="control-panel--bottom_switch" data-cy="startStopSwitch-{channel}">
   <Switch
     hideLabel
     bind:toggled={$channelConfig[channel].enabled}
