@@ -7,53 +7,15 @@
   import {
     amplitudeAdjustment,
     offsetAdjustment,
-    thicknessAdjustment,
     timeSweep,
   } from "../stores.js";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
   import ThicknessSwitch from "./ThicknessSwitch.svelte";
   import DistributeOffsetButton from "./DistributeOffsetButton.svelte";
-  import startStopLine from "./Waves.svelte";
   export let waveElement;
   export let isEnabled;
   export let indicatorElement;
   let btnOnOff;
-
-  let activeChannels = [];
-  let activeChannelCounter = NUM_CHANNELS;
-
-  let distributed = false;
-
-  const setActiveChannels = () => {
-    for (let i = 0; i < NUM_CHANNELS; i++) {
-      activeChannels[i] = false;
-    }
-  };
-
-  setActiveChannels();
-
-  const countActiveChannels = () => {
-    let count = 0;
-    for (let i = 0; i < NUM_CHANNELS; i++) {
-      if (activeChannels[i]) count++;
-    }
-    activeChannelCounter = count;
-  };
-
-  const distributeChannels = () => {
-    let offset = 2 / (activeChannelCounter + 1);
-    // loop over all channels and set offset
-    let offsetY = 1 - offset;
-    for (let index = 0; index < NUM_CHANNELS; index++) {
-      console.log(offsetY);
-      if (activeChannels[index]) {
-        waveElement.updateChannelOffsetY(index, offsetY);
-        indicatorElement.updateChannelOffsetY(index, offsetY);
-        document.getElementById(`offsetSlider-${index}`).value = offsetY;
-        offsetY -= offset;
-      }
-    }
-  };
 </script>
 
 <div class="controls">
@@ -75,15 +37,7 @@
         waveElement.resetPlot();
       }}
     />
-    <DistributeOffsetButton
-      activeChannelCount={activeChannelCounter}
-      on:distributeOffset={(event) => {
-        let offset = event.detail.offset;
-        // loop over all channels and set offset
-        distributed = true;
-        distributeChannels();
-      }}
-    />
+    <DistributeOffsetButton />
   </div>
   <div class="slider-wrapper">
     <div class="sliders">
