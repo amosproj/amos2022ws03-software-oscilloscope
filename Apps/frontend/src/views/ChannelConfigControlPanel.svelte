@@ -18,8 +18,6 @@
   function showPopup() {
     $presetPopupOpen = true;
     loadAllChannelConfigPresets();
-
-    console.log(JSON.stringify($availableChannelConfigPresets));
   }
 </script>
 

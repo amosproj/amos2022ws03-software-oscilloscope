@@ -31,6 +31,7 @@ export function getChannelConfig(presetName) {
     .then((response) => response.data)
     .catch(function (error) {
       console.error(ERR_MSG_COULD_NOT_RETRIEVE_CHANNEL_CONFIG);
+      console.error(error);
     });
   return response;
 }
@@ -52,6 +53,7 @@ export function postChannelConfig(data, presetName) {
     .then((response) => response.data)
     .catch(function (error) {
       console.log(ERR_MSG_COULD_NOT_STORE_CHANNEL_CONFIG);
+      console.error(error);
     });
 
   return response;

@@ -21,15 +21,16 @@
   },
   "dependencies": {
     "connect": "^3.2.0",
-    "express-openapi": "^12.1.0",
-    "js-yaml": "^3.3.0",
-    "ws": "^8.11.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.5.1",
-    "prettier": "2.8.0"
+    "eslint-plugin-prettier": "^4.2.1",
+    "express": "^4.18.2",
+    "express-openapi": "^12.1.0",
+    "js-yaml": "^3.3.0",
+    "prettier": "2.8.0",
+    "ws": "^8.11.0"
   }
 }
