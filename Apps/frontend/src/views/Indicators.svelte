@@ -11,6 +11,7 @@
     NUM_CHANNELS,
     NUM_INTERVALS_HORIZONTAL,
   } from "../const";
+  import { amplitudeAdjustment } from "../stores";
   import { roundVoltage } from "../helper";
 
   let canvasElement;
@@ -19,7 +20,6 @@
   let min = Array(NUM_CHANNELS).fill(0.0);
   let max = Array(NUM_CHANNELS).fill(0.0);
   let offsets = Array(NUM_CHANNELS).fill(0.0);
-  let scalings = Array(NUM_CHANNELS).fill(1.0);
   let startStopLine = Array(NUM_CHANNELS).fill(true);
 
   export let scaleY;
@@ -40,22 +40,22 @@
       const transformedCurrent = transformSampleToYCoord(
         current[channel],
         offsets[channel],
-        scalings[channel]
+        $amplitudeAdjustment[channel]
       );
       const transformedMin = transformSampleToYCoord(
         min[channel],
         offsets[channel],
-        scalings[channel]
+        $amplitudeAdjustment[channel]
       );
       const transformedMax = transformSampleToYCoord(
         max[channel],
         offsets[channel],
-        scalings[channel]
+        $amplitudeAdjustment[channel]
       );
       const transformedZero = transformSampleToYCoord(
         0,
         offsets[channel],
-        scalings[channel]
+        $amplitudeAdjustment[channel]
       );
       //drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
       drawMinMaxZeroLines(
@@ -77,17 +77,6 @@
    */
   export const updateChannelOffsetY = (channelIndex, offsetY) => {
     offsets[channelIndex] = offsetY;
-    update(current);
-  };
-
-  /**
-   * Update the scaling/amplification of a channel by a factor.
-   *
-   * @param {number} channelIndex
-   * @param {number} scaling
-   */
-  export const updateChannelScaling = (channelIndex, scaling) => {
-    scalings[channelIndex] = scaling;
     update(current);
   };
 

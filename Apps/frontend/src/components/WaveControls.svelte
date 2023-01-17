@@ -4,7 +4,12 @@
   import OnOffButton from "./OnOffButton.svelte";
   import ResetButton from "../views/ResetButton.svelte";
   import Slider from "./Slider.svelte";
-  import { timeSweep } from "../stores.js";
+  import {
+    amplitudeAdjustment,
+    offsetAdjustment,
+    thicknessAdjustment,
+    timeSweep,
+  } from "../stores.js";
   import TimeSweepSlider from "./TimeSweepSlider.svelte";
   import ThicknessSwitch from "./ThicknessSwitch.svelte";
   import DistributeOffsetButton from "./DistributeOffsetButton.svelte";
@@ -87,18 +92,7 @@
       <br />
       <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
-        <StartStopButton
-          channel_id={index}
-          on:startStop={async (event) => {
-            let hasStarted = event.detail.buttonValue;
-            waveElement.startStopChannelI(index, hasStarted);
-            indicatorElement.startStopChannelI(index, hasStarted);
-            activeChannels[index] = hasStarted;
-            console.log(hasStarted);
-            countActiveChannels();
-            console.log(activeChannelCounter);
-          }}
-        />
+        <StartStopButton channel_id={index} />
       {/each}
     </div>
     <div class="sliders">
@@ -107,12 +101,7 @@
       <br />
       <small>Channels</small>
       {#each { length: NUM_CHANNELS } as _, index}
-        <ThicknessSwitch
-          channel={index}
-          onClick={(isThick) => {
-            waveElement.updateChannelThickness(index, !isThick);
-          }}
-        />
+        <ThicknessSwitch channel={index} />
       {/each}
     </div>
     <div class="sliders">
@@ -123,11 +112,11 @@
       {#each { length: NUM_CHANNELS } as _, index}
         <Slider
           id={`offsetSlider-${index}`}
+          bind:value={$offsetAdjustment[index]}
           onInput={(offsetY) => {
             waveElement.updateChannelOffsetY(index, offsetY);
             indicatorElement.updateChannelOffsetY(index, offsetY);
           }}
-          value={0}
           min={-1.0}
           max={1.0}
           step={0.01}
@@ -157,10 +146,7 @@
         <Slider
           id={`amplitudeSlider-${index}`}
           className="amplitude-slider"
-          onInput={(value) => {
-            waveElement.updateChannelScaling(index, value);
-            indicatorElement.updateChannelScaling(index, value);
-          }}
+          bind:value={$amplitudeAdjustment[index]}
           max={MAX_AMPLITUDE}
           min={MIN_AMPLITUDE}
           calcDisplayValue={(value) => (1 / value).toFixed(2)}
