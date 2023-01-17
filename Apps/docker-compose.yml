@@ -2,7 +2,7 @@ version: '3'
 
 services:
   generator:
-    image: sosci/generator:nightly
+    image: sosci/generator
     hostname: generator
     build:
       context: ./generator
