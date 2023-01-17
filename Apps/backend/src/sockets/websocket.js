@@ -9,7 +9,7 @@ import { DEFAULT_PACKAGE_SIZE } from "../const.js";
  * WebSocket Interface
  */
 export class WebSocketInterface {
-   /**
+  /**
    * Create a new Web socket.
    * @param {number} port Port which shall be used to bind the web socket
    * @param {string} address Address which shall be used to bind the web socket
@@ -17,7 +17,6 @@ export class WebSocketInterface {
   constructor(port, address) {
     this.port = port;
     this.address = address;
-
 
     this.metrics = new Metrics("Web Socket");
     this.logger = new Logger("WebSocket");
@@ -27,7 +26,6 @@ export class WebSocketInterface {
     this.client = undefined;
     /** Package which will be sent to client */
     this.deliveryPackage = new DeliveryPackage(DEFAULT_PACKAGE_SIZE);
-
   }
 
   /**

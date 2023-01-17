@@ -12,9 +12,30 @@ const configService = {
    * @memberof ConfigService
    * @function
    **/
-  getConfig() {
+  getConfigs() {
     try {
-      var raw = fs.readFileSync(PATH_PRESET);
+      var files_ = [];
+      var files = fs.readdirSync(PATH_PRESET);
+      for (var i in files) {
+        var name = files[i].replace(".json", "");
+        files_.push(name);
+      }
+      return files_;
+    } catch (error) {
+      return [];
+    }
+  },
+  /**
+   * Get channel configuration by id.
+   * @param {string} id String of preset name
+   * @returns ChannelConfig as json or undefined
+   * @memberof ConfigService
+   * @function
+   **/
+  getConfigById(id) {
+    try {
+      var file = `${PATH_PRESET}/${id}.json`;
+      var raw = fs.readFileSync(file);
       var preset = JSON.parse(raw);
 
       return preset;
@@ -28,12 +49,14 @@ const configService = {
    *
    * body ChannelConfig Create a new configuration for channels
    * @param {JSON} input JSON formatted channel configuration
+   * @param {string} id String of preset name
    * @returns ChannelConfig equal to input
    * @memberof ConfigService
    * @function
    **/
-  postConfig(input) {
-    fs.writeFileSync(PATH_PRESET, JSON.stringify(input));
+  postConfig(input, id) {
+    let filename = `${PATH_PRESET}/${id}.json`;
+    fs.writeFileSync(filename, JSON.stringify(input));
     return input;
   },
 };

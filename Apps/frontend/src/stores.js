@@ -6,12 +6,13 @@ export const osciEnabled = writable(false);
 
 export const osciData = writable([]);
 
+export const availableChannelConfigPresets = writable([]);
 export const channelConfig = writable(
   Array(NUM_CHANNELS + 1)
     .fill()
     .map(() => ({
       channelId: 0,
-      enabled: true,
+      enabled: false,
       thickness: false,
       offset: 0,
       sweepSpeed: 5,
@@ -20,4 +21,5 @@ export const channelConfig = writable(
 );
 
 export const expandedPanelOpen = writable(false);
+export const presetPopupOpen = writable(false);
 export const isGND = writable(false);

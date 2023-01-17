@@ -26,9 +26,40 @@ paths:
     get:
       tags:
         - config
+      summary: Get all channel configurations
+      description: Get all channel configuration.
+      operationId: getConfigs
+      parameters:
+        - name: api_key
+          in: header
+          description: ""
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelConfigList"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ChannelConfigList"
+        "404":
+          description: No channel config found
+      security:
+        - api_key: []
+      x-swagger-router-controller: Config
+  /config/{id}:
+    get:
+      tags:
+        - config
       summary: Get the current channel configuration
       description: Get the current channel configuration if there is one.
-      operationId: getConfig
+      operationId: getConfigById
       parameters:
         - name: api_key
           in: header
@@ -68,6 +99,12 @@ paths:
           required: true
           style: simple
           explode: false
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: ""
+          required: true
           schema:
             type: string
       requestBody:
@@ -167,6 +204,18 @@ components:
             enabled: true
             sweepSpeed: 1
             channelId: 1
+      xml:
+        name: channelconfig
+    ChannelConfigList:
+      type: object
+      properties:
+        configs:
+          type: array
+          xml:
+            name: configs
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ChannelConfig"
       xml:
         name: channelconfig
   securitySchemes:

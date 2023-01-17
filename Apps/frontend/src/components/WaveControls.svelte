@@ -1,6 +1,6 @@
 <script>
   import { MAX_AMPLITUDE, MIN_AMPLITUDE, NUM_CHANNELS } from "../const.js";
-  import StartStopButton from "../views/StartStopButton.svelte";
+  import StartStopButton from "./StartStopButton.svelte";
   import OnOffButton from "./OnOffButton.svelte";
   import ResetButton from "../views/ResetButton.svelte";
   import Slider from "./Slider.svelte";

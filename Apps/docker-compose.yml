@@ -46,6 +46,8 @@ services:
       - WS_PORT=9000
       - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
+      - FRONTEND_ORIGIN=http://localhost:5173
+      - API_KEY=sosci-local
     ports:
       - 34255:34255
       - 9000:9000

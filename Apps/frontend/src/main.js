@@ -10,6 +10,5 @@ const app = new App({
 });
 
 console.log(`Starting frontend on ${BASE_URL}`);
-//console.log(channelConfig)
 
 export default app;

@@ -5,9 +5,3 @@ repos:
     -   id: trailing-whitespace
     -   id: check-yaml
     -   id: end-of-file-fixer
--   repo: local
-    hooks:
-    -   id: npm-lint-frontend
-        name: npm-lint-frontend
-        entry: bash -c 'cd Apps/frontend && npm run format'
-        language: node

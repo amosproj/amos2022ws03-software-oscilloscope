@@ -16,7 +16,6 @@
     small
     bind:toggled={$channelConfig[channel].thickness}
     on:click={() => {
-      $channelConfig[channel].thickness = !channelConfig[channel].thickness;
       onClick();
     }}
     toggledColor={LINE_COLORS_RGBA[channel]}

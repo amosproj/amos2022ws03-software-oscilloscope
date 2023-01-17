@@ -21,6 +21,8 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    environment:
+      - API_KEY=${API_KEY:-noteset}
     volumes:
       - backend-data:/opt/sosci/data
     networks:
@@ -47,10 +49,12 @@ services:
     image: sosci/backend:${VERSION_TAG:-latest}
     pull_policy: always
     environment:
+      - API_KEY=${API_KEY:-noteset}
       - UDP_PORT=34259
       - WS_PORT=9000
       - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
+      - FRONTEND_ORIGIN=https://amos-sosci.die-degens.eu/dev/ui/
     ports:
       - 34259:34259
     networks:

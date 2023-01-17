@@ -26,18 +26,18 @@ export default function (configService) {
    * @function
    */
   function GET(req, res, next) {
-    var presets = configService.getConfigs();
-    res.status(200).json(presets);
+    var preset = configService.getConfigById(req.params.id);
+    if (preset === undefined) {
+      res.status(404).json("Not found");
+    } else {
+      res.status(200).json(preset);
+    }
   }
-  /**
-   * Handle a POST request
-   * @param {*} req request object
-   * @param {*} res response object
-   * @param {*} next
-   * @memberof ConfigController
-   */
+
   function POST(req, res, next) {
-    res.status(200).json(configService.postConfig(req.body, req.query.id));
+    res
+      .status(501)
+      .json("not implemented. Available as POST on /config?id=<id>");
   }
 
   return operations;

@@ -4,6 +4,7 @@
   import Indicators from "./Indicators.svelte";
   import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
   import ControlPanelBottom from "./ControlPanelBottom.svelte";
+  import ControlPanelSide from "./ControlPanelSide.svelte";
   import GeneralButtons from "./GeneralButtons.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
@@ -92,7 +93,9 @@
         <Waves bind:this={waveElement} {scalesY} />
       </div>
     </div>
-    <div class="control-panel--right">Overall Buttons</div>
+    <div class="control-panel--right">
+      <ControlPanelSide {waveElement} {indicatorElement} />
+    </div>
     <div
       class="control-panel--bottom"
       bind:clientHeight={controlPanelBottomHeight}
