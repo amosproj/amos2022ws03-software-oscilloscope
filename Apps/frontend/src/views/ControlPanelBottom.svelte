@@ -1,6 +1,6 @@
 <script>
   import Slider from "../components/Slider.svelte";
-  import StartStopButton from "../components/StartStopSwitch.svelte";
+  import StartStopSwitch from "../components/StartStopSwitch.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
   import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import {
@@ -50,7 +50,7 @@
     <tr>
       <td>Ch. {index}</td>
       <td>
-        <StartStopButton channel={index} />
+        <StartStopSwitch channel={index} />
       </td>
       <td>
         <ThicknessSwitch channel={index} />
