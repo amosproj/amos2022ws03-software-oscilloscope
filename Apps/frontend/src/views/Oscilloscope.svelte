@@ -82,7 +82,7 @@
       <GeneralButtons {waveElement} {indicatorElement} />
     </div>
     <div class="indicators">
-      <Indicators bind:this={indicatorElement} scaleY={Math.max(...scalesY)} />
+      <Indicators bind:this={indicatorElement} />
     </div>
     <div class="oscilloscope">
       <div class="oscilloscope--coordinate-system">
