@@ -39,7 +39,6 @@
   );
   let lines = [];
   let heads = [];
-  //let startStopLine = [];
   let xArr;
   let xLast;
 

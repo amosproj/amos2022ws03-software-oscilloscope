@@ -11,7 +11,11 @@
     NUM_CHANNELS,
     NUM_INTERVALS_HORIZONTAL,
   } from "../const";
-  import { amplitudeAdjustment, offsetAdjustment } from "../stores";
+  import {
+    amplitudeAdjustment,
+    channelActivated,
+    offsetAdjustment,
+  } from "../stores";
   import { roundVoltage } from "../helper";
 
   let canvasElement;
@@ -33,7 +37,7 @@
     drawGlobalZeroLine();
 
     for (let channel = 0; channel < NUM_CHANNELS; channel++) {
-      if (startStopLine[channel]) {
+      if ($channelActivated[channel]) {
         updateCurrentMinMax(samples[startIndex + channel], channel);
       }
       const transformedCurrent = transformSampleToYCoord(
