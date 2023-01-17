@@ -107,10 +107,10 @@ nav {
   grid-row: 2;
   justify-self: end;
   font-family: monospace;
-  font-size: 12px;
+  font-size: min(1em, 2vw);
   text-align: right;
-  line-height: normal;
-  padding-right: 10px;
+  line-height: calc(0.5vw + 0.5em);
+  padding-right: 1vmax;
 }
 
 .oscilloscope {
