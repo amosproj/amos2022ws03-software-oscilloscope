@@ -4,7 +4,7 @@
   import Indicators from "./Indicators.svelte";
   import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
   import ControlPanelBottom from "./ControlPanelBottom.svelte";
-  import ControlPanelSide from "./ControlPanelSide.svelte";
+  import ControlPanelRight from "./ControlPanelRight.svelte";
   import GeneralButtons from "./GeneralButtons.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
@@ -94,7 +94,7 @@
       </div>
     </div>
     <div class="control-panel--right">
-      <ControlPanelSide {waveElement} {indicatorElement} />
+      <ControlPanelRight {waveElement} {indicatorElement} />
     </div>
     <div
       class="control-panel--bottom"

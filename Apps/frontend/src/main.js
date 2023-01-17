@@ -1,7 +1,6 @@
 import "./app.scss";
 // @ts-ignore
 import App from "./App.svelte";
-import { channelConfig } from "./stores";
 
 import { BASE_URL } from "./const";
 
