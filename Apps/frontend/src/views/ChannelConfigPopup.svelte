@@ -65,6 +65,14 @@
       );
     }
   }
+
+  function handleSaveButton() {
+    if(document.getElementById("presetName").value==="") { 
+        document.getElementById('storeChannelConfig').disabled = true; 
+    } else { 
+        document.getElementById('storeChannelConfig').disabled = false;
+    }
+  }
 </script>
 
 <div data-cy="channelConfigPreset">
@@ -83,8 +91,8 @@
   </div>
   <div style="margin-left: auto;">
     <h3>{LABEL_HEADER_CREATE_CHANNEL_CONFIG}</h3>
-    <input id="presetName" type="text" bind:value={presetName} />
-    <button id="storeChannelConfig" on:click={storeChannelConfig}
+    <input id="presetName" type="text" bind:value={presetName}  on:change={handleSaveButton}/>
+    <button id="storeChannelConfig" on:click={storeChannelConfig} disabled
       >{LABEL_BUTTON_UPDATE_CHANNEL_CONFIG}</button
     >
   </div>
