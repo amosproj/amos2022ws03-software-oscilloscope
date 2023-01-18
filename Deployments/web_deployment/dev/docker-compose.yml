@@ -81,6 +81,8 @@ services:
       - "traefik.http.routers.sosci-dev-backend-rest.service=sosci-dev-backend-rest"
       - "traefik.http.services.sosci-dev-backend-rest.loadbalancer.server.port=8080"
       - "traefik.http.routers.sosci-dev-backend-rest.middlewares=sosci-backend-stripprefix-dev-rest"
+    volumes:
+      - backend-data:/opt/sosci/data
 
 networks:
   internal:
