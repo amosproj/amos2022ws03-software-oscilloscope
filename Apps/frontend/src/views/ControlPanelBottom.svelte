@@ -1,8 +1,7 @@
 <script>
   import Slider from "../components/Slider.svelte";
-  import StartStopButton from "../components/StartStopButton.svelte";
+  import StartStopSwitch from "../components/StartStopSwitch.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
-  import TimeSweepSlider from "../components/TimeSweepSlider.svelte";
   import {
     MAX_AMPLITUDE,
     MAX_SWEEP_SLIDER_VALUE,
@@ -11,10 +10,13 @@
     MIN_SWEEP_SLIDER_VALUE,
     NUM_CHANNELS,
   } from "../const";
-  import { expandedPanelOpen, timeSweep } from "../stores";
+  import {
+    amplitudeAdjustment,
+    expandedPanelOpen,
+    offsetAdjustment,
+    timeSweep,
+  } from "../stores";
 
-  export let waveElement;
-  export let indicatorElement;
   export let controlPanelBottomHeight = 0;
 </script>
 
@@ -39,7 +41,18 @@
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td>
-      <TimeSweepSlider channel={NUM_CHANNELS + 1} isCommon={true} />
+      <Slider
+        className="control-panel--entry"
+        onInput={() => {
+          for (let index = 0; index < NUM_CHANNELS; index++) {
+            $timeSweep[index] = $timeSweep[NUM_CHANNELS];
+          }
+        }}
+        bind:value={$timeSweep[NUM_CHANNELS]}
+        min={MIN_SWEEP_SLIDER_VALUE}
+        max={MAX_SWEEP_SLIDER_VALUE}
+        dataCy={`timesweepSlider-${NUM_CHANNELS}`}
+      />
     </td>
     <td><!--Placeholder--></td>
   </tr>
@@ -47,31 +60,15 @@
     <tr>
       <td>Ch. {index}</td>
       <td>
-        <StartStopButton
-          channel={index}
-          on:startStop={async (event) => {
-            let hasStarted = event.detail.buttonValue;
-            waveElement.startStopChannelI(index, hasStarted);
-            indicatorElement.startStopChannelI(index, hasStarted);
-          }}
-        />
+        <StartStopSwitch channel={index} />
       </td>
       <td>
-        <ThicknessSwitch
-          channel={index}
-          onClick={(isThick) => {
-            waveElement.updateChannelThickness(index, !isThick);
-          }}
-        />
+        <ThicknessSwitch channel={index} />
       </td>
       <td>
         <Slider
           className="control-panel--entry"
-          onInput={(offsetY) => {
-            waveElement.updateChannelOffsetY(index, offsetY);
-            indicatorElement.updateChannelOffsetY(index, offsetY);
-          }}
-          value={0}
+          bind:value={$offsetAdjustment[index]}
           min={-1.0}
           max={1.0}
           step={0.01}
@@ -81,20 +78,16 @@
       <td>
         <Slider
           className="control-panel--entry"
-          onInput={() => {}}
+          bind:value={$timeSweep[index]}
           min={MIN_SWEEP_SLIDER_VALUE}
           max={MAX_SWEEP_SLIDER_VALUE}
-          bind:value={$timeSweep[index]}
           dataCy={`timesweepSlider-${index}`}
         />
       </td>
       <td>
         <Slider
           className="control-panel--entry"
-          onInput={(value) => {
-            waveElement.updateChannelScaling(index, value);
-            indicatorElement.updateChannelScaling(index, value);
-          }}
+          bind:value={$amplitudeAdjustment[index]}
           min={MIN_AMPLITUDE}
           max={MAX_AMPLITUDE}
           calculateDisplayedValue={(value) => (1 / value).toFixed(2)}

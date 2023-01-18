@@ -4,14 +4,14 @@ services:
   generator:
     image: sosci/generator
     hostname: generator
-    build: 
+    build:
       context: ./generator
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       - HOST=0.0.0.0:34254
       - TARGET=backend:34255
-      - PPS=100000.0
+      - PPS=10000.0
       - SIG_FREQ=1.0
     ports:
       - 34254:34254
@@ -42,15 +42,22 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     environment:
-      - HOST_PORT=34255
+      - UDP_PORT=34255
+      - WS_PORT=9000
+      - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
-    ports: 
+      - FRONTEND_ORIGIN=http://localhost:5000
+      - API_KEY=sosci-local
+    ports:
       - 34255:34255
       - 9000:9000
+      - 8081:8080
     networks:
       - internal
       - web
     restart: unless-stopped
+    volumes:
+      - backend-data:/opt/sosci/data
 
 networks:
   internal:
@@ -58,3 +65,6 @@ networks:
     internal: true
   web:
     driver: bridge
+
+volumes:
+  backend-data:

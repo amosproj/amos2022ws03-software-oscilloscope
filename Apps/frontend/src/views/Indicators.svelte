@@ -11,6 +11,11 @@
     NUM_CHANNELS,
     NUM_INTERVALS_HORIZONTAL,
   } from "../const";
+  import {
+    amplitudeAdjustment,
+    channelActivated,
+    offsetAdjustment,
+  } from "../stores";
   import { roundVoltage } from "../helper";
 
   let canvasElement;
@@ -18,9 +23,6 @@
   let current = Array(NUM_CHANNELS).fill(0.0);
   let min = Array(NUM_CHANNELS).fill(0.0);
   let max = Array(NUM_CHANNELS).fill(0.0);
-  let offsets = Array(NUM_CHANNELS).fill(0.0);
-  let scalings = Array(NUM_CHANNELS).fill(1.0);
-  let startStopLine = Array(NUM_CHANNELS).fill(true);
 
   export let scaleY;
 
@@ -34,23 +36,23 @@
     drawGlobalZeroLine();
 
     for (let channel = 0; channel < NUM_CHANNELS; channel++) {
-      if (startStopLine[channel]) {
+      if ($channelActivated[channel]) {
         updateCurrentMinMax(samples[startIndex + channel], channel);
       }
       const transformedMin = transformSampleToYCoord(
         min[channel],
-        offsets[channel],
-        scalings[channel]
+        $offsetAdjustment[channel],
+        $amplitudeAdjustment[channel]
       );
       const transformedMax = transformSampleToYCoord(
         max[channel],
-        offsets[channel],
-        scalings[channel]
+        $offsetAdjustment[channel],
+        $amplitudeAdjustment[channel]
       );
       const transformedZero = transformSampleToYCoord(
         0,
-        offsets[channel],
-        scalings[channel]
+        $offsetAdjustment[channel],
+        $amplitudeAdjustment[channel]
       );
       drawMinMaxZeroLines(
         channel,
@@ -61,38 +63,6 @@
       );
       writeText(channel, min[channel], max[channel]);
     }
-  };
-
-  /**
-   * Update the offset of a channel by a voltage.
-   *
-   * @param {number} channelIndex
-   * @param {number} offsetY
-   */
-  export const updateChannelOffsetY = (channelIndex, offsetY) => {
-    offsets[channelIndex] = offsetY;
-    update(current);
-  };
-
-  /**
-   * Update the scaling/amplification of a channel by a factor.
-   *
-   * @param {number} channelIndex
-   * @param {number} scaling
-   */
-  export const updateChannelScaling = (channelIndex, scaling) => {
-    scalings[channelIndex] = scaling;
-    update(current);
-  };
-
-  /**
-   * Start or stop indicator updates of a channel.
-   *
-   * @param {number} channelIndex
-   * @param {boolean} hasStarted
-   */
-  export const startStopChannelI = (channelIndex, hasStarted) => {
-    startStopLine[channelIndex] = hasStarted;
   };
 
   // ----- Svelte lifecycle hooks -----
