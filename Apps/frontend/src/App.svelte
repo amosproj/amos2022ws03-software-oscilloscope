@@ -1,25 +1,14 @@
 <script>
-  import Logo from "./views/Logo.svelte";
-  import Oscilloscope from "./views/Oscilloscope.svelte";
+  import Layout from "./views/Oscilloscope.svelte";
 </script>
 
-<main>
-  <div>
-    <Logo />
-  </div>
-  <div class="canvas">
-    <Oscilloscope />
-  </div>
+<svelte:head>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
+  <link rel="stylesheet" href="node_modules/svelte-material-ui/bare.css" />
+</svelte:head>
+<main data-cy="oscilloscope">
+  <Layout />
 </main>
-
-<style>
-  main {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .canvas {
-    flex-grow: 1;
-  }
-</style>

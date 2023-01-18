@@ -8,7 +8,7 @@ on:
       - 'Apps/frontend/**.*'
       - '.github/workflows/build-frontend-automation.yml'
   pull_request:
-    branches: 
+    branches:
       - "dev"
       - "int"
       - "main"

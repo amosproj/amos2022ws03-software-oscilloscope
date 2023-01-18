@@ -61,7 +61,7 @@ jobs:
       - "build-push"
 
     steps:
-      - 
+      -
         if: github.event.pull_request.base.ref == 'dev'
         name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v2
@@ -69,7 +69,7 @@ jobs:
           webhook_url: ${{ secrets.WEBHOOK_URL_DEV }}?VERSION_TAG=nightly
           webhook_secret: "none"
           verbose: true
-      - 
+      -
         if: github.event.pull_request.base.ref == 'int'
         name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v2
@@ -77,7 +77,7 @@ jobs:
           webhook_url: ${{ secrets.WEBHOOK_URL_INT }}?VERSION_TAG=${{ github.event.pull_request.title }}
           webhook_secret: "none"
           verbose: true
-      - 
+      -
         if: github.event.pull_request.base.ref == 'main'
         name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v2

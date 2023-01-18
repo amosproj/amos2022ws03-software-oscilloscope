@@ -58,10 +58,3 @@
 </script>
 
 <canvas bind:this={canvasElement} />
-
-<style>
-  canvas {
-    border: 1px solid white;
-    background-color: black;
-  }
-</style>
