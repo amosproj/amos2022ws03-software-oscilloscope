@@ -5,10 +5,10 @@ services:
     depends_on:
       - remote_listener
     image: sosci/backend
-    build: 
+    build:
       context: ../../Apps/backend
       dockerfile: ./Dockerfile
-    
+
     restart: always
 
     environment:
@@ -25,10 +25,10 @@ services:
 
   remote_listener:
     image: sosci/backend/remote_listener
-    build: 
+    build:
       context: ../../Apps/backend/test/remote_listener/
       dockerfile: ./Dockerfile
-    
+
     container_name: remote_listener
     restart: always
     networks:

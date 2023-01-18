@@ -13,4 +13,4 @@ RUN npm install
 # Copy source code into docker container
 COPY . ./
 
-CMD [ "npm", "start" ] 
+CMD [ "npm", "start" ]

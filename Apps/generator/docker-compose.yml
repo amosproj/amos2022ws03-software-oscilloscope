@@ -3,10 +3,10 @@ version: '3'
 services:
   backend:
     image: sosci/backend
-    build: 
+    build:
       context: ./
       dockerfile: ./Dockerfile
-    
+
     container_name: "sosci-backend"
     restart: always
 

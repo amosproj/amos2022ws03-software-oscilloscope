@@ -6,7 +6,7 @@ on:
       - 'Apps/generator/**.*'
       - '.github/workflows/test-generator-automation.yml'
   pull_request:
-    branches: 
+    branches:
       - "dev"
       - "int"
       - "main"
