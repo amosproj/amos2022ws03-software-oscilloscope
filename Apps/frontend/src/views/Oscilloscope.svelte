@@ -101,13 +101,9 @@
       bind:clientHeight={controlPanelBottomHeight}
     >
       {#if controlPanelBottomHeight > MIN_CONTROL_PANEL_BOTTOM_HEIGHT}
-        <ControlPanelBottom
-          {waveElement}
-          {indicatorElement}
-          {controlPanelBottomHeight}
-        />
+        <ControlPanelBottom {controlPanelBottomHeight} />
       {:else}
-        <ExpandableControlPanel {waveElement} {indicatorElement} />
+        <ExpandableControlPanel />
       {/if}
     </div>
   </div>

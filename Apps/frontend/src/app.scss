@@ -125,6 +125,7 @@ nav {
 
   &--waves {
     position: absolute;
+    margin-top: 0.1vw;
     inset: 0;
   }
 }
@@ -132,11 +133,11 @@ nav {
 .control-panel {
   &--top {
     &_general {
-      grid-column: 2;
+      grid-column: 2/6;
       grid-row: 1;
       display: flex;
       align-self: center;
-      justify-content: space-evenly;
+      justify-content: start;
     }
   }
 
@@ -263,5 +264,9 @@ nav {
 
   &--drop-down {
     background-image: url("./assets/mui_drop-down.svg");
+  }
+
+  &--distribute {
+    background-image: url("./assets/mui_distribute.svg");
   }
 }

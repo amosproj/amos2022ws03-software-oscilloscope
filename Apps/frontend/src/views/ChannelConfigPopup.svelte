@@ -6,7 +6,8 @@
     postChannelConfig,
   } from "../rest/ChannelConfigController";
   import {
-    channelConfig,
+    getLiveChannelConfig,
+    setLiveChannelConfig,
     availableChannelConfigPresets,
     presetPopupOpen,
   } from "../stores";
@@ -19,9 +20,6 @@
   } from "../labels";
   import { EVENT_LOADED_CHANNEL_CONFIG } from "../events";
 
-  export let waveElement;
-  export let indicatorElement;
-
   let presetName;
   let selectedPreset;
 
@@ -30,47 +28,20 @@
   async function loadChannelConfigById() {
     var response = await getChannelConfig(selectedPreset);
 
-    if (response !== undefined) channelConfig.set(response.channels);
+    if (response !== undefined) setLiveChannelConfig(response.channels);
 
-    updateChannelConfig();
     dispatch(EVENT_LOADED_CHANNEL_CONFIG, {});
   }
 
   async function storeChannelConfig() {
-    await postChannelConfig($channelConfig, presetName);
-  }
-
-  function updateChannelConfig() {
-    for (let index = 0; index < NUM_CHANNELS; index++) {
-      /* StartStop */
-      waveElement.startStopChannelI(index, $channelConfig[index].enabled);
-      indicatorElement.startStopChannelI(index, $channelConfig[index].enabled);
-      /* Thickness */
-      waveElement.updateChannelThickness(
-        index,
-        $channelConfig[index].thickness
-      );
-      /* Offset */
-      waveElement.updateChannelOffsetY(index, $channelConfig[index].offset);
-      indicatorElement.updateChannelOffsetY(
-        index,
-        $channelConfig[index].offset
-      );
-      /* Sweepspeed is automatically updated */
-      /* Amplitude */
-      waveElement.updateChannelScaling(index, $channelConfig[index].amplitude);
-      indicatorElement.updateChannelScaling(
-        index,
-        $channelConfig[index].amplitude
-      );
-    }
+    await postChannelConfig(getLiveChannelConfig(), presetName);
   }
 
   function handleSaveButton() {
-    if(document.getElementById("presetName").value==="") { 
-        document.getElementById('storeChannelConfig').disabled = true; 
-    } else { 
-        document.getElementById('storeChannelConfig').disabled = false;
+    if (document.getElementById("presetName").value === "") {
+      document.getElementById("storeChannelConfig").disabled = true;
+    } else {
+      document.getElementById("storeChannelConfig").disabled = false;
     }
   }
 </script>
@@ -91,7 +62,12 @@
   </div>
   <div style="margin-left: auto;">
     <h3>{LABEL_HEADER_CREATE_CHANNEL_CONFIG}</h3>
-    <input id="presetName" type="text" bind:value={presetName}  on:change={handleSaveButton}/>
+    <input
+      id="presetName"
+      type="text"
+      bind:value={presetName}
+      on:change={handleSaveButton}
+    />
     <button id="storeChannelConfig" on:click={storeChannelConfig} disabled
       >{LABEL_BUTTON_UPDATE_CHANNEL_CONFIG}</button
     >
