@@ -74,7 +74,7 @@ services:
       - "traefik.http.services.sosci-dev-backend.loadbalancer.server.port=9000"
       - "traefik.http.routers.sosci-dev-backend.middlewares=sosci-backend-stripprefix-dev"
       # Main REST API
-      - "traefik.http.middlewares.sosci-backend-stripprefix-dev-rest.stripprefix.prefixes=/backend/rest"
+      - "traefik.http.middlewares.sosci-backend-stripprefix-dev-rest.stripprefix.prefixes=/dev/backend/rest"
       - "traefik.http.routers.sosci-dev-backend-rest.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/backend/rest`)"
       - "traefik.http.routers.sosci-dev-backend-rest.entrypoints=websecure"
       - "traefik.http.routers.sosci-dev-backend-rest.tls.certresolver=letsencrypt"
