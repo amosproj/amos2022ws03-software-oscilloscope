@@ -1,11 +1,7 @@
 <script>
   import Switch from "svelte-toggle";
   import { LINE_COLORS_RGBA } from "../const.js";
-  import { channelConfig } from "../stores.js";
-
-  export let onClick = (event) => {
-    console.error(`Missing implementation for thickness)!`);
-  };
+  import { thicknessAdjustment } from "../stores.js";
 
   export let channel;
 </script>
@@ -14,10 +10,7 @@
   <Switch
     hideLabel
     small
-    bind:toggled={$channelConfig[channel].thickness}
-    on:click={() => {
-      onClick();
-    }}
+    bind:toggled={$thicknessAdjustment[channel]}
     toggledColor={LINE_COLORS_RGBA[channel]}
   />
 </div>
