@@ -55,7 +55,7 @@ services:
       - WS_PORT=9000
       - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
-      - FRONTEND_ORIGIN=https://amos-sosci.die-degens.eu/dev/ui/
+      - FRONTEND_ORIGIN=https://amos-sosci.die-degens.eu,http://localhost:5173,http://localhost:5000
     ports:
       - 34255:34255
     networks:
