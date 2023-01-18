@@ -54,7 +54,7 @@ services:
       - WS_PORT=9000
       - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
-      - FRONTEND_ORIGIN=https://amos-sosci.die-degens.eu/dev/ui/
+      - FRONTEND_ORIGIN=https://amos-sosci.die-degens.eu
     ports:
       - 34259:34259
     networks:
@@ -77,9 +77,11 @@ services:
       - "traefik.http.routers.sosci-prod-backend-rest.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/backend/rest`)"
       - "traefik.http.routers.sosci-prod-backend-rest.entrypoints=websecure"
       - "traefik.http.routers.sosci-prod-backend-rest.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.sosci-prod-backend-rest.service=sosci-prod-backend"
-      - "traefik.http.services.sosci-prod-backend-rest.loadbalancer.server.port=8081"
+      - "traefik.http.routers.sosci-prod-backend-rest.service=sosci-prod-backend-rest"
+      - "traefik.http.services.sosci-prod-backend-rest.loadbalancer.server.port=8080"
       - "traefik.http.routers.sosci-prod-backend-rest.middlewares=sosci-backend-stripprefix-prod-rest"
+    volumes:
+      - backend-data:/opt/sosci/data
       
 
 networks:
