@@ -65,14 +65,22 @@ services:
     labels:
       - "traefik.enable=true"
       # Remove path prefix
-      - "traefik.http.middlewares.sosci-backend-stripprefix-dev.stripprefix.prefixes=/dev/api"
+      - "traefik.http.middlewares.sosci-backend-stripprefix-dev.stripprefix.prefixes=/dev/backend/ws"
         # Main
-      - "traefik.http.routers.sosci-dev-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/backend/ws`)"
       - "traefik.http.routers.sosci-dev-backend.entrypoints=websecure"
       - "traefik.http.routers.sosci-dev-backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-dev-backend.service=sosci-dev-backend"
       - "traefik.http.services.sosci-dev-backend.loadbalancer.server.port=9000"
       - "traefik.http.routers.sosci-dev-backend.middlewares=sosci-backend-stripprefix-dev"
+      # Main REST API
+      - "traefik.http.middlewares.sosci-backend-stripprefix-dev-rest.stripprefix.prefixes=/backend/rest"
+      - "traefik.http.routers.sosci-dev-backend-rest.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/backend/rest`)"
+      - "traefik.http.routers.sosci-dev-backend-rest.entrypoints=websecure"
+      - "traefik.http.routers.sosci-dev-backend-rest.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-dev-backend-rest.service=sosci-dev-backend"
+      - "traefik.http.services.sosci-dev-backend-rest.loadbalancer.server.port=8081"
+      - "traefik.http.routers.sosci-dev-backend-rest.middlewares=sosci-backend-stripprefix-dev-rest"
 
 networks:
   internal:
