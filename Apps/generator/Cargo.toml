@@ -9,4 +9,4 @@ edition = "2021"
 tokio = { version = "1.21.2", features = ["rt-multi-thread", "time", "macros"] }
 ndarray = "0.15.6"
 dasp_signal = "0.11.0"
-rand = "0.8.5"  
+rand = "0.8.5"

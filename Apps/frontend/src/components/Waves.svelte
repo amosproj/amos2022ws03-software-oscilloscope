@@ -19,7 +19,7 @@
     LINE_THICKNESS_SMALL,
     LINE_THICKNESS_BIG,
   } from "../const";
-  import { timeSweep } from "../stores";
+  import { channelConfig } from "../stores";
 
   export let scalesY;
 
@@ -34,18 +34,6 @@
   let startStopLine = [];
   let xArr;
   let xLast;
-
-  const LOG_AFTER = 10000;
-  let bufferCounter;
-  let startTime;
-  const currentTime = () => {
-    return window.performance.now();
-  };
-  const resetLogVars = () => {
-    bufferCounter = 0;
-    startTime = currentTime();
-  };
-  resetLogVars();
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -93,7 +81,7 @@
       xLast[channelIndex] = xNew;
 
       // time sweep (https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Development-Documentation#time-sweep-calculation)
-      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0; // in [-1,1]
+      let sweep = $channelConfig[channelIndex].sweepSpeed / 5.0 - 1.0; // in [-1,1]
       let delta =
         DEFAULT_STEP_SIZE *
         (1.0 + sweep * (sweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
@@ -102,18 +90,6 @@
       while (xArr[channelIndex] >= CANVAS_WIDTH) {
         xArr[channelIndex] -= CANVAS_WIDTH;
       }
-    }
-
-    bufferCounter++;
-    if (bufferCounter >= LOG_AFTER) {
-      console.log(
-        "Updated " +
-          LOG_AFTER +
-          " times in " +
-          (currentTime() - startTime) +
-          " ms."
-      );
-      resetLogVars();
     }
   };
 
@@ -144,6 +120,7 @@
 
   export const startStopChannelI = (channelIndex, hasStarted) => {
     startStopLine[channelIndex] = hasStarted;
+    lines[channelIndex].visible = hasStarted;
   };
 
   const update = () => {
@@ -184,7 +161,7 @@
       line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addThickLine(line);
       lines.push(line);
-      startStopLine[i] = true;
+      startStopLine[i] = false;
 
       let head = new WebglSquare(color);
       heads.push(head);

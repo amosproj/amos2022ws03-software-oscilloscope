@@ -6,14 +6,20 @@ export const osciEnabled = writable(false);
 
 export const osciData = writable([]);
 
-export const timeSweep = writable(new Array(NUM_CHANNELS + 1).fill(5));
-
-// store for the amplification factors of each channel
-export const amplitudeAdjustment = writable(new Array(NUM_CHANNELS).fill(1));
-
-export const thicknessAdjustment = writable(
-  new Array(NUM_CHANNELS).fill(false)
+export const availableChannelConfigPresets = writable([]);
+export const channelConfig = writable(
+  Array(NUM_CHANNELS + 1)
+    .fill()
+    .map(() => ({
+      channelId: 0,
+      enabled: false,
+      thickness: false,
+      offset: 0,
+      sweepSpeed: 5,
+      amplitude: 1,
+    }))
 );
 
 export const expandedPanelOpen = writable(false);
+export const presetPopupOpen = writable(false);
 export const isGND = writable(false);

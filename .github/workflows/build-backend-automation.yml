@@ -8,7 +8,7 @@ on:
       - 'Apps/backend/**.*'
       - '.github/workflows/build-backend-automation.yml'
   pull_request:
-    branches: 
+    branches:
       - "dev"
       - "int"
       - "main"
