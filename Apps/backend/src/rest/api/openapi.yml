@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: SOSCI - OpenAPI 3.0
+  description: |-
+    Some useful links:
+    - [The SOSCI repository](https://github.com/amosproj/amos2022ws03-software-oscilloscope)
+    - [The API definition](https://github.com/amosproj/amos2022ws03-software-oscilloscope/tree/main/Documentation/openapi.yaml)
+    - [Web Application](https://amos-sosci.die-degens.eu/ui/)
+  license:
+    name: MIT License
+    url: https://github.com/amosproj/amos2022ws03-software-oscilloscope/blob/dev/LICENSE
+  version: sprint-09
+externalDocs:
+  description: Find out more about SOSCI
+  url: https://github.com/amosproj/amos2022ws03-software-oscilloscope
+servers:
+  - url: http://localhost:8081/
+  - url: https://amos-sosci.die-degens.eu/api/
+  - url: https://amos-sosci.die-degens.eu/int/api/
+  - url: https://amos-sosci.die-degens.eu/dev/api/
+tags:
+  - name: config
+    description: Rest api for interaction between frontend & backend
+paths:
+  /config:
+    get:
+      tags:
+        - config
+      summary: Get all channel configurations
+      description: Get all channel configuration.
+      operationId: getConfigs
+      parameters:
+        - name: api_key
+          in: header
+          description: ""
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelConfigList"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ChannelConfigList"
+        "404":
+          description: No channel config found
+      security:
+        - api_key: []
+      x-swagger-router-controller: Config
+  /config/{id}:
+    get:
+      tags:
+        - config
+      summary: Get the current channel configuration
+      description: Get the current channel configuration if there is one.
+      operationId: getConfigById
+      parameters:
+        - name: api_key
+          in: header
+          description: ""
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelConfig"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ChannelConfig"
+        "404":
+          description: No channel config found
+      security:
+        - api_key: []
+      x-swagger-router-controller: Config
+    post:
+      tags:
+        - config
+      summary: Store a new configuration for channels
+      description:
+        "Store a new configuration for channels. If there is already a\
+        \ existing configuration, it will be overwritten."
+      operationId: postConfig
+      parameters:
+        - name: api_key
+          in: header
+          description: ""
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: ""
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Create a new configuration for channels
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChannelConfig"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/ChannelConfig"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ChannelConfig"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelConfig"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/ChannelConfig"
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "405":
+          description: Invalid input
+      security:
+        - api_key: []
+      x-swagger-router-controller: Config
+components:
+  schemas:
+    Channel:
+      type: object
+      properties:
+        channelId:
+          type: integer
+          format: int64
+          example: 1
+        enabled:
+          type: boolean
+          example: false
+        thickness:
+          type: boolean
+          example: false
+        offset:
+          type: number
+          format: float
+          example: 0
+        sweepSpeed:
+          type: number
+          format: float
+          example: 1
+        amplitude:
+          type: number
+          format: float
+          example: 1
+      example:
+        amplitude: 1
+        offset: 0
+        enabled: true
+        thickness: false
+        sweepSpeed: 1
+        channelId: 1
+      xml:
+        name: Channel
+    ChannelConfig:
+      type: object
+      properties:
+        channels:
+          type: array
+          xml:
+            name: channels
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/Channel"
+      example:
+        channels:
+          - amplitude: 1
+            offset: 0
+            thickness: false
+            enabled: true
+            sweepSpeed: 1
+            channelId: 1
+          - amplitude: 1
+            offset: 0
+            thickness: false
+            enabled: true
+            sweepSpeed: 1
+            channelId: 1
+      xml:
+        name: channelconfig
+    ChannelConfigList:
+      type: object
+      properties:
+        configs:
+          type: array
+          xml:
+            name: configs
+            wrapped: true
+          items:
+            $ref: "#/components/schemas/ChannelConfig"
+      xml:
+        name: channelconfig
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

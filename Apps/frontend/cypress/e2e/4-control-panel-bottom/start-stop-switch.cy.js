@@ -13,10 +13,16 @@ describe("startStopSwitch", () => {
 
   it("is toggleable", () => {
     cy.get(`[data-cy="startStopSwitch-0"]`).within(() => {
-      cy.get('[role="switch"]').should("have.attr", "aria-checked", "true");
+      cy.get('[role="switch"]').should("have.attr", "aria-checked", "false");
       cy.get('[role="switch"]')
         .click()
-        .should("have.attr", "aria-checked", "false");
+        .should("have.attr", "aria-checked", "true");
     });
+  });
+
+  it("has default off/false", () => {
+    cy.get('[data-cy="startStopSwitch-0"]')
+      .find('[role="switch"]')
+      .should("have.attr", "aria-checked", "false");
   });
 });

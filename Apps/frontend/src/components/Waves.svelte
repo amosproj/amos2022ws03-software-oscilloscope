@@ -19,7 +19,13 @@
     LINE_THICKNESS_SMALL,
     LINE_THICKNESS_BIG,
   } from "../const";
-  import { timeSweep } from "../stores";
+  import {
+    amplitudeAdjustment,
+    channelActivated,
+    offsetAdjustment,
+    thicknessAdjustment,
+    timeSweep,
+  } from "../stores";
 
   export let scalesY;
 
@@ -28,24 +34,13 @@
   /**
    * @type {Number[][]}
    */
-  let channelSamples;
+  let channelSamples = Array.from(Array(NUM_CHANNELS), () =>
+    new Array(CANVAS_WIDTH).fill(undefined)
+  );
   let lines = [];
   let heads = [];
-  let startStopLine = [];
   let xArr;
   let xLast;
-
-  const LOG_AFTER = 10000;
-  let bufferCounter;
-  let startTime;
-  const currentTime = () => {
-    return window.performance.now();
-  };
-  const resetLogVars = () => {
-    bufferCounter = 0;
-    startTime = currentTime();
-  };
-  resetLogVars();
 
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
@@ -79,7 +74,7 @@
       channelIndex < endIndex;
       channelIndex++
     ) {
-      if (!startStopLine[channelIndex]) {
+      if (!$channelActivated[channelIndex]) {
         continue;
       }
       let xCurr = xArr[channelIndex];
@@ -103,47 +98,46 @@
         xArr[channelIndex] -= CANVAS_WIDTH;
       }
     }
+  };
 
-    bufferCounter++;
-    if (bufferCounter >= LOG_AFTER) {
-      console.log(
-        "Updated " +
-          LOG_AFTER +
-          " times in " +
-          (currentTime() - startTime) +
-          " ms."
-      );
-      resetLogVars();
+  // Subscribe to the offsetAdjustment store
+  offsetAdjustment.subscribe((newOffsets) => {
+    for (let i = 0; i < NUM_CHANNELS; i++) {
+      let line = lines[i];
+      if (line !== undefined) line.offsetY = newOffsets[i];
+      let head = heads[i];
+      if (head !== undefined) head.offsetY = newOffsets[i];
     }
-  };
+  });
 
-  // Sets the scaling of a individual wave according to the voltage intervals
-  const setScaling = (index, scale) => {
-    lines[index].scaleY = computeScaling(scale);
-  };
+  // Subscribe to the channelActivation store
+  channelActivated.subscribe((isActive) => {
+    for (let i = 0; i < NUM_CHANNELS; i++) {
+      if (lines[i] !== undefined) lines[i].visible = isActive[i];
+    }
+  });
+
+  thicknessAdjustment.subscribe((isThick) => {
+    for (let i = 0; i < NUM_CHANNELS; i++) {
+      if (lines[i] !== undefined) {
+        const thickness = isThick[i]
+          ? LINE_THICKNESS_BIG
+          : LINE_THICKNESS_SMALL;
+        lines[i].setThickness(thickness);
+      }
+    }
+  });
+
+  amplitudeAdjustment.subscribe((amplitudes) => {
+    for (let i = 0; i < NUM_CHANNELS; i++) {
+      if (lines[i] !== undefined)
+        lines[i].scaleY = computeScaling(amplitudes[i]);
+    }
+  });
 
   // computes the Scaling of a wave according to the voltage intervals
-  const computeScaling = (scale) => {
-    return (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * scale;
-  };
-
-  export const updateChannelOffsetY = (channelIndex, offsetY) => {
-    lines[channelIndex].offsetY = offsetY;
-    heads[channelIndex].offsetY = offsetY;
-  };
-
-  // Update the amplification of wave
-  export const updateChannelScaling = (channelIndex, scaling) => {
-    setScaling(channelIndex, scaling);
-  };
-
-  export const updateChannelThickness = (channelIndex, isThick) => {
-    const thickness = isThick ? LINE_THICKNESS_BIG : LINE_THICKNESS_SMALL;
-    lines[channelIndex].setThickness(thickness);
-  };
-
-  export const startStopChannelI = (channelIndex, hasStarted) => {
-    startStopLine[channelIndex] = hasStarted;
+  const computeScaling = (amplitude) => {
+    return (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * amplitude;
   };
 
   const update = () => {
@@ -184,7 +178,6 @@
       line.scaleY = computeScaling(scalesY[i]);
       webGLPlot.addThickLine(line);
       lines.push(line);
-      startStopLine[i] = true;
 
       let head = new WebglSquare(color);
       heads.push(head);

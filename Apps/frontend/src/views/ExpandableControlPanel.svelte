@@ -5,8 +5,6 @@
   import { expandedPanelOpen } from "../stores";
 
   $: panelHeight = 0;
-  export let waveElement;
-  export let indicatorElement;
 
   /**
    * The function introduces an event handler to check if there is a click
@@ -54,6 +52,6 @@
     on:click-outside={() => ($expandedPanelOpen = false)}
     data-cy="expanded-control-panel"
   >
-    <ControlPanelBottom {waveElement} {indicatorElement} />
+    <ControlPanelBottom />
   </nav>
 {/if}
