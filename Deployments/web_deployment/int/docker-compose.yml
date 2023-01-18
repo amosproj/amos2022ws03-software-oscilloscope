@@ -77,7 +77,7 @@ services:
       - "traefik.http.routers.sosci-int-backend-rest.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/backend/rest`)"
       - "traefik.http.routers.sosci-int-backend-rest.entrypoints=websecure"
       - "traefik.http.routers.sosci-int-backend-rest.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.sosci-int-backend-rest.service=sosci-int-backend"
+      - "traefik.http.routers.sosci-int-backend-rest.service=sosci-int-backend-rest"
       - "traefik.http.services.sosci-int-backend-rest.loadbalancer.server.port=8080"
       - "traefik.http.routers.sosci-int-backend-rest.middlewares=sosci-backend-stripprefix-int-rest"
 
