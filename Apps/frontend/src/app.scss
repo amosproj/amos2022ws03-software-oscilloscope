@@ -262,37 +262,37 @@ nav {
 }
 
 /* Icon definitions */
-/* https://fonts.google.com/icons -> change "Optical Size" to 24, keep rest as is */
-.mui-icon {
+/* https://fonts.google.com/icons */
+.icon {
   &--on {
-    background-image: url("./assets/mui_play.svg");
+    background-image: url("./assets/icon_play.svg");
   }
 
   &--off {
-    background-image: url("./assets/mui_stop.svg");
+    background-image: url("./assets/icon_stop.svg");
   }
 
   &--reset {
-    background-image: url("./assets/mui_reset.svg");
+    background-image: url("./assets/icon_reset.svg");
   }
 
   &--expand-more {
-    background-image: url("./assets/mui_expand_more.svg");
+    background-image: url("./assets/icon_expand_more.svg");
   }
 
   &--expand-less {
-    background-image: url("./assets/mui_expand_less.svg");
+    background-image: url("./assets/icon_expand_less.svg");
   }
 
   &--close {
-    background-image: url("./assets/mui_close.svg");
+    background-image: url("./assets/icon_close.svg");
   }
 
-  &--drop-down {
-    background-image: url("./assets/mui_drop-down.svg");
+  &--ground {
+    background-image: url("./assets/icon_ground.svg");
   }
 
   &--distribute {
-    background-image: url("./assets/mui_distribute.svg");
+    background-image: url("./assets/icon_distribute.svg");
   }
 }

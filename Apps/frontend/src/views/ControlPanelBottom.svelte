@@ -24,7 +24,7 @@
   <th>
     {#if $expandedPanelOpen && controlPanelBottomHeight <= MIN_CONTROL_PANEL_BOTTOM_HEIGHT}
       <button
-        class="icon-button icon-button--small mui-icon--close"
+        class="icon-button icon-button--small icon--close"
         on:click={() => ($expandedPanelOpen = false)}
         data-cy="expanded-control-panel-close-button"
       />

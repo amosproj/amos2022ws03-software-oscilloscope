@@ -1,6 +1,5 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { NUM_CHANNELS } from "../const";
   import {
     getChannelConfig,
     postChannelConfig,
