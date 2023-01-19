@@ -12,7 +12,7 @@ describe("amplitudeSlider", () => {
   it(`has label that displays reciprocal value "Infinity"`, () => {
     cy.get(`[data-cy="amplitudeSlider-0"]`).within(() => {
       cy.get('[type="range"]').invoke("val", 2).trigger("change");
-      cy.get("span").should("have.text", "0.50");
+      cy.get("div").should("have.text", "0.50");
     });
   });
 
