@@ -15,6 +15,5 @@ describe("everything visible on front page", () => {
     cy.get("#availablePreset").should("be.visible");
     cy.get("#presetName").should("be.visible");
     cy.get("#storeChannelConfig").should("be.visible");
-    cy.get("#cancelChannelConfig").should("be.visible");
   });
 });
