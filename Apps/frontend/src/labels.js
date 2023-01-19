@@ -8,6 +8,13 @@ export const LABEL_BUTTON_LOAD_CHANNEL_CONFIG = "Load";
 export const LABEL_BUTTON_UPDATE_CHANNEL_CONFIG = "Save";
 export const LABEL_BUTTON_CANCEL_CHANNEL_CONFIG = "Cancel";
 
+export const TOOLTIP_BUTTON_GND = "GND";
+export const TOOLTIP_BUTTON_DISTRIBUTE = "Distribute";
+export const TOOLTIP_BUTTON_RESET = "Reset";
+export const TOOLTIP_BUTTON_OFFOFF_BASE = "Turn ";
+export const TOOLTIP_BUTTON_OFFOFF_ON = "on";
+export const TOOLTIP_BUTTON_OFFOFF_OFF = "off";
+
 /* Log messages */
 export const ERR_MSG_COULD_NOT_RETRIEVE_CHANNEL_CONFIG =
   "Could not load channel config!";

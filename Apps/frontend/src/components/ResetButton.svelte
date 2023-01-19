@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { Tooltip } from "sveltestrap";
+  import { TOOLTIP_BUTTON_RESET } from "../labels";
 
   const dispatch = createEventDispatcher();
   $: url = "../assets/mui_reset.svg";
@@ -17,5 +18,6 @@
     on:click={handleClick}
     data-cy="reset-button"
   />
-  <Tooltip target="btn-reset" placement="bottom">Reset</Tooltip>
+  <Tooltip target="btn-reset" placement="bottom">{TOOLTIP_BUTTON_RESET}</Tooltip
+  >
 </div>

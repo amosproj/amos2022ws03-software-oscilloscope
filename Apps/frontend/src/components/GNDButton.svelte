@@ -1,5 +1,6 @@
 <script>
   import { Tooltip } from "sveltestrap";
+  import { TOOLTIP_BUTTON_GND } from '../labels';
 
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
@@ -20,5 +21,5 @@
     }}
     data-cy="gnd-button"
   />
-  <Tooltip target="btn-gnd" placement="bottom">GND</Tooltip>
+  <Tooltip target="btn-gnd" placement="bottom">{TOOLTIP_BUTTON_GND}</Tooltip>
 </div>

@@ -3,6 +3,11 @@
   import { createEventDispatcher } from "svelte";
   import { osciEnabled } from "../stores";
   import { Tooltip } from "sveltestrap";
+  import {
+    TOOLTIP_BUTTON_OFFOFF_BASE,
+    TOOLTIP_BUTTON_OFFOFF_ON,
+    TOOLTIP_BUTTON_OFFOFF_OFF,
+  } from "../labels";
 
   const dispatch = createEventDispatcher();
 
@@ -27,5 +32,9 @@
     )}
     on:click={handleClick}
   />
-  <Tooltip target="btn-onoff" placement="bottom">Turn {$osciEnabled ? 'off' : 'on'}</Tooltip>
+  <Tooltip target="btn-onoff" placement="bottom"
+    >{TOOLTIP_BUTTON_OFFOFF_BASE}{$osciEnabled
+      ? TOOLTIP_BUTTON_OFFOFF_OFF
+      : TOOLTIP_BUTTON_OFFOFF_ON}</Tooltip
+  >
 </div>

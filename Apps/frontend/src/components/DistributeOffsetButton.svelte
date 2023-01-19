@@ -2,6 +2,7 @@
   import { NUM_CHANNELS } from "../const";
   import { channelActivated, offsetAdjustment } from "../stores";
   import { Tooltip } from "sveltestrap";
+  import { TOOLTIP_BUTTON_DISTRIBUTE } from '../labels';
 
   function calculateOffset() {
     // offset is calculated based on the number of channels between -1 and 1
@@ -25,5 +26,5 @@
     }}
     data-cy="distribute-button"
   />
-  <Tooltip target="btn-distribute" placement="bottom">Distribute</Tooltip>
+  <Tooltip target="btn-distribute" placement="bottom">{TOOLTIP_BUTTON_DISTRIBUTE}</Tooltip>
 </div>
