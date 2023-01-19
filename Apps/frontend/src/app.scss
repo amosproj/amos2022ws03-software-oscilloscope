@@ -1,0 +1,272 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: min(1em, 2vw);
+  line-height: min(1.6em, 2vw);
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#app {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
+img {
+  width: 92%;
+  height: 92%;
+}
+
+input[type="range"] {
+  width: 40%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 0.2em;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: calc(0.5vmax + 0.5em);
+    width: calc(0.5vmax + 0.5em);
+    border-radius: 100%;
+    background: #efefef;
+    cursor: pointer;
+  }
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: calc(14vmax + 8em);
+  box-shadow: 0 0 2em rgba(80, 80, 80, 1);
+  background-color: #242424;
+  z-index: 3;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #efefef;
+  }
+
+  nav {
+    background-color: #efefef;
+  }
+
+  .icon-button {
+    filter: invert(0) !important;
+  }
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns:
+    8vmax
+    calc(16vw - 2em)
+    calc(100vw - 2 * (8vmax + 16vw - 2em))
+    calc(16vw - 2em)
+    8vmax;
+  grid-template-rows:
+    calc(1 / 2 * (8vmax))
+    calc(1 / 2 * (100vw - 2 * (8vmax + 16vw - 2em)))
+    calc(100vh - 1 / 2 * (8vmax + 100vw - 2 * (8vmax + 16vw - 2em)));
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.logo {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.indicators {
+  grid-column: 1/3;
+  grid-row: 2;
+  justify-self: end;
+}
+
+.oscilloscope {
+  grid-column: 3;
+  grid-row: 2;
+  position: relative;
+
+  &--coordinate-system {
+    position: absolute;
+    inset: 0;
+
+    & > canvas {
+      border: 0.1vw solid #efefef;
+      background-color: black;
+    }
+  }
+
+  &--waves {
+    position: absolute;
+    margin-top: 0.1vw;
+    inset: 0;
+  }
+}
+
+.control-panel {
+  &--top {
+    &_general {
+      grid-column: 2/6;
+      grid-row: 1;
+      display: flex;
+      align-self: center;
+      justify-content: start;
+    }
+  }
+
+  &--right {
+    grid-column: 4/6;
+    grid-row: 2;
+  }
+
+  &--bottom {
+    grid-column: 1/6;
+    grid-row: 3;
+    padding: 0.5% 0;
+
+    &_switch {
+      width: 28px;
+      height: 16px;
+      margin: 0 auto;
+    }
+
+    &_expand-accordion {
+      width: 100%;
+      padding: 1vh 0;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      background: none;
+      border: none;
+
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(127, 127, 127, 0.1) !important;
+      }
+
+      & > button {
+        &:hover {
+          background-color: rgba(0, 0, 0, 0) !important;
+        }
+      }
+    }
+
+    & > table {
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+      table-layout: fixed;
+
+      & > th {
+        vertical-align: middle;
+        font-weight: normal;
+      }
+
+      & > * {
+        padding: 0;
+        margin: 0;
+        width: auto;
+
+        & > * {
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  &--entry {
+    & > span {
+      position: absolute;
+    }
+  }
+}
+
+.icon-button {
+  border-radius: 100%;
+  border: 0;
+  padding: 1.6vmax;
+  cursor: pointer;
+  filter: invert(1);
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 64%;
+
+  &--small {
+    padding: 2vmax !important;
+  }
+
+  &:hover {
+    background-color: rgba(127, 127, 127, 0.1) !important;
+  }
+}
+
+.screen-size-warning {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Icon definitions */
+.mui-icon {
+  &--on {
+    background-image: url("./assets/mui_play.svg");
+  }
+
+  &--off {
+    background-image: url("./assets/mui_stop.svg");
+  }
+
+  &--reset {
+    background-image: url("./assets/mui_reset.svg");
+  }
+
+  &--expand-more {
+    background-image: url("./assets/mui_expand_more.svg");
+  }
+
+  &--expand-less {
+    background-image: url("./assets/mui_expand_less.svg");
+  }
+
+  &--close {
+    background-image: url("./assets/mui_close.svg");
+  }
+
+  &--drop-down {
+    background-image: url("./assets/mui_drop-down.svg");
+  }
+
+  &--distribute {
+    background-image: url("./assets/mui_distribute.svg");
+  }
+}

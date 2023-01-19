@@ -21,6 +21,10 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    environment:
+      - API_KEY=${API_KEY:-noteset}
+    volumes:
+      - backend-data:/opt/sosci/data
     networks:
       - web
       - internal
@@ -46,9 +50,13 @@ services:
     image: sosci/backend:${VERSION_TAG:-nightly}
     pull_policy: always
     environment:
-      - HOST_PORT=34255
+      - API_KEY=${API_KEY:-noteset}
+      - UDP_PORT=34255
+      - WS_PORT=9000
+      - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
-    ports: 
+      - FRONTEND_ORIGIN=https://amos-sosci.die-degens.eu,http://localhost:5173,http://localhost:5000
+    ports:
       - 34255:34255
     networks:
       - internal
@@ -57,14 +65,24 @@ services:
     labels:
       - "traefik.enable=true"
       # Remove path prefix
-      - "traefik.http.middlewares.sosci-backend-stripprefix-dev.stripprefix.prefixes=/dev/api"
+      - "traefik.http.middlewares.sosci-backend-stripprefix-dev.stripprefix.prefixes=/dev/backend/ws"
         # Main
-      - "traefik.http.routers.sosci-dev-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/api`)"
+      - "traefik.http.routers.sosci-dev-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/backend/ws`)"
       - "traefik.http.routers.sosci-dev-backend.entrypoints=websecure"
       - "traefik.http.routers.sosci-dev-backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-dev-backend.service=sosci-dev-backend"
       - "traefik.http.services.sosci-dev-backend.loadbalancer.server.port=9000"
       - "traefik.http.routers.sosci-dev-backend.middlewares=sosci-backend-stripprefix-dev"
+      # Main REST API
+      - "traefik.http.middlewares.sosci-backend-stripprefix-dev-rest.stripprefix.prefixes=/dev/backend/rest"
+      - "traefik.http.routers.sosci-dev-backend-rest.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/dev/backend/rest`)"
+      - "traefik.http.routers.sosci-dev-backend-rest.entrypoints=websecure"
+      - "traefik.http.routers.sosci-dev-backend-rest.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-dev-backend-rest.service=sosci-dev-backend-rest"
+      - "traefik.http.services.sosci-dev-backend-rest.loadbalancer.server.port=8080"
+      - "traefik.http.routers.sosci-dev-backend-rest.middlewares=sosci-backend-stripprefix-dev-rest"
+    volumes:
+      - backend-data:/opt/sosci/data
 
 networks:
   internal:
@@ -73,3 +91,6 @@ networks:
   web:
     driver: bridge
     external: true
+
+volumes:
+  backend-data:

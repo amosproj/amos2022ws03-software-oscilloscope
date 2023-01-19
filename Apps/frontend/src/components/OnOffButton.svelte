@@ -1,14 +1,13 @@
 <script>
+  import clsx from "clsx";
   import { createEventDispatcher } from "svelte";
+  import { osciEnabled } from "../stores";
 
   const dispatch = createEventDispatcher();
 
-  let isOn = false;
-  $: label = "Turn " + (isOn ? "off" : "on") + ".";
-
   const handleClick = async () => {
-    isOn = !isOn;
-    dispatch("switch-plot-enabled", { enabled: isOn });
+    $osciEnabled = !$osciEnabled;
+    dispatch("switch-plot-enabled", { enabled: $osciEnabled });
   };
 
   export const click = () => {
@@ -16,12 +15,12 @@
   };
 </script>
 
-<br />
-<button id="btn-on-off" on:click={handleClick}>{label}</button>
-
-<style>
-  #btn-on-off {
-    border-style: solid;
-    border-color: grey;
-  }
-</style>
+<button
+  data-cy="on-off-button"
+  class={clsx(
+    { "icon-button": true },
+    { "mui-icon--off": $osciEnabled },
+    { "mui-icon--on": !$osciEnabled }
+  )}
+  on:click={handleClick}
+/>

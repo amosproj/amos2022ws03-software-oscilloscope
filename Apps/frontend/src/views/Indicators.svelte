@@ -11,6 +11,11 @@
     NUM_CHANNELS,
     NUM_INTERVALS_HORIZONTAL,
   } from "../const";
+  import {
+    amplitudeAdjustment,
+    channelActivated,
+    offsetAdjustment,
+  } from "../stores";
   import { roundVoltage } from "../helper";
 
   let canvasElement;
@@ -18,9 +23,6 @@
   let current = Array(NUM_CHANNELS).fill(0.0);
   let min = Array(NUM_CHANNELS).fill(0.0);
   let max = Array(NUM_CHANNELS).fill(0.0);
-  let offsets = Array(NUM_CHANNELS).fill(0.0);
-  let scalings = Array(NUM_CHANNELS).fill(1.0);
-  let startStopLine = Array(NUM_CHANNELS).fill(true);
 
   export let scaleY;
 
@@ -34,30 +36,24 @@
     drawGlobalZeroLine();
 
     for (let channel = 0; channel < NUM_CHANNELS; channel++) {
-      if (startStopLine[channel]) {
+      if ($channelActivated[channel]) {
         updateCurrentMinMax(samples[startIndex + channel], channel);
       }
-      const transformedCurrent = transformSampleToYCoord(
-        current[channel],
-        offsets[channel],
-        scalings[channel]
-      );
       const transformedMin = transformSampleToYCoord(
         min[channel],
-        offsets[channel],
-        scalings[channel]
+        $offsetAdjustment[channel],
+        $amplitudeAdjustment[channel]
       );
       const transformedMax = transformSampleToYCoord(
         max[channel],
-        offsets[channel],
-        scalings[channel]
+        $offsetAdjustment[channel],
+        $amplitudeAdjustment[channel]
       );
       const transformedZero = transformSampleToYCoord(
         0,
-        offsets[channel],
-        scalings[channel]
+        $offsetAdjustment[channel],
+        $amplitudeAdjustment[channel]
       );
-      //drawIndicator(channel, transformedCurrent, LINE_COLORS_RGBA[channel]);
       drawMinMaxZeroLines(
         channel,
         transformedMin,
@@ -67,38 +63,6 @@
       );
       writeText(channel, min[channel], max[channel]);
     }
-  };
-
-  /**
-   * Update the offset of a channel by a voltage.
-   *
-   * @param {number} channelIndex
-   * @param {number} offsetY
-   */
-  export const updateChannelOffsetY = (channelIndex, offsetY) => {
-    offsets[channelIndex] = offsetY;
-    update(current);
-  };
-
-  /**
-   * Update the scaling/amplification of a channel by a factor.
-   *
-   * @param {number} channelIndex
-   * @param {number} scaling
-   */
-  export const updateChannelScaling = (channelIndex, scaling) => {
-    scalings[channelIndex] = scaling;
-    update(current);
-  };
-
-  /**
-   * Start or stop indicator updates of a channel.
-   *
-   * @param {number} channelIndex
-   * @param {boolean} hasStarted
-   */
-  export const startStopChannelI = (channelIndex, hasStarted) => {
-    startStopLine[channelIndex] = hasStarted;
   };
 
   // ----- Svelte lifecycle hooks -----
@@ -154,7 +118,6 @@
    * Resize the canvas.
    */
   const resizeCanvas = () => {
-    canvasElement.width = INDICATOR_SECTION_WIDTH;
     canvasElement.height = CANVAS_HEIGHT;
     canvasContext = canvasElement.getContext("2d");
     // Translate coordinates to have zero point at the right center
@@ -168,28 +131,12 @@
     canvasContext.beginPath();
     canvasContext.strokeStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.moveTo(0, 0);
-    canvasContext.lineTo(-canvasElement.width, 0);
+    canvasContext.lineTo(-INDICATOR_SECTION_WIDTH, 0);
     canvasContext.stroke();
     canvasContext.font = `${INDICATOR_FONT_SIZE}px Arial`;
     canvasContext.fillStyle = INDICATOR_ZERO_LINE_COLOR;
     canvasContext.textAlign = "left";
-    canvasContext.fillText("0", -canvasElement.width, INDICATOR_FONT_SIZE);
-  };
-
-  /**
-   * Draw an indicator of the current voltage of a channel.
-   *
-   * @param {number} channel
-   * @param {number} voltage
-   * @param {string} color
-   */
-  const drawIndicator = (channel, voltage, color) => {
-    const x = -(INDICATOR_WIDTH + INDICATOR_MARGIN) * (channel + 1);
-    const y = voltage;
-    canvasContext.fillStyle = color;
-    canvasContext.beginPath();
-    canvasContext.arc(x, y, INDICATOR_WIDTH / 2, 0, 2 * Math.PI);
-    canvasContext.fill();
+    canvasContext.fillText("0", -INDICATOR_SECTION_WIDTH, INDICATOR_FONT_SIZE);
   };
 
   /**
@@ -245,6 +192,3 @@
 </script>
 
 <canvas data-cy="indicators" bind:this={canvasElement} />
-
-<style>
-</style>
