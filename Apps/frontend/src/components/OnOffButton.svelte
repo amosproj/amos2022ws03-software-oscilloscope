@@ -2,6 +2,7 @@
   import clsx from "clsx";
   import { createEventDispatcher } from "svelte";
   import { osciEnabled } from "../stores";
+  import { Tooltip } from "sveltestrap";
 
   const dispatch = createEventDispatcher();
 
@@ -15,12 +16,16 @@
   };
 </script>
 
-<button
-  data-cy="on-off-button"
-  class={clsx(
-    { "icon-button": true },
-    { "mui-icon--off": $osciEnabled },
-    { "mui-icon--on": !$osciEnabled }
-  )}
-  on:click={handleClick}
-/>
+<div>
+  <button
+    id="btn-onoff"
+    data-cy="on-off-button"
+    class={clsx(
+      { "icon-button": true },
+      { "mui-icon--off": $osciEnabled },
+      { "mui-icon--on": !$osciEnabled }
+    )}
+    on:click={handleClick}
+  />
+  <Tooltip target="btn-onoff" placement="bottom">Turn {$osciEnabled ? 'off' : 'on'}</Tooltip>
+</div>
