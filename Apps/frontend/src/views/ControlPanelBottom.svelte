@@ -9,6 +9,8 @@
     MIN_CONTROL_PANEL_BOTTOM_HEIGHT,
     MIN_SWEEP_SLIDER_VALUE,
     NUM_CHANNELS,
+    TIME_PER_DIV,
+    PIXELS_PER_DIV,
   } from "../const";
   import {
     amplitudeAdjustment,
@@ -16,8 +18,14 @@
     offsetAdjustment,
     timeSweep,
   } from "../stores";
+  import { computeDisplayDeltaFromTimeSweep } from "../helper";
 
   export let controlPanelBottomHeight = 0;
+
+  const computeDisplaySpeed = (value) => {
+    let delta = computeDisplayDeltaFromTimeSweep(value);
+    return ((TIME_PER_DIV * PIXELS_PER_DIV) / delta).toFixed(2) + " sec/div";
+  };
 </script>
 
 <table>
@@ -52,6 +60,7 @@
         min={MIN_SWEEP_SLIDER_VALUE}
         max={MAX_SWEEP_SLIDER_VALUE}
         dataCy={`timesweepSlider-${NUM_CHANNELS}`}
+        calculateDisplayedValue={computeDisplaySpeed}
       />
     </td>
     <td><!--Placeholder--></td>
@@ -82,6 +91,7 @@
           min={MIN_SWEEP_SLIDER_VALUE}
           max={MAX_SWEEP_SLIDER_VALUE}
           dataCy={`timesweepSlider-${index}`}
+          calculateDisplayedValue={computeDisplaySpeed}
         />
       </td>
       <td>

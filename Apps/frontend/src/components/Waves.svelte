@@ -11,9 +11,6 @@
     CANVAS_WIDTH,
     NUM_CHANNELS,
     NUM_INTERVALS_HORIZONTAL,
-    MIN_SWEEP,
-    MAX_SWEEP,
-    DEFAULT_STEP_SIZE,
     LINE_COLORS,
     WAVE_CURSOR_SIZE,
     LINE_THICKNESS_SMALL,
@@ -26,6 +23,7 @@
     thicknessAdjustment,
     timeSweep,
   } from "../stores";
+  import { computeDisplayDeltaFromTimeSweep } from "../helper";
 
   export let scalesY;
 
@@ -87,12 +85,7 @@
       }
       xLast[channelIndex] = xNew;
 
-      // time sweep (https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Development-Documentation#time-sweep-calculation)
-      let sweep = $timeSweep[channelIndex] / 5.0 - 1.0; // in [-1,1]
-      let delta =
-        DEFAULT_STEP_SIZE *
-        (1.0 + sweep * (sweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
-
+      let delta = computeDisplayDeltaFromTimeSweep($timeSweep[channelIndex]);
       xArr[channelIndex] = xCurr + delta;
       while (xArr[channelIndex] >= CANVAS_WIDTH) {
         xArr[channelIndex] -= CANVAS_WIDTH;
