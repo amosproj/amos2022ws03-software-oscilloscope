@@ -21,6 +21,15 @@
   let startStopLine = Array(NUM_CHANNELS).fill(true);
 
   const initWebGL = () => {
+    prepareCanvasAndWebGL();
+    prepareProgram();
+    prepareArrayBuffer();
+    prepareUniforms();
+    prepareInputVertex();
+    drawAllIndicators();
+  };
+
+  const prepareCanvasAndWebGL = () => {
     canvasElement.width = INDICATOR_SECTION_WIDTH;
     canvasElement.height = CANVAS_HEIGHT;
 
@@ -28,16 +37,23 @@
     if (!gl) return;
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clear(gl.COLOR_BUFFER_BIT);
+  };
 
-    program = createShaderProgram(gl, vertexShader, fragmentShader);
-    gl.useProgram(program);
-
+  const prepareArrayBuffer = () => {
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
     const lineVertices = new Float32Array([0, 0, 1, 0]);
     gl.bufferData(gl.ARRAY_BUFFER, lineVertices, gl.STATIC_DRAW);
 
+  };
+
+  const prepareProgram = () => {
+    program = createShaderProgram(gl, vertexShader, fragmentShader);
+    gl.useProgram(program);
+  };
+
+  const prepareUniforms = () => {
     const initialSample = 0;
     const initialColor = new Float32Array([1, 1, 1, 1]);
     const initialChannel = 0;
@@ -54,15 +70,14 @@
     gl.uniform1f(offsetUniform, initialOffset);
     scaleUniform = gl.getUniformLocation(program, "u_scale");
     gl.uniform1f(scaleUniform, initialScale);
+  };
 
-
+  const prepareInputVertex = () => {
     const inputVertex = gl.getAttribLocation(program, "inputVertex");
     gl.enableVertexAttribArray(inputVertex);
     gl.vertexAttribPointer(inputVertex, 2, gl.FLOAT, false, 0, 0);
-
-    drawAllIndicators();
   };
-  
+
   const drawAllIndicators = () => {
     for (let channel = 0; channel < NUM_CHANNELS; channel++) drawIndicator(channel);
   };
