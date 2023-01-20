@@ -5,12 +5,8 @@ export const CANVAS_HEIGHT = 500;
 export const NUM_INTERVALS_VERTICAL = 20;
 export const NUM_INTERVALS_HORIZONTAL = 10;
 
-export const INDICATOR_MARGIN = 4;
-export const INDICATOR_WIDTH = 8;
-export const INDICATOR_FONT_SIZE = 11;
 export const INDICATOR_DECIMAL_PLACES = 3;
-export const INDICATOR_SECTION_WIDTH = 240;
-export const INDICATOR_ZERO_LINE_COLOR = "#000000";
+export const INDICATOR_SECTION_WIDTH = 120;
 
 export const COORDINATE_LINE_COLOR = "#FFFFFF80";
 

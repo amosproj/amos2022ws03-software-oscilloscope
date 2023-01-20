@@ -35,7 +35,7 @@
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-    const lineVertices = new Float32Array([-1, 0, 1, 0]);
+    const lineVertices = new Float32Array([0, 0, 1, 0]);
     gl.bufferData(gl.ARRAY_BUFFER, lineVertices, gl.STATIC_DRAW);
 
     const initialSample = 0;
