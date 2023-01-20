@@ -14,7 +14,7 @@
   import { expandedPanelOpen, timeSweep } from "../stores";
 
   export let waveElement;
-  export let indicatorElement;
+  export let lineIndicatorElement;
   export let controlPanelBottomHeight = 0;
 </script>
 
@@ -34,7 +34,7 @@
   <th>Time Sweep</th>
   <th>Amplitude</th>
   <tr>
-    <td> Common </td>
+    <td> Common</td>
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
@@ -52,7 +52,7 @@
           on:startStop={async (event) => {
             let hasStarted = event.detail.buttonValue;
             waveElement.startStopChannelI(index, hasStarted);
-            indicatorElement.startStopChannelI(index, hasStarted);
+            lineIndicatorElement.startStopChannelI(index, hasStarted);
           }}
         />
       </td>
@@ -69,7 +69,7 @@
           className="control-panel--entry"
           onInput={(offsetY) => {
             waveElement.updateChannelOffsetY(index, offsetY);
-            indicatorElement.updateChannelOffsetY(index, offsetY);
+            lineIndicatorElement.updateChannelOffsetY(index, offsetY);
           }}
           value={0}
           min={-1.0}
@@ -93,7 +93,7 @@
           className="control-panel--entry"
           onInput={(value) => {
             waveElement.updateChannelScaling(index, value);
-            indicatorElement.updateChannelScaling(index, value);
+            lineIndicatorElement.updateChannelScaling(index, value);
           }}
           min={MIN_AMPLITUDE}
           max={MAX_AMPLITUDE}

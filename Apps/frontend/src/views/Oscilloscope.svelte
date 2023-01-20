@@ -1,7 +1,7 @@
 <script>
   import { onDestroy, onMount } from "svelte";
   import Logo from "./Logo.svelte";
-  import Indicators from "./Indicators.svelte";
+  import LineIndicators from "./LineIndicators.svelte";
   import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
   import ControlPanelBottom from "./ControlPanelBottom.svelte";
   import GeneralButtons from "./GeneralButtons.svelte";
@@ -10,6 +10,7 @@
   import { MIN_CONTROL_PANEL_BOTTOM_HEIGHT, NUM_CHANNELS } from "../const";
   import { osciEnabled, isGND } from "../stores";
   import { logSocketCloseCode } from "../helper";
+  import TextIndicators from "./TextIndicators.svelte";
 
   $: innerWidth = 0;
   $: innerHeight = 0;
@@ -18,7 +19,8 @@
   let scalesY = Array(NUM_CHANNELS).fill(1); // 1V per horizontal line
 
   let waveElement;
-  let indicatorElement;
+  let lineIndicatorElement;
+  let textIndicatorElement;
 
   let socket;
 
@@ -61,7 +63,11 @@
     }
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
-      if (index % 1000 == 0) indicatorElement.update(samples, index);
+      if (index % 1000 === 0) {
+        lineIndicatorElement.update(samples);
+        textIndicatorElement.update(samples);
+      }
+      
     }
   };
 
@@ -79,10 +85,10 @@
       <Logo />
     </div>
     <div class="control-panel--top_general">
-      <GeneralButtons {waveElement} {indicatorElement} />
+      <GeneralButtons {waveElement} {lineIndicatorElement} {textIndicatorElement} />
     </div>
-    <div class="indicators">
-      <Indicators bind:this={indicatorElement} />
+    <div class="line-indicators">
+      <LineIndicators bind:this={lineIndicatorElement} />
     </div>
     <div class="oscilloscope">
       <div class="oscilloscope--coordinate-system">
@@ -92,7 +98,9 @@
         <Waves bind:this={waveElement} {scalesY} />
       </div>
     </div>
-    <div class="control-panel--right">Overall Buttons</div>
+    <div class="text-indicators">
+      <TextIndicators bind:this={textIndicatorElement} />
+    </div>
     <div
       class="control-panel--bottom"
       bind:clientHeight={controlPanelBottomHeight}
@@ -100,11 +108,11 @@
       {#if controlPanelBottomHeight > MIN_CONTROL_PANEL_BOTTOM_HEIGHT}
         <ControlPanelBottom
           {waveElement}
-          {indicatorElement}
+          {lineIndicatorElement}
           {controlPanelBottomHeight}
         />
       {:else}
-        <ExpandableControlPanel {waveElement} {indicatorElement} />
+        <ExpandableControlPanel {waveElement} {lineIndicatorElement} />
       {/if}
     </div>
   </div>

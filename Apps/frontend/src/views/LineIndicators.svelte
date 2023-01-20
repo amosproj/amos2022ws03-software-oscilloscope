@@ -60,9 +60,17 @@
     gl.enableVertexAttribArray(inputVertex);
     gl.vertexAttribPointer(inputVertex, 2, gl.FLOAT, false, 0, 0);
 
+    drawAllIndicators();
+  };
+  
+  const drawAllIndicators = () => {
     for (let channel = 0; channel < NUM_CHANNELS; channel++) drawIndicator(channel);
   };
 
+  /**
+   * Draw a channel's min and max indicator.
+   * @param {number} channel
+   */
   const drawIndicator = (channel) => {
     gl.uniform1i(channelUniform, channel);
     gl.uniform4fv(colorUniform, new Float32Array(LINE_COLORS_WEBGL[channel]));
@@ -92,9 +100,13 @@
     }
   };
 
+  /**
+   * Reset all values and indicators.
+   */
   export const reset = () => {
     min = Array(NUM_CHANNELS).fill(0.0);
     max = Array(NUM_CHANNELS).fill(0.0);
+    drawAllIndicators();
   };
 
   /**
@@ -116,11 +128,3 @@
 </script>
 
 <canvas data-cy="indicators" bind:this={canvasElement}></canvas>
-<!--{#each min as _, i}-->
-<!--    <div style="color: {LINE_COLORS_RGBA[i]}">-->
-<!--      [{i}]-->
-<!--      Min: {roundVoltage(min[i])} V-->
-<!--      <br>-->
-<!--      Max: {roundVoltage(max[i])} V-->
-<!--    </div>-->
-<!--{/each}-->

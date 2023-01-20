@@ -5,7 +5,8 @@
   import GNDButton from "../components/GNDButton.svelte";
 
   let onOffButton;
-  export let indicatorElement;
+  export let lineIndicatorElement;
+  export let textIndicatorElement;
   export let waveElement;
 </script>
 
@@ -22,7 +23,8 @@
       onOffButton.click();
     }
     // clear canvas and indicators
-    indicatorElement.reset();
+    lineIndicatorElement.reset();
+    textIndicatorElement.reset();
     waveElement.resetPlot();
   }}
 />
