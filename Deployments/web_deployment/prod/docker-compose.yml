@@ -21,6 +21,10 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    environment:
+      - API_KEY=${API_KEY:-noteset}
+    volumes:
+      - backend-data:/opt/sosci/data
     networks:
       - web
     labels:
@@ -45,9 +49,13 @@ services:
     image: sosci/backend:${VERSION_TAG:-latest}
     pull_policy: always
     environment:
-      - HOST_PORT=34259
+      - API_KEY=${API_KEY:-noteset}
+      - UDP_PORT=34259
+      - WS_PORT=9000
+      - REST_PORT=8080
       - HOST_ADDRESS=0.0.0.0
-    ports: 
+      - FRONTEND_ORIGIN=https://amos-sosci.die-degens.eu
+    ports:
       - 34259:34259
     networks:
       - internal
@@ -56,14 +64,25 @@ services:
     labels:
       - "traefik.enable=true"
       # Remove path prefix
-      - "traefik.http.middlewares.sosci-backend-stripprefix-prod.stripprefix.prefixes=/api"
-        # Main
-      - "traefik.http.routers.sosci-prod-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/api`)"
+      - "traefik.http.middlewares.sosci-backend-stripprefix-prod.stripprefix.prefixes=/backend/ws"
+      # Main WebSocket
+      - "traefik.http.routers.sosci-prod-backend.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/backend/ws`)"
       - "traefik.http.routers.sosci-prod-backend.entrypoints=websecure"
       - "traefik.http.routers.sosci-prod-backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-prod-backend.service=sosci-prod-backend"
       - "traefik.http.services.sosci-prod-backend.loadbalancer.server.port=9000"
       - "traefik.http.routers.sosci-prod-backend.middlewares=sosci-backend-stripprefix-prod"
+      # Main REST API
+      - "traefik.http.middlewares.sosci-backend-stripprefix-prod-rest.stripprefix.prefixes=/backend/rest"
+      - "traefik.http.routers.sosci-prod-backend-rest.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/backend/rest`)"
+      - "traefik.http.routers.sosci-prod-backend-rest.entrypoints=websecure"
+      - "traefik.http.routers.sosci-prod-backend-rest.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sosci-prod-backend-rest.service=sosci-prod-backend-rest"
+      - "traefik.http.services.sosci-prod-backend-rest.loadbalancer.server.port=8080"
+      - "traefik.http.routers.sosci-prod-backend-rest.middlewares=sosci-backend-stripprefix-prod-rest"
+    volumes:
+      - backend-data:/opt/sosci/data
+      
 
 networks:
   internal:
@@ -72,3 +91,6 @@ networks:
   web:
     driver: bridge
     external: true
+
+volumes:
+  backend-data:

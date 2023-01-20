@@ -4,6 +4,7 @@
   import LineIndicators from "./LineIndicators.svelte";
   import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
   import ControlPanelBottom from "./ControlPanelBottom.svelte";
+  import ControlPanelRight from "./ControlPanelRight.svelte";
   import GeneralButtons from "./GeneralButtons.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
@@ -67,7 +68,7 @@
         lineIndicatorElement.update(samples);
         textIndicatorElement.update(samples);
       }
-      
+
     }
   };
 
@@ -106,13 +107,9 @@
       bind:clientHeight={controlPanelBottomHeight}
     >
       {#if controlPanelBottomHeight > MIN_CONTROL_PANEL_BOTTOM_HEIGHT}
-        <ControlPanelBottom
-          {waveElement}
-          {lineIndicatorElement}
-          {controlPanelBottomHeight}
-        />
+        <ControlPanelBottom {controlPanelBottomHeight} />
       {:else}
-        <ExpandableControlPanel {waveElement} {lineIndicatorElement} />
+        <ExpandableControlPanel />
       {/if}
     </div>
   </div>

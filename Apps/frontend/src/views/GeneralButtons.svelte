@@ -3,6 +3,7 @@
   import OnOffButton from "../components/OnOffButton.svelte";
   import ResetButton from "../components/ResetButton.svelte";
   import GNDButton from "../components/GNDButton.svelte";
+  import DistributeOffsetButton from "../components/DistributeOffsetButton.svelte";
 
   let onOffButton;
   export let lineIndicatorElement;
@@ -33,3 +34,4 @@
     $isGND = e.detail.down;
   }}
 />
+<DistributeOffsetButton />
