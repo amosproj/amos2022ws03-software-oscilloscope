@@ -28,6 +28,9 @@ export const LINE_COLORS = [
 ];
 
 export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
+export const LINE_COLORS_WEBGL = LINE_COLORS.map((color) =>
+  color.map((num) => num / 255).concat([1])
+);
 export const LINE_THICKNESS_SMALL = 0.002;
 export const LINE_THICKNESS_BIG = 0.008;
 

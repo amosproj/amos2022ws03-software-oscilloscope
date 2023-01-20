@@ -1,14 +1,78 @@
 <link rel="stylesheet" href="../app.scss">
 <script>
-  import {
-    NUM_CHANNELS,
-  } from "../const";
-  import { roundVoltage } from "../helper";
-  import { LINE_COLORS_RGBA } from "../const.js";
+  import { CANVAS_HEIGHT, INDICATOR_SECTION_WIDTH, LINE_COLORS_WEBGL, NUM_CHANNELS } from "../const";
+  import { onMount } from "svelte";
+  import { createShaderProgram } from "../shader/shaderHelper.js";
+  import { fragmentShader, vertexShader } from "../shader/indicatorShader.js";
+
+  let canvasElement;
+  let gl;
+  let program;
+  let sampleUniform;
+  let colorUniform;
+  let channelUniform;
+  let offsetUniform;
+  let scaleUniform;
 
   let min = Array(NUM_CHANNELS).fill(0.0);
   let max = Array(NUM_CHANNELS).fill(0.0);
+  let offsets = Array(NUM_CHANNELS).fill(0.0);
+  let scalings = Array(NUM_CHANNELS).fill(1.0);
   let startStopLine = Array(NUM_CHANNELS).fill(true);
+
+  const initWebGL = () => {
+    canvasElement.width = INDICATOR_SECTION_WIDTH;
+    canvasElement.height = CANVAS_HEIGHT;
+
+    gl = canvasElement.getContext("webgl2");
+    if (!gl) return;
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    program = createShaderProgram(gl, vertexShader, fragmentShader);
+    gl.useProgram(program);
+
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+    const lineVertices = new Float32Array([-1, 0, 1, 0]);
+    gl.bufferData(gl.ARRAY_BUFFER, lineVertices, gl.STATIC_DRAW);
+
+    const initialSample = 0;
+    const initialColor = new Float32Array([1, 1, 1, 1]);
+    const initialChannel = 0;
+    const initialOffset = 0;
+    const initialScale = 0;
+
+    sampleUniform = gl.getUniformLocation(program, "u_sample");
+    gl.uniform1f(sampleUniform, initialSample);
+    colorUniform = gl.getUniformLocation(program, "u_colour");
+    gl.uniform4fv(colorUniform, initialColor);
+    channelUniform = gl.getUniformLocation(program, "u_channel");
+    gl.uniform1i(channelUniform, initialChannel);
+    offsetUniform = gl.getUniformLocation(program, "u_offset");
+    gl.uniform1f(offsetUniform, initialOffset);
+    scaleUniform = gl.getUniformLocation(program, "u_scale");
+    gl.uniform1f(scaleUniform, initialScale);
+
+
+    const inputVertex = gl.getAttribLocation(program, "inputVertex");
+    gl.enableVertexAttribArray(inputVertex);
+    gl.vertexAttribPointer(inputVertex, 2, gl.FLOAT, false, 0, 0);
+
+    for (let channel = 0; channel < NUM_CHANNELS; channel++) drawIndicator(channel);
+  };
+
+  const drawIndicator = (channel) => {
+    gl.uniform1i(channelUniform, channel);
+    gl.uniform4fv(colorUniform, new Float32Array(LINE_COLORS_WEBGL[channel]));
+    gl.uniform1f(sampleUniform, min[channel]);
+    gl.uniform1f(offsetUniform, offsets[channel]);
+    gl.uniform1f(scaleUniform, scalings[channel]);
+    gl.drawArrays(gl.LINES, 0, 2);
+    gl.uniform1f(sampleUniform, max[channel]);
+    gl.drawArrays(gl.LINES, 0, 2);
+  };
 
   /**
    * Trigger a rerender of the indicators with given sample array.
@@ -18,34 +82,45 @@
   export const update = (samples) => {
     for (let channel = 0; channel < NUM_CHANNELS; channel++) {
       if (!startStopLine[channel]) continue;
-      if (samples[channel] > max[channel]) max[channel] = samples[channel];
-      if (samples[channel] < min[channel]) min[channel] = samples[channel];
+      if (samples[channel] > max[channel]) {
+        max[channel] = samples[channel];
+      }
+      if (samples[channel] < min[channel]) {
+        min[channel] = samples[channel];
+      }
+      drawIndicator(channel);
     }
   };
 
   export const reset = () => {
     min = Array(NUM_CHANNELS).fill(0.0);
     max = Array(NUM_CHANNELS).fill(0.0);
-  }
+  };
 
   /**
    * Start or stop indicator updates of a channel.
    *
-   * @param {number} channelIndex
+   * @param {number} channel
    * @param {boolean} hasStarted
    */
-  export const startStopChannelI = (channelIndex, hasStarted) => {
-    startStopLine[channelIndex] = hasStarted;
+  export const startStopChannelI = (channel, hasStarted) => {
+    startStopLine[channel] = hasStarted;
   };
+
+  export const updateChannelOffsetY = (channel, offset) => offsets[channel] = offset;
+  export const updateChannelScaling = (channel, scaling) => scalings[channel] = scaling;
+
+  onMount(() => {
+    initWebGL();
+  });
 </script>
 
-<div data-cy="indicators">
-{#each min as _, i}
-    <div style="color: {LINE_COLORS_RGBA[i]}">
-      [{i}]
-      Min: {roundVoltage(min[i])} V
-      <br>
-      Max: {roundVoltage(max[i])} V
-    </div>
-{/each}
-</div>
+<canvas data-cy="indicators" bind:this={canvasElement}></canvas>
+<!--{#each min as _, i}-->
+<!--    <div style="color: {LINE_COLORS_RGBA[i]}">-->
+<!--      [{i}]-->
+<!--      Min: {roundVoltage(min[i])} V-->
+<!--      <br>-->
+<!--      Max: {roundVoltage(max[i])} V-->
+<!--    </div>-->
+<!--{/each}-->
