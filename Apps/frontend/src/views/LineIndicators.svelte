@@ -1,9 +1,19 @@
 <link rel="stylesheet" href="../app.scss">
 <script>
-  import { CANVAS_HEIGHT, INDICATOR_SECTION_WIDTH, LINE_COLORS_WEBGL, NUM_CHANNELS } from "../const";
+  import {
+    CANVAS_HEIGHT,
+    INDICATOR_SECTION_WIDTH,
+    LINE_COLORS_WEBGL,
+    NUM_CHANNELS,
+  } from "../const";
   import { onMount } from "svelte";
   import { createShaderProgram } from "../shader/shaderHelper.js";
   import { fragmentShader, vertexShader } from "../shader/indicatorShader.js";
+  import {
+    amplitudeAdjustment,
+    channelActivated,
+    offsetAdjustment,
+  } from "../stores";
 
   let canvasElement;
   let gl;
@@ -17,8 +27,20 @@
   let min = Array(NUM_CHANNELS).fill(0.0);
   let max = Array(NUM_CHANNELS).fill(0.0);
   let offsets = Array(NUM_CHANNELS).fill(0.0);
-  let scalings = Array(NUM_CHANNELS).fill(1.0);
-  let startStopLine = Array(NUM_CHANNELS).fill(true);
+  let amplitudes = Array(NUM_CHANNELS).fill(1.0);
+  let isActive = Array(NUM_CHANNELS).fill(true);
+
+  offsetAdjustment.subscribe((newOffsets) => {
+    offsets = newOffsets;
+  });
+
+  channelActivated.subscribe((newIsActive) => {
+    isActive = newIsActive;
+  });
+
+  amplitudeAdjustment.subscribe((newAmplitudes) => {
+    amplitudes = newAmplitudes;
+  });
 
   const initWebGL = () => {
     prepareCanvasAndWebGL();
@@ -91,7 +113,7 @@
     gl.uniform4fv(colorUniform, new Float32Array(LINE_COLORS_WEBGL[channel]));
     gl.uniform1f(sampleUniform, min[channel]);
     gl.uniform1f(offsetUniform, offsets[channel]);
-    gl.uniform1f(scaleUniform, scalings[channel]);
+    gl.uniform1f(scaleUniform, amplitudes[channel]);
     gl.drawArrays(gl.LINES, 0, 2);
     gl.uniform1f(sampleUniform, max[channel]);
     gl.drawArrays(gl.LINES, 0, 2);
@@ -104,7 +126,7 @@
    */
   export const update = (samples) => {
     for (let channel = 0; channel < NUM_CHANNELS; channel++) {
-      if (!startStopLine[channel]) continue;
+      if (!isActive[channel]) continue;
       if (samples[channel] > max[channel]) {
         max[channel] = samples[channel];
       }
@@ -131,11 +153,11 @@
    * @param {boolean} hasStarted
    */
   export const startStopChannelI = (channel, hasStarted) => {
-    startStopLine[channel] = hasStarted;
+    isActive[channel] = hasStarted;
   };
 
   export const updateChannelOffsetY = (channel, offset) => offsets[channel] = offset;
-  export const updateChannelScaling = (channel, scaling) => scalings[channel] = scaling;
+  export const updateChannelScaling = (channel, scaling) => amplitudes[channel] = scaling;
 
   onMount(() => {
     initWebGL();
