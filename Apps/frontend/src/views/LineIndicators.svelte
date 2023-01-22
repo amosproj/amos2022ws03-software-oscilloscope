@@ -145,20 +145,7 @@
     max = Array(NUM_CHANNELS).fill(0.0);
     drawAllIndicators();
   };
-
-  /**
-   * Start or stop indicator updates of a channel.
-   *
-   * @param {number} channel
-   * @param {boolean} hasStarted
-   */
-  export const startStopChannelI = (channel, hasStarted) => {
-    isActive[channel] = hasStarted;
-  };
-
-  export const updateChannelOffsetY = (channel, offset) => offsets[channel] = offset;
-  export const updateChannelScaling = (channel, scaling) => amplitudes[channel] = scaling;
-
+  
   onMount(() => {
     initWebGL();
   });
