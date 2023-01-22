@@ -19,22 +19,21 @@
   export const click = () => {
     handleClick();
   };
+  let button;
 </script>
 
-<div>
-  <button
-    id="btn-onoff"
-    data-cy="on-off-button"
-    class={clsx(
-      { "icon-button": true },
-      { "mui-icon--off": $osciEnabled },
-      { "mui-icon--on": !$osciEnabled }
-    )}
-    on:click={handleClick}
-  />
-  <Tooltip target="btn-onoff" placement="bottom"
-    >{TOOLTIP_BUTTON_OFFOFF_BASE}{$osciEnabled
-      ? TOOLTIP_BUTTON_OFFOFF_OFF
-      : TOOLTIP_BUTTON_OFFOFF_ON}</Tooltip
-  >
-</div>
+<button
+  bind:this={button}
+  data-cy="on-off-button"
+  class={clsx(
+    { "icon-button": true },
+    { "mui-icon--off": $osciEnabled },
+    { "mui-icon--on": !$osciEnabled }
+  )}
+  on:click={handleClick}
+/>
+<Tooltip target={button} placement="bottom">
+  {TOOLTIP_BUTTON_OFFOFF_BASE}{$osciEnabled
+    ? TOOLTIP_BUTTON_OFFOFF_OFF
+    : TOOLTIP_BUTTON_OFFOFF_ON}
+</Tooltip>

@@ -9,15 +9,15 @@
   const handleClick = async () => {
     dispatch("reset", {});
   };
+  let button;
 </script>
 
-<div>
-  <button
-    id="btn-reset"
-    class="icon-button mui-icon--reset"
-    on:click={handleClick}
-    data-cy="reset-button"
-  />
-  <Tooltip target="btn-reset" placement="bottom">{TOOLTIP_BUTTON_RESET}</Tooltip
-  >
-</div>
+<button
+  bind:this={button}
+  class="icon-button mui-icon--reset"
+  on:click={handleClick}
+  data-cy="reset-button"
+/>
+<Tooltip target={button} placement="bottom">
+  {TOOLTIP_BUTTON_RESET}
+</Tooltip>
