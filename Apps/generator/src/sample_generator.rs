@@ -60,6 +60,18 @@ impl TenChannelSampleGenerator {
         samples.push(0.0);
         samples
     }
+
+    fn random_bounded_values(self: &mut TenChannelSampleGenerator) -> f64 {
+        let mut rng = thread_rng();
+        let prev_value = self.prev_rand_value;
+        loop {
+            let value = rng.gen_range(-1.0..1.0);
+            if (prev_value - value).abs() <= 0.2 {
+                self.prev_rand_value = value;
+                return value;
+            }
+        }
+    }
 }
 
 #[cfg(test)]
