@@ -5,7 +5,6 @@
   import { expandedPanelOpen } from "../stores";
   import { clickOutside } from "../helper";
   $: panelHeight = 0;
-
 </script>
 
 <button

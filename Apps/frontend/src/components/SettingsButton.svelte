@@ -7,8 +7,6 @@
   import { clickOutside } from "../helper";
 
   $: panelHeight = 0;
-  export let waveElement;
-  export let indicatorElement;
 
   async function loadAllChannelConfigPresets() {
     var response = await getAllChannelConfig();
@@ -30,13 +28,15 @@
     on:click-outside={() => ($presetPopupOpen = false)}
     data-cy="expanded-preset-popup"
   >
-    <SettingsPopup {waveElement} {indicatorElement} />
+    <SettingsPopup />
   </nav>
 {/if}
 
 <div>
-  <button id="settingsButton" 
+  <button
+    id="settingsButton"
     class="icon-button mui-icon--settings"
-    on:click={showPopup} data-cy="preset-config-open-popup"
-    />
+    on:click={showPopup}
+    data-cy="preset-config-open-popup"
+  />
 </div>

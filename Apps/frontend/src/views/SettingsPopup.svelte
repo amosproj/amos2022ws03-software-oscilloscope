@@ -32,96 +32,109 @@
 
   async function storeChannelConfig() {
     await postChannelConfig(getLiveChannelConfig(), presetName);
-    
+
     var response = await getAllChannelConfig();
     if (response !== undefined) availableChannelConfigPresets.set(response);
-    
   }
 
   function handleSaveButton() {
-    if (document.getElementById("presetName").value === "") {
-      document.getElementById("storeChannelConfig").disabled = true;
+    let storeButton = document.getElementById("storeChannelConfig");
+
+    if (presetName === "") {
+      storeButton.disabled = true;
     } else {
-      document.getElementById("storeChannelConfig").disabled = false;
+      storeButton.disabled = false;
     }
   }
 
   function handleLoadButton() {
-    if (document.getElementById("availablePreset").value === "") {
-      document.getElementById("getChannelConfig").disabled = true;
+    let loadButton = document.getElementById("getChannelConfig");
+
+    if (selectedPreset === "") {
+      loadButton.disabled = true;
     } else {
-      document.getElementById("getChannelConfig").disabled = false;
+      loadButton.disabled = false;
     }
   }
 </script>
 
-<div data-cy="settings-popup">
-  <div style="display: flex;">
+<div data-cy="preset-config-open-popup">
+  <div class="settings--close">
     <button
       class="icon-button icon-button--small mui-icon--close"
       on:click={() => ($presetPopupOpen = false)}
       data-cy="expanded-control-panel-close-button"
     />
-    <h3 style="display: inline;">Settings</h3>
+    <h3 class="settings--headline">Settings</h3>
   </div>
-  <hr class="rounded">
+  <hr class="rounded" />
   <div>
     <ol>
-      <li>  
-        <h4 style="width: fit-content; margin:0">Presets:</h4>
+      <li>
+        <h4 class="settings--headline-section">Presets:</h4>
         <ul>
-            <li>
-                <div style="display: table; width: fit-content;">
-                  {LABEL_HEADER_LOAD_FROM_LIST_CHANNEL_CONFIG}
-                  <div style="display: table-cell;">
-                    <div style="display: table-cell;">
-                      <select id="availablePreset" 
-                        class="margin-small"
-                        bind:value={selectedPreset}
-                        on:select={handleLoadButton}>
-                        {#each $availableChannelConfigPresets as preset}
-                          <option value={preset}>
-                            {preset}
-                          </option>
-                        {/each}
-                        <option value="" disabled selected>Select preset</option>
-                      </select>
-                    </div>
-                    <div style="display: table-cell;">
-                      <button id="getChannelConfig"
-                        class="icon-button icon-button--big mui-icon--publish"
-                        on:click={loadChannelConfigById}
-                        disabled                 
-                      />
-                    </div> 
-                  </div>                  
+          <li>
+            <div class="settings--list-element">
+              {LABEL_HEADER_LOAD_FROM_LIST_CHANNEL_CONFIG}
+              <div>
+                <div>
+                  <select
+                    id="availablePreset"
+                    class="margin--small"
+                    bind:value={selectedPreset}
+                    on:change={handleLoadButton}
+                    data-cy="available-presets-list"
+                  >
+                    {#each $availableChannelConfigPresets as preset}
+                      <option value={preset}>
+                        {preset}
+                      </option>
+                    {/each}
+                    <option value="" disabled selected>Select preset...</option>
+                    <option value="test">test</option>
+                  </select>
                 </div>
-            </li>
-            <li>
-              <div style="display: table; width: fit-content;">
-                {LABEL_HEADER_CREATE_CHANNEL_CONFIG}
-                <div style="display: table-cell;">
-                  <div style="display: table-cell;">
-                    <input
+                <div>
+                  <button
+                    id="getChannelConfig"
+                    class="icon-button icon-button--big mui-icon--publish"
+                    on:click={loadChannelConfigById}
+                    disabled
+                    data-cy="load-channel-config"
+                  />
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="settings--list-element">
+              {LABEL_HEADER_CREATE_CHANNEL_CONFIG}
+              <div>
+                <div>
+                  <input
                     class="margin-small"
                     id="presetName"
                     type="text"
                     bind:value={presetName}
                     on:keyup={handleSaveButton}
                     placeholder="Set preset name..."
-                    />
-                  </div>    
-                  <div style="display: table-cell;">
-                    <button id="storeChannelConfig"
-                      class="icon-button icon-button--big mui-icon--save"
-                      on:click={storeChannelConfig} 
-                      disabled
-                    />     
-                </div>                
+                    data-cy="selected-preset"
+                  />
+                </div>
+                <div>
+                  <button
+                    id="storeChannelConfig"
+                    class="icon-button icon-button--big mui-icon--save"
+                    on:click={storeChannelConfig}
+                    disabled
+                    data-cy="store-channel-config"
+                  />
+                </div>
               </div>
-            </li>
-        </ul>        
-      </li>      
-    </ol>    
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ol>
   </div>
 </div>

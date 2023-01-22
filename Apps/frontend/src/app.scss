@@ -118,6 +118,30 @@ nav {
   justify-self: end;
 }
 
+.settings {
+  &--close {
+    display: flex;
+  }
+  &--headline {
+    display: inline;
+  }
+  &--headline-section {
+    width: fit-content;
+    margin: 0;
+  }
+  &--list-element {
+    display: table;
+    width: fit-content;
+    & > div {
+      display: table-cell;
+
+      & > div {
+        display: table-cell;
+      }
+    }
+  }
+}
+
 .oscilloscope {
   grid-column: 3;
   grid-row: 2;
@@ -218,9 +242,12 @@ nav {
     }
   }
 }
-.margin-small {
-  margin-right: 5px;
-  margin-left: 5px;
+
+.margin {
+  &--small {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 }
 
 .icon-button {

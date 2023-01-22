@@ -1,7 +1,6 @@
 /* Labels used in the UI */
 
-export const LABEL_HEADER_LOAD_FROM_LIST_CHANNEL_CONFIG =
-  "Load Existing:";
+export const LABEL_HEADER_LOAD_FROM_LIST_CHANNEL_CONFIG = "Load Existing:";
 export const LABEL_HEADER_CREATE_CHANNEL_CONFIG = "Create New: ";
 
 /* Log messages */

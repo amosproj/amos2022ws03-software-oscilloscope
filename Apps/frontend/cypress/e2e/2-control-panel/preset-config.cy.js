@@ -11,9 +11,9 @@ describe("everything visible on front page", () => {
 
   it("is clickable", () => {
     cy.get('[data-cy="preset-config-open-popup"]').click();
-    cy.get("#getChannelConfig").should("be.visible");
-    cy.get("#availablePreset").should("be.visible");
-    cy.get("#presetName").should("be.visible");
-    cy.get("#storeChannelConfig").should("be.visible");
+    cy.get('[data-cy="load-channel-config"]').should("be.visible");
+    cy.get('[data-cy="available-presets-list"]').should("be.visible");
+    cy.get('[data-cy="selected-preset"]').should("be.visible");
+    cy.get('[data-cy="store-channel-config"]').should("be.visible");
   });
 });

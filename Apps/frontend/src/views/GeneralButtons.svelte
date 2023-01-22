@@ -35,4 +35,4 @@
 />
 <DistributeOffsetButton />
 
-<SettingsButton {waveElement} {indicatorElement} />
+<SettingsButton />
