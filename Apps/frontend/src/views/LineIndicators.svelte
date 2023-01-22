@@ -2,7 +2,7 @@
 <script>
   import {
     CANVAS_HEIGHT,
-    INDICATOR_SECTION_WIDTH,
+    LINE_INDICATORS_CANVAS_WIDTH,
     LINE_COLORS_WEBGL,
     NUM_CHANNELS,
   } from "../const";
@@ -52,7 +52,7 @@
   };
 
   const prepareCanvasAndWebGL = () => {
-    canvasElement.width = INDICATOR_SECTION_WIDTH;
+    canvasElement.width = LINE_INDICATORS_CANVAS_WIDTH;
     canvasElement.height = CANVAS_HEIGHT;
 
     gl = canvasElement.getContext("webgl2");
