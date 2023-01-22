@@ -26,7 +26,7 @@ impl TenChannelSampleGenerator {
         add_noise: bool,
     ) -> TenChannelSampleGenerator {
         fn oscillate(rate: f64) -> impl Iterator<Item=f64> {
-            (0..).map(move |x| (x as f64 * std::f64::consts::PI / rate).sin() + 1.0)
+            (0..).map(move |x| ((x as f64 * std::f64::consts::PI / rate).sin() + 1.0) / 2.0)
         }
         let sine_signal = signal::rate(sampling_rate).const_hz(frequency).sine();
         let saw_signal = signal::rate(sampling_rate).const_hz(frequency).saw();
