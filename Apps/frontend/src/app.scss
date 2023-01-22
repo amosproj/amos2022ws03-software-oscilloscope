@@ -163,7 +163,7 @@ nav {
   height: 100%;
 }
 
-.slider_label {
+.slider-label {
   display: inline;
 }
 
@@ -245,7 +245,7 @@ nav {
     grid-column: 1/6;
     grid-row: 3;
     padding: 0.5% 0;
-    padding-top: 12px;
+    padding-top: 0.5%;
 
     &_switch {
       width: 28px;
@@ -274,10 +274,10 @@ nav {
     }
 
     & > table {
-      width: 96%;
-      margin: 0 2%;
+      width: 100%;
+      height: 100%;
       text-align: center;
-      border-collapse: collapse;
+      border-collapse: unset;
       table-layout: fixed;
 
       & tr:nth-child(even) {
@@ -286,6 +286,22 @@ nav {
 
       & tr:nth-child(odd) {
         background-color: #404040;
+      }
+
+      & > th {
+        vertical-align: middle;
+        font-weight: normal;
+        padding-top: 0.5%;
+      }
+
+      & > * {
+        padding: 0;
+        margin: 0;
+
+        & > * {
+          padding: 0;
+          margin: 0;
+        }
       }
     }
   }

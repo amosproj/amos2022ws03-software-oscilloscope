@@ -29,8 +29,8 @@
         on:click={() => ($expandedPanelOpen = false)}
         data-cy="expanded-control-panel-close-button"
       />
-      {:else}
-        Channel
+    {:else}
+      Channel
     {/if}
   </th>
   <th>Start/Stop</th>
@@ -44,7 +44,7 @@
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td>
-      <!--Common TimeSweep Slider-->  
+      <!--Common TimeSweep Slider-->
       <Slider
         className="control-panel--entry"
         onInput={() => {
@@ -60,46 +60,45 @@
     </td>
     <td><!--Placeholder--></td>
   </tr>
-    {#each { length: NUM_CHANNELS } as _, index}
-      <tr>
-        <td style="">Ch. {index + 1}</td>
-        <td>
-          <StartStopSwitch channel={index} />
-        </td>
-        <td>
-          <ThicknessSwitch channel={index} />
-        </td>
-        <td>
-          <Slider
-            className="control-panel--entry"
-            bind:value={$offsetAdjustment[index]}
-            min={-1.0}
-            max={1.0}
-            step={0.01}
-            dataCy={`offsetSlider-${index}`}
-          />
-        </td>
-        <td>
-          <Slider
-            className="control-panel--entry"
-            bind:value={$timeSweep[index]}
-            min={MIN_SWEEP_SLIDER_VALUE}
-            max={MAX_SWEEP_SLIDER_VALUE}
-            dataCy={`timesweepSlider-${index}`}
-          />
-        </td>
-        <td>
-          <Slider
-            className="control-panel--entry"
-            bind:value={$amplitudeAdjustment[index]}
-            min={MIN_AMPLITUDE}
-            max={MAX_AMPLITUDE}
-            calculateDisplayedValue={(value) => (1 / value).toFixed(2)}
-            dataCy={`amplitudeSlider-${index}`}
-          />
-        </td>
-      </tr>
+  {#each { length: NUM_CHANNELS } as _, index}
+    <tr>
+      <td>Ch. {index + 1}</td>
+      <td>
+        <StartStopSwitch channel={index} />
+      </td>
+      <td>
+        <ThicknessSwitch channel={index} />
+      </td>
+      <td>
+        <Slider
+          className="control-panel--entry"
+          bind:value={$offsetAdjustment[index]}
+          min={-1.0}
+          max={1.0}
+          step={0.01}
+          dataCy={`offsetSlider-${index}`}
+        />
+      </td>
+      <td>
+        <Slider
+          className="control-panel--entry"
+          bind:value={$timeSweep[index]}
+          min={MIN_SWEEP_SLIDER_VALUE}
+          max={MAX_SWEEP_SLIDER_VALUE}
+          dataCy={`timesweepSlider-${index}`}
+        />
+      </td>
+      <td>
+        <Slider
+          className="control-panel--entry"
+          bind:value={$amplitudeAdjustment[index]}
+          min={MIN_AMPLITUDE}
+          max={MAX_AMPLITUDE}
+          calculateDisplayedValue={(value) => (1 / value).toFixed(2)}
+          dataCy={`amplitudeSlider-${index}`}
+        />
+      </td>
+    </tr>
   {/each}
   <tr />
-
 </table>
