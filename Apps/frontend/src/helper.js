@@ -71,3 +71,22 @@ export const logSocketCloseCode = (code) => {
       console.log("Socket closed due to unknown reason.");
   }
 };
+
+/**
+ * The function introduces an event handler to check if there is a click
+ * event outside the chosen element.
+ * To attach the handler add `use:clickOutside` to the node properties.
+ */
+export const clickOutside = (element) => {
+  const handleClick = (event) => {
+    if (element && !element.contains(event.target) && !event.defaultPrevented) {
+      element.dispatchEvent(new CustomEvent("click-outside", element));
+    }
+  };
+  document.addEventListener("click", handleClick, true);
+  return {
+    destroy() {
+      document.removeEventListener("click", handleClick, true);
+    },
+  };
+};
