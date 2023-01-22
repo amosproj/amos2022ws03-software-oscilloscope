@@ -4,6 +4,7 @@
   import ResetButton from "../components/ResetButton.svelte";
   import GNDButton from "../components/GNDButton.svelte";
   import DistributeOffsetButton from "../components/DistributeOffsetButton.svelte";
+  import SettingsButton from "../components/SettingsButton.svelte";
 
   let onOffButton;
   export let indicatorElement;
@@ -33,3 +34,5 @@
   }}
 />
 <DistributeOffsetButton />
+
+<SettingsButton />
