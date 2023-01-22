@@ -13,6 +13,9 @@ pub struct TenChannelSampleGenerator {
     pub prev_rand_value: f64,
     pub sine_amplitude_iterator: Box<dyn Iterator<Item=f64>>,
     pub sine_amplitude_signal: signal::Sine<signal::ConstHz>,
+    pub sine_signal_no_noise: signal::Sine<signal::ConstHz>,
+    pub saw_signal_no_noise: signal::Saw<signal::ConstHz>,
+    pub square_signal_no_noise: signal::Square<signal::ConstHz>,
 }
 
 impl TenChannelSampleGenerator {
@@ -32,6 +35,9 @@ impl TenChannelSampleGenerator {
         let prev_rand_value = 0.0;
         let sine_amplitude_iterator = Box::new(oscillate(sampling_rate * 10.0));
         let sine_amplitude_signal = signal::rate(sampling_rate).const_hz(frequency).sine();
+        let sine_signal_no_noise = signal::rate(sampling_rate).const_hz(frequency).sine();
+        let saw_signal_no_noise = signal::rate(sampling_rate).const_hz(frequency).saw();
+        let square_signal_no_noise = signal::rate(sampling_rate).const_hz(frequency).square();
 
         TenChannelSampleGenerator {
             sine_signal,
@@ -43,6 +49,9 @@ impl TenChannelSampleGenerator {
             prev_rand_value,
             sine_amplitude_iterator,
             sine_amplitude_signal,
+            sine_signal_no_noise,
+            saw_signal_no_noise,
+            square_signal_no_noise,
         }
     }
 
@@ -62,11 +71,11 @@ impl TenChannelSampleGenerator {
         samples.push(self.amplitude * self.random_bounded_values());
         samples.push(self.rng.gen_range(-1.0..1.0));
         samples.push(self.amplitude * self.sine_amplitude_signal.next() * self.sine_amplitude_iterator.next().unwrap());
+        samples.push(self.amplitude * self.sine_signal_no_noise.next());
+        samples.push(self.amplitude * self.saw_signal_no_noise.next());
+        samples.push(self.amplitude * self.square_signal_no_noise.next());
 
         // remaining channels are set to a constant 0-Signal
-        samples.push(0.0);
-        samples.push(0.0);
-        samples.push(0.0);
         samples.push(0.0);
         samples
     }
