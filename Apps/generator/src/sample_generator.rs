@@ -128,4 +128,45 @@ mod tests {
         assert_eq!(first, second);
         assert_eq!(second, third);
     }
+
+    #[test]
+    fn test_random_bounded_values() {
+        const SAMPLING_RATE: f64 = 50.0;
+        const FREQUENCY: f64 = 1.0;
+        const AMPLITUDE: f64 = 10.0;
+        let mut generator = TenChannelSampleGenerator::new(SAMPLING_RATE, FREQUENCY, AMPLITUDE, false);
+        let first_value = generator.random_bounded_values();
+
+        let second_value = generator.random_bounded_values();
+        assert!((first_value - second_value).abs() <= 0.2);
+
+        let third_value = generator.random_bounded_values();
+        assert!((first_value - third_value).abs() <= 0.4);
+        assert!((second_value - third_value).abs() <= 0.2);
+
+        let fourth_value = generator.random_bounded_values();
+        assert!((first_value - fourth_value).abs() <= 0.6);
+        assert!((second_value - fourth_value).abs() <= 0.4);
+        assert!((third_value - fourth_value).abs() <= 0.2);
+    }
+
+    #[test]
+    fn test_random_bounded_values_min_max() {
+        let mut min:f64 = 10000.0;
+        let mut max: f64 = -100000.0;
+
+        const SAMPLING_RATE: f64 = 50.0;
+        const FREQUENCY: f64 = 1.0;
+        const AMPLITUDE: f64 = 10.0;
+        let mut generator = TenChannelSampleGenerator::new(SAMPLING_RATE, FREQUENCY, AMPLITUDE, false);
+
+        for _ in 0..1000 {
+            let value = generator.random_bounded_values();
+            min = min.min(value);
+            max = max.max(value);
+        }
+
+        assert!(min > -1.0);
+        assert!(max < 1.0);
+        }
 }
