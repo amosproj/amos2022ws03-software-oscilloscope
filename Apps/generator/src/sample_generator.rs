@@ -11,6 +11,8 @@ pub struct TenChannelSampleGenerator {
     pub amplitude: f64,
     pub add_noise: bool,
     pub prev_rand_value: f64,
+    pub sine_amplitude_iterator: Box<dyn Iterator<Item=f64>>,
+    pub sine_amplitude_signal: signal::Sine<signal::ConstHz>,
 }
 
 impl TenChannelSampleGenerator {
@@ -20,11 +22,16 @@ impl TenChannelSampleGenerator {
         amplitude: f64,
         add_noise: bool,
     ) -> TenChannelSampleGenerator {
+        fn oscillate(rate: f64) -> impl Iterator<Item=f64> {
+            (0..).map(move |x| (x as f64 * std::f64::consts::PI / rate).sin() + 1.0)
+        }
         let sine_signal = signal::rate(sampling_rate).const_hz(frequency).sine();
         let saw_signal = signal::rate(sampling_rate).const_hz(frequency).saw();
         let square_signal = signal::rate(sampling_rate).const_hz(frequency).square();
-        let rng = rand::thread_rng();
+        let rng = thread_rng();
         let prev_rand_value = 0.0;
+        let sine_amplitude_iterator = Box::new(oscillate(sampling_rate * 10.0));
+        let sine_amplitude_signal = signal::rate(sampling_rate).const_hz(frequency).sine();
 
         TenChannelSampleGenerator {
             sine_signal,
@@ -34,6 +41,8 @@ impl TenChannelSampleGenerator {
             amplitude,
             add_noise,
             prev_rand_value,
+            sine_amplitude_iterator,
+            sine_amplitude_signal,
         }
     }
 
@@ -52,9 +61,9 @@ impl TenChannelSampleGenerator {
         samples.push(self.amplitude * self.saw_signal.next() + noise);
         samples.push(self.amplitude * self.random_bounded_values());
         samples.push(self.rng.gen_range(-1.0..1.0));
+        samples.push(self.amplitude * self.sine_amplitude_signal.next() * self.sine_amplitude_iterator.next().unwrap());
 
         // remaining channels are set to a constant 0-Signal
-        samples.push(0.0);
         samples.push(0.0);
         samples.push(0.0);
         samples.push(0.0);
@@ -153,7 +162,7 @@ mod tests {
 
     #[test]
     fn test_random_bounded_values_min_max() {
-        let mut min:f64 = 10000.0;
+        let mut min: f64 = 10000.0;
         let mut max: f64 = -100000.0;
 
         const SAMPLING_RATE: f64 = 50.0;
@@ -169,5 +178,5 @@ mod tests {
 
         assert!(min > -1.0);
         assert!(max < 1.0);
-        }
+    }
 }
