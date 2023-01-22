@@ -8,7 +8,7 @@
   import GeneralButtons from "./GeneralButtons.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
-  import { MIN_CONTROL_PANEL_BOTTOM_HEIGHT, NUM_CHANNELS } from "../const";
+  import { INDICATORS_UPDATE_FREQUENCY, MIN_CONTROL_PANEL_BOTTOM_HEIGHT, NUM_CHANNELS } from "../const";
   import { osciEnabled, isGND } from "../stores";
   import { logSocketCloseCode } from "../helper";
   import TextIndicators from "./TextIndicators.svelte";
@@ -64,7 +64,7 @@
     }
     for (let index = 0; index < samples.length; index += NUM_CHANNELS) {
       waveElement.updateBuffer(samples, index, index + NUM_CHANNELS);
-      if (index % 1000 === 0) {
+      if (index % INDICATORS_UPDATE_FREQUENCY === 0) {
         lineIndicatorElement.update(samples);
         textIndicatorElement.update(samples);
       }
