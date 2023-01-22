@@ -6,7 +6,7 @@ describe("everything visible on front page", () => {
   });
 
   it("displays btn", () => {
-    cy.get("#settingsButton").should("be.visible");
+    cy.get('[data-cy="settings-button"]').should("be.visible");
   });
 
   it("is clickable", () => {

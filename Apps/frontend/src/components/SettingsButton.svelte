@@ -34,9 +34,8 @@
 
 <div>
   <button
-    id="settingsButton"
     class="icon-button mui-icon--settings"
     on:click={showPopup}
-    data-cy="preset-config-open-popup"
+    data-cy="settings-button"
   />
 </div>
