@@ -1,14 +1,12 @@
 <script>
-  import ChannelConfigPopup from "./ChannelConfigPopup.svelte";
-  import { LABEL_BUTTON_MANAGE_CHANNEL_CONFIG } from "../labels";
+  import SettingsPopup from "../views/SettingsPopup.svelte";
   import { presetPopupOpen } from "../stores";
   import { fly } from "svelte/transition";
   import { getAllChannelConfig } from "../rest/ChannelConfigController";
   import { availableChannelConfigPresets } from "../stores";
+  import { clickOutside } from "../helper";
 
   $: panelHeight = 0;
-  export let waveElement;
-  export let indicatorElement;
 
   async function loadAllChannelConfigPresets() {
     var response = await getAllChannelConfig();
@@ -26,17 +24,18 @@
     class="control-panel--bottom"
     transition:fly={{ y: panelHeight, opacity: 1 }}
     bind:clientHeight={panelHeight}
+    use:clickOutside
+    on:click-outside={() => ($presetPopupOpen = false)}
     data-cy="expanded-preset-popup"
   >
-    <ChannelConfigPopup {waveElement} {indicatorElement} />
+    <SettingsPopup />
   </nav>
 {/if}
 
 <div>
   <button
-    id="managePresets"
+    class="icon-button icon--settings"
     on:click={showPopup}
-    data-cy="preset-config-open-popup"
-    >{LABEL_BUTTON_MANAGE_CHANNEL_CONFIG}</button
-  >
+    data-cy="settings-button"
+  />
 </div>

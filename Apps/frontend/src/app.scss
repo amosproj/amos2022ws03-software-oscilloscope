@@ -37,6 +37,16 @@ img {
   height: 92%;
 }
 
+input[type="text"] {
+  height: calc(0.5vmax + 1.5em);
+  margin: 1%;
+}
+
+select {
+  height: calc(0.5vmax + 1.5em);
+  margin: 1%;
+}
+
 input[type="range"] {
   width: 40%;
   appearance: none;
@@ -125,6 +135,16 @@ nav {
   .icon-button {
     filter: invert(0) !important;
   }
+
+  .control-panel--bottom > table {
+    & tr:nth-child(even) {
+      background-color: #efefef !important;
+    }
+
+    & tr:nth-child(odd) {
+      background-color: white !important;
+    }
+  }
 }
 
 .wrapper {
@@ -143,6 +163,10 @@ nav {
   height: 100%;
 }
 
+.slider_label {
+  display: inline;
+}
+
 .logo {
   grid-column: 1;
   grid-row: 1;
@@ -152,6 +176,30 @@ nav {
   grid-column: 1/3;
   grid-row: 2;
   justify-self: end;
+}
+
+.settings {
+  &--close {
+    display: flex;
+  }
+  &--headline {
+    display: inline;
+  }
+  &--headline-section {
+    width: fit-content;
+    margin: 0;
+  }
+  &--list-element {
+    display: table;
+    width: fit-content;
+    & > div {
+      display: table-cell;
+
+      & > div {
+        display: table-cell;
+      }
+    }
+  }
 }
 
 .oscilloscope {
@@ -197,6 +245,7 @@ nav {
     grid-column: 1/6;
     grid-row: 3;
     padding: 0.5% 0;
+    padding-top: 12px;
 
     &_switch {
       width: 28px;
@@ -231,28 +280,21 @@ nav {
       border-collapse: collapse;
       table-layout: fixed;
 
-      & > th {
-        vertical-align: middle;
-        font-weight: normal;
+      & tr:nth-child(even) {
+        background-color: #242424;
       }
 
-      & > * {
-        padding: 0;
-        margin: 0;
-        width: auto;
-
-        & > * {
-          padding: 0;
-          margin: 0;
-        }
+      & tr:nth-child(odd) {
+        background-color: #404040;
       }
     }
   }
+}
 
-  &--entry {
-    & > span {
-      position: absolute;
-    }
+.margin {
+  &--small {
+    margin-right: 5px;
+    margin-left: 5px;
   }
 }
 
@@ -271,8 +313,17 @@ nav {
     padding: calc(1.2vmax + 8px) !important;
   }
 
+  &--big {
+    padding: 2.5vmax !important;
+  }
+
   &:hover {
     background-color: rgba(127, 127, 127, 0.1) !important;
+  }
+
+  &:disabled {
+    filter: invert(0.5);
+    cursor: not-allowed;
   }
 }
 
@@ -316,5 +367,17 @@ nav {
 
   &--distribute {
     background-image: url("./assets/icon_distribute.svg");
+  }
+
+  &--save {
+    background-image: url("./assets/icon_save.svg");
+  }
+
+  &--publish {
+    background-image: url("./assets/icon_publish.svg");
+  }
+
+  &--settings {
+    background-image: url("./assets/icon_settings.svg");
   }
 }
