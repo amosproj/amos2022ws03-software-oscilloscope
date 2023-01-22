@@ -38,6 +38,16 @@ img {
   height: 92%;
 }
 
+input[type="text"] {
+  height: calc(0.5vmax + 1.5em);
+  margin: 1%;
+}
+
+select {
+  height: calc(0.5vmax + 1.5em);
+  margin: 1%;
+}
+
 input[type="range"] {
   width: 40%;
   appearance: none;
@@ -120,6 +130,30 @@ nav {
   grid-column: 1/3;
   grid-row: 2;
   justify-self: end;
+}
+
+.settings {
+  &--close {
+    display: flex;
+  }
+  &--headline {
+    display: inline;
+  }
+  &--headline-section {
+    width: fit-content;
+    margin: 0;
+  }
+  &--list-element {
+    display: table;
+    width: fit-content;
+    & > div {
+      display: table-cell;
+
+      & > div {
+        display: table-cell;
+      }
+    }
+  }
 }
 
 .oscilloscope {
@@ -241,6 +275,13 @@ nav {
   }
 }
 
+.margin {
+  &--small {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+}
+
 .icon-button {
   border-radius: 100%;
   border: 0;
@@ -256,8 +297,17 @@ nav {
     padding: 2vmax !important;
   }
 
+  &--big {
+    padding: 2.5vmax !important;
+  }
+
   &:hover {
     background-color: rgba(127, 127, 127, 0.1) !important;
+  }
+
+  &:disabled {
+    filter: invert(0.5);
+    cursor: not-allowed;
   }
 }
 
@@ -300,5 +350,17 @@ nav {
 
   &--distribute {
     background-image: url("./assets/mui_distribute.svg");
+  }
+
+  &--save {
+    background-image: url("./assets/mui_save.svg");
+  }
+
+  &--publish {
+    background-image: url("./assets/mui_publish.svg");
+  }
+
+  &--settings {
+    background-image: url("./assets/mui_settings.svg");
   }
 }
