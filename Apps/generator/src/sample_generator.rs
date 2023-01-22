@@ -1,5 +1,6 @@
 use dasp_signal::{self as signal, Signal};
 use rand::Rng;
+use rand::thread_rng;
 
 pub struct TenChannelSampleGenerator {
     pub sine_signal: signal::Sine<signal::ConstHz>,
@@ -8,6 +9,7 @@ pub struct TenChannelSampleGenerator {
     pub rng: rand::rngs::ThreadRng,
     pub amplitude: f64,
     pub add_noise: bool,
+    pub prev_rand_value: f64,
 }
 
 impl TenChannelSampleGenerator {
@@ -21,6 +23,7 @@ impl TenChannelSampleGenerator {
         let saw_signal = signal::rate(sampling_rate).const_hz(frequency).saw();
         let square_signal = signal::rate(sampling_rate).const_hz(frequency).square();
         let rng = rand::thread_rng();
+        let prev_rand_value = 0.0;
 
         TenChannelSampleGenerator {
             sine_signal,
@@ -29,6 +32,7 @@ impl TenChannelSampleGenerator {
             rng,
             amplitude,
             add_noise,
+            prev_rand_value,
         }
     }
 
