@@ -4,7 +4,6 @@
   import LineIndicators from "./LineIndicators.svelte";
   import ExpandableControlPanel from "./ExpandableControlPanel.svelte";
   import ControlPanelBottom from "./ControlPanelBottom.svelte";
-  import ControlPanelRight from "./ControlPanelRight.svelte";
   import GeneralButtons from "./GeneralButtons.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
