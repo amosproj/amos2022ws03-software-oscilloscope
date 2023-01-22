@@ -32,10 +32,8 @@
   </nav>
 {/if}
 
-<div>
-  <button
-    class="icon-button mui-icon--settings"
-    on:click={showPopup}
-    data-cy="settings-button"
-  />
-</div>
+<button
+  class="icon-button icon--settings"
+  on:click={showPopup}
+  data-cy="settings-button"
+/>

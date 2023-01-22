@@ -34,5 +34,4 @@
   }}
 />
 <DistributeOffsetButton />
-
 <SettingsButton />

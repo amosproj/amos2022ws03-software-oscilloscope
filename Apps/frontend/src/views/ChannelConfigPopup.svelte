@@ -50,7 +50,7 @@
 <div data-cy="channelConfigPreset">
   <div style="margin-left: auto;">
     <h3>{LABEL_HEADER_LOAD_FROM_LIST_CHANNEL_CONFIG}</h3>
-    <select id="availablePreset" bind:value={selectedPreset}>
+    <select bind:value={selectedPreset}>
       {#each $availableChannelConfigPresets as preset}
         <option value={preset}>
           {preset}

@@ -61,7 +61,7 @@
 <div data-cy="preset-config-open-popup">
   <div class="settings--close">
     <button
-      class="icon-button icon-button--small mui-icon--close"
+      class="icon-button icon-button--small icon--close"
       on:click={() => ($presetPopupOpen = false)}
       data-cy="expanded-control-panel-close-button"
     />
@@ -79,7 +79,6 @@
               <div>
                 <div>
                   <select
-                    id="availablePreset"
                     class="margin--small"
                     bind:value={selectedPreset}
                     on:change={handleLoadButton}
@@ -97,7 +96,7 @@
                 <div>
                   <button
                     id="getChannelConfig"
-                    class="icon-button icon-button--big mui-icon--publish"
+                    class="icon-button icon-button--big icon--publish"
                     on:click={loadChannelConfigById}
                     disabled
                     data-cy="load-channel-config"
@@ -124,7 +123,7 @@
                 <div>
                   <button
                     id="storeChannelConfig"
-                    class="icon-button icon-button--big mui-icon--save"
+                    class="icon-button icon-button--big icon--save"
                     on:click={storeChannelConfig}
                     disabled
                     data-cy="store-channel-config"
