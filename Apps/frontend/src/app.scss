@@ -88,6 +88,16 @@ nav {
   .icon-button {
     filter: invert(0) !important;
   }
+
+  .control-panel--bottom > table {
+    & tr:nth-child(even) {
+      background-color: #efefef !important;
+    }
+
+    & tr:nth-child(odd) {
+      background-color: white !important;
+    }
+  }
 }
 
 .wrapper {
@@ -105,6 +115,10 @@ nav {
   width: 100%;
   height: 100%;
   overflow: auto;
+}
+
+.slider_label {
+  display: inline;
 }
 
 .logo {
@@ -184,6 +198,7 @@ nav {
     grid-column: 1/6;
     grid-row: 3;
     padding: 0.5% 0;
+    padding-top: 12px;
 
     &_switch {
       width: 28px;
@@ -213,32 +228,49 @@ nav {
     }
 
     & > table {
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+      width: 100%;
+      border-collapse: unset;
+
+      & tr:nth-child(even) {
+        background-color: #242424;
+      }
+
+      & tr:nth-child(odd) {
+        background-color: #404040;
+      }
+    }
+    & > table thead {
+      /* head takes the height it requires, 
+      and it's not scaled when table is resized */
+      flex: 0 0 auto;
+      width: calc(100% - 0.9em);
+    }
+    & > table tbody {
+      /* body takes all the remaining available space */
+      flex: 1 1 auto;
+      display: block;
+      overflow-y: scroll;
+    }
+    & > table tbody tr {
       width: 100%;
       text-align: center;
-      border-collapse: collapse;
+    }
+    & > table thead,
+    table tbody tr {
+      display: table;
       table-layout: fixed;
-
-      & > th {
-        vertical-align: middle;
-        font-weight: normal;
-      }
-
-      & > * {
-        padding: 0;
-        margin: 0;
-        width: auto;
-
-        & > * {
-          padding: 0;
-          margin: 0;
-        }
-      }
+    }
+    & > tr {
+      padding: 3px;
     }
   }
 
   &--entry {
-    & > span {
-      position: absolute;
+    & > input {
+      background-color: #222222;
     }
   }
 }
