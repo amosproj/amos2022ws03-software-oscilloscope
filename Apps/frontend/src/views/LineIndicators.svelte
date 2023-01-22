@@ -8,7 +8,7 @@
   } from "../const";
   import { onMount } from "svelte";
   import { createShaderProgram } from "../shader/shaderHelper.js";
-  import { fragmentShader, vertexShader } from "../shader/indicatorShader.js";
+  import { fragmentShader, vertexShader } from "../shader/indicatorShaders.js";
   import {
     amplitudeAdjustment,
     channelActivated,
