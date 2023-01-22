@@ -1,6 +1,7 @@
 use dasp_signal::{self as signal, Signal};
 use rand::Rng;
 use rand::thread_rng;
+const RANDOM_DIFF: f64 = 0.01;
 
 pub struct TenChannelSampleGenerator {
     pub sine_signal: signal::Sine<signal::ConstHz>,
@@ -50,9 +51,9 @@ impl TenChannelSampleGenerator {
         samples.push(self.amplitude * self.sine_signal.next() + noise);
         samples.push(self.amplitude * self.saw_signal.next() + noise);
         samples.push(self.amplitude * self.random_bounded_values());
+        samples.push(self.rng.gen_range(-1.0..1.0));
 
         // remaining channels are set to a constant 0-Signal
-        samples.push(0.0);
         samples.push(0.0);
         samples.push(0.0);
         samples.push(0.0);
@@ -66,7 +67,7 @@ impl TenChannelSampleGenerator {
         let prev_value = self.prev_rand_value;
         loop {
             let value = rng.gen_range(-1.0..1.0);
-            if (prev_value - value).abs() <= 0.2 {
+            if (prev_value - value).abs() <= RANDOM_DIFF {
                 self.prev_rand_value = value;
                 return value;
             }
@@ -138,16 +139,16 @@ mod tests {
         let first_value = generator.random_bounded_values();
 
         let second_value = generator.random_bounded_values();
-        assert!((first_value - second_value).abs() <= 0.2);
+        assert!((first_value - second_value).abs() <= RANDOM_DIFF);
 
         let third_value = generator.random_bounded_values();
-        assert!((first_value - third_value).abs() <= 0.4);
-        assert!((second_value - third_value).abs() <= 0.2);
+        assert!((first_value - third_value).abs() <= RANDOM_DIFF * 2.0);
+        assert!((second_value - third_value).abs() <= RANDOM_DIFF);
 
         let fourth_value = generator.random_bounded_values();
-        assert!((first_value - fourth_value).abs() <= 0.6);
-        assert!((second_value - fourth_value).abs() <= 0.4);
-        assert!((third_value - fourth_value).abs() <= 0.2);
+        assert!((first_value - fourth_value).abs() <= 3.0 * RANDOM_DIFF);
+        assert!((second_value - fourth_value).abs() <= 2.0 * RANDOM_DIFF);
+        assert!((third_value - fourth_value).abs() <= RANDOM_DIFF);
     }
 
     #[test]
