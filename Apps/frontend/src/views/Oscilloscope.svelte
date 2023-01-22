@@ -88,7 +88,7 @@
     <div class="control-panel--top_general">
       <GeneralButtons {waveElement} {lineIndicatorElement} {textIndicatorElement} />
     </div>
-    <div class="line-indicators">
+    <div class="indicators--line">
       <LineIndicators bind:this={lineIndicatorElement} />
     </div>
     <div class="oscilloscope">
@@ -99,7 +99,7 @@
         <Waves bind:this={waveElement} {scalesY} />
       </div>
     </div>
-    <div class="text-indicators">
+    <div class="indicators--text">
       <TextIndicators bind:this={textIndicatorElement} />
     </div>
     <div
