@@ -90,7 +90,6 @@
                       </option>
                     {/each}
                     <option value="" disabled selected>Select preset...</option>
-                    <option value="test">test</option>
                   </select>
                 </div>
                 <div>
