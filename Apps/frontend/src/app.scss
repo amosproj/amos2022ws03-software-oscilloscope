@@ -65,7 +65,7 @@ nav {
   z-index: 3;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
     color: #213547;
     background-color: #efefef;
@@ -79,21 +79,14 @@ nav {
     filter: invert(0) !important;
   }
 
-  table tr:nth-child(even) {
-    background-color: white;
-  }
+  .control-panel--bottom > table {
+    & tr:nth-child(even) {
+      background-color: #efefef !important;
+    }
 
-  table tr:nth-child(odd) {
-    background-color: lightgray;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  table tr:nth-child(even) {
-    background-color: #404040;
-  }
-  table tr:nth-child(odd) {
-    background-color: darkgray;
+    & tr:nth-child(odd) {
+      background-color: white !important;
+    }
   }
 }
 
@@ -206,6 +199,14 @@ nav {
       height: 100%;
       width: 100%;
       border-collapse: unset;
+
+      & tr:nth-child(even) {
+        background-color: #242424;
+      }
+
+      & tr:nth-child(odd) {
+        background-color: #404040;
+      }
     }
     & > table thead {
       /* head takes the height it requires, 
