@@ -30,12 +30,12 @@
     if (response !== undefined) setLiveChannelConfig(response.channels);
 
     dispatch(EVENT_LOADED_CHANNEL_CONFIG, {});
-    $presetPopupOpen = false
+    $presetPopupOpen = false;
   }
 
   async function storeChannelConfig() {
     await postChannelConfig(getLiveChannelConfig(), presetName);
-    $presetPopupOpen = false
+    $presetPopupOpen = false;
   }
 
   function handleSaveButton() {

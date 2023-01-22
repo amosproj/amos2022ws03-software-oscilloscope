@@ -20,6 +20,7 @@
   export let controlPanelBottomHeight = 0;
 </script>
 
+<!--This is the control panel that appears below the main control panel. It is only visible when the user clicks on the "Control Panel" button.-->
 <table>
   <th>
     {#if $expandedPanelOpen && controlPanelBottomHeight <= MIN_CONTROL_PANEL_BOTTOM_HEIGHT}
@@ -28,6 +29,8 @@
         on:click={() => ($expandedPanelOpen = false)}
         data-cy="expanded-control-panel-close-button"
       />
+    {:else}
+      Channel
     {/if}
   </th>
   <th>Start/Stop</th>
@@ -41,6 +44,7 @@
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td>
+      <!--Common TimeSweep Slider-->
       <Slider
         className="control-panel--entry"
         onInput={() => {
@@ -58,7 +62,7 @@
   </tr>
   {#each { length: NUM_CHANNELS } as _, index}
     <tr>
-      <td>Ch. {index}</td>
+      <td>Ch. {index + 1}</td>
       <td>
         <StartStopSwitch channel={index} />
       </td>

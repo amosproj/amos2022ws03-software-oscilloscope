@@ -14,6 +14,6 @@
 <div class={className} data-cy={dataCy}>
   <input {id} type="range" bind:value on:input={onInput} {min} {max} {step} />
   {#if calculateDisplayedValue !== undefined}
-    <span>{calculateDisplayedValue(value)}</span>
+    <div class="slider-label">{calculateDisplayedValue(value)}</div>
   {/if}
 </div>
