@@ -33,7 +33,10 @@
 {/if}
 
 <div>
-  <button id="managePresets" on:click={showPopup} data-cy="preset-config-open-popup"
+  <button
+    id="managePresets"
+    on:click={showPopup}
+    data-cy="preset-config-open-popup"
     >{LABEL_BUTTON_MANAGE_CHANNEL_CONFIG}</button
   >
 </div>

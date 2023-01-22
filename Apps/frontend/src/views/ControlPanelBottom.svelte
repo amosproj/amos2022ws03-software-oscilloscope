@@ -42,11 +42,12 @@
   </thead>
   <tbody>
     <tr>
-      <td > Common </td>
+      <td> Common </td>
       <td><!--Placeholder--></td>
       <td><!--Placeholder--></td>
       <td><!--Placeholder--></td>
       <td>
+        <!--Common TimeSweep Slider-->
         <Slider
           className="control-panel--entry"
           onInput={() => {
@@ -64,7 +65,7 @@
     </tr>
     {#each { length: NUM_CHANNELS } as _, index}
       <tr>
-        <td style="">Ch. {index+1}</td>
+        <td style="">Ch. {index + 1}</td>
         <td>
           <StartStopSwitch channel={index} />
         </td>
@@ -103,5 +104,5 @@
       </tr>
     {/each}
     <tr />
-  </tbody>  
+  </tbody>
 </table>

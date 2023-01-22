@@ -80,15 +80,22 @@ nav {
   }
 
   table tr:nth-child(even) {
-    background-color: #d9d9d9;
+    background-color: white;
   }
 
   table tr:nth-child(odd) {
-    background-color: #c3c3c3;
+    background-color: lightgray;
   }
 }
 
-
+@media (prefers-color-scheme: dark) {
+  table tr:nth-child(even) {
+    background-color: #404040;
+  }
+  table tr:nth-child(odd) {
+    background-color: darkgray;
+  }
+}
 
 .wrapper {
   display: grid;
@@ -105,6 +112,10 @@ nav {
   width: 100%;
   height: 100%;
   overflow: auto;
+}
+
+.slider_label {
+  display: inline;
 }
 
 .logo {
@@ -209,28 +220,23 @@ nav {
       overflow-y: scroll;
     }
     & > table tbody tr {
-        width: 100%;
-        text-align: center;
+      width: 100%;
+      text-align: center;
     }
-    & > table thead, table tbody tr {
-        display: table;
-        table-layout: fixed;
+    & > table thead,
+    table tbody tr {
+      display: table;
+      table-layout: fixed;
     }
     & > tr {
       padding: 3px;
-    }
-    & > table tr:nth-child(even) {
-      background-color: #838383;
-    }    
-    & > table tr:nth-child(odd) {
-      background-color: #999999;
     }
   }
 
   &--entry {
     & > input {
       background-color: #222222;
-    }    
+    }
   }
 }
 
@@ -295,4 +301,3 @@ nav {
     background-image: url("./assets/mui_distribute.svg");
   }
 }
-
