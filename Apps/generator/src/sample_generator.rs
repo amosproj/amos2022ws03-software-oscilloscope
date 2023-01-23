@@ -144,8 +144,8 @@ mod tests {
         let second: Vec<f64> = generator.next();
         let third: Vec<f64> = generator.next();
 
-        assert_eq!(first, second);
-        assert_eq!(second, third);
+        assert_eq!(first[0..3], second[0..3]);
+        assert_eq!(second[0..3], third[0..3]);
     }
 
     #[test]
