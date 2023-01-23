@@ -9,8 +9,8 @@ export const LABEL_BUTTON_UPDATE_CHANNEL_CONFIG = "Save";
 export const LABEL_BUTTON_CANCEL_CHANNEL_CONFIG = "Cancel";
 
 export const TOOLTIP_BUTTON_GND = "GND";
-export const TOOLTIP_BUTTON_DISTRIBUTE = "Distribute";
-export const TOOLTIP_BUTTON_RESET = "Reset";
+export const TOOLTIP_BUTTON_DISTRIBUTE = "Distributes enabled channels vertically";
+export const TOOLTIP_BUTTON_RESET = "Cleans the canvas and stops plotting";
 export const TOOLTIP_BUTTON_OFFOFF_ON = "Turn on";
 export const TOOLTIP_BUTTON_OFFOFF_OFF = "Turn off";
 
