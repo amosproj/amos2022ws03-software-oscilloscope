@@ -37,11 +37,17 @@ export const reset = () => {
 
 </script>
 
-{#each min as _, i}
-    <div style="color: {LINE_COLORS_RGBA[i]}">
-      [{i+1}]
-      Min: {roundVoltage(min[i])} V
-      <br>
-      &nbsp;&nbsp;&nbsp;&nbsp;Max: {roundVoltage(max[i])} V
-    </div>
-{/each}
+<table>
+  {#each min as _, i}
+      <tr style="color: {LINE_COLORS_RGBA[i]}">
+        <td>
+          [{(i+1)}]
+        </td>
+        <td>
+          Min: {roundVoltage(min[i])} V
+          <br>
+          Max: {roundVoltage(max[i])} V
+        </td>
+      </tr>
+  {/each}
+</table>

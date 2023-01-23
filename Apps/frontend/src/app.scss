@@ -131,16 +131,20 @@ nav {
   &--close {
     display: flex;
   }
+
   &--headline {
     display: inline;
   }
+
   &--headline-section {
     width: fit-content;
     margin: 0;
   }
+
   &--list-element {
     display: table;
     width: fit-content;
+
     & > div {
       display: table-cell;
 
@@ -188,6 +192,10 @@ nav {
     text-align: left;
     line-height: calc(0.5vw + 0.5em);
     padding-left: 1vmax;
+
+    td {
+      vertical-align: top;
+    }
   }
 }
 
@@ -250,27 +258,32 @@ nav {
         background-color: #404040;
       }
     }
+
     & > table thead {
       /* head takes the height it requires, 
       and it's not scaled when table is resized */
       flex: 0 0 auto;
       width: calc(100% - 0.9em);
     }
+
     & > table tbody {
       /* body takes all the remaining available space */
       flex: 1 1 auto;
       display: block;
       overflow-y: scroll;
     }
+
     & > table tbody tr {
       width: 100%;
       text-align: center;
     }
+
     & > table thead,
     table tbody tr {
       display: table;
       table-layout: fixed;
     }
+
     & > tr {
       padding: 3px;
     }
