@@ -57,9 +57,9 @@
         </option>
       {/each}
     </select>
-    <button id="getChannelConfig" on:click={loadChannelConfigById}
-      >{LABEL_BUTTON_LOAD_CHANNEL_CONFIG}</button
-    >
+    <button id="getChannelConfig" on:click={loadChannelConfigById}>
+      {LABEL_BUTTON_LOAD_CHANNEL_CONFIG}
+    </button>
   </div>
   <div style="margin-left: auto;">
     <h3>{LABEL_HEADER_CREATE_CHANNEL_CONFIG}</h3>
@@ -69,12 +69,12 @@
       bind:value={presetName}
       on:change={handleSaveButton}
     />
-    <button id="storeChannelConfig" on:click={storeChannelConfig} disabled
-      >{LABEL_BUTTON_UPDATE_CHANNEL_CONFIG}</button
-    >
+    <button id="storeChannelConfig" on:click={storeChannelConfig} disabled>
+      {LABEL_BUTTON_UPDATE_CHANNEL_CONFIG}
+    </button>
   </div>
   <br />
-  <button id="cancelChannelConfig" on:click={() => ($presetPopupOpen = false)}
-    >{LABEL_BUTTON_CANCEL_CHANNEL_CONFIG}</button
-  >
+  <button id="cancelChannelConfig" on:click={() => ($presetPopupOpen = false)}>
+    {LABEL_BUTTON_CANCEL_CHANNEL_CONFIG}
+  </button>
 </div>
