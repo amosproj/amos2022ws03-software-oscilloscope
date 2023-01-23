@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="../app.scss">
 <script>
   import {
     CANVAS_HEIGHT,
@@ -67,7 +66,6 @@
 
     const lineVertices = new Float32Array([0, 0, 1, 0]);
     gl.bufferData(gl.ARRAY_BUFFER, lineVertices, gl.STATIC_DRAW);
-
   };
 
   const prepareProgram = () => {
@@ -101,7 +99,8 @@
   };
 
   const drawAllIndicators = () => {
-    for (let channel = 0; channel < NUM_CHANNELS; channel++) drawIndicator(channel);
+    for (let channel = 0; channel < NUM_CHANNELS; channel++)
+      drawIndicator(channel);
   };
 
   /**
@@ -145,10 +144,12 @@
     max = Array(NUM_CHANNELS).fill(0.0);
     drawAllIndicators();
   };
-  
+
   onMount(() => {
     initWebGL();
   });
 </script>
 
-<canvas data-cy="indicators" bind:this={canvasElement}></canvas>
+<link rel="stylesheet" href="../app.scss" />
+
+<canvas data-cy="indicators" bind:this={canvasElement} />

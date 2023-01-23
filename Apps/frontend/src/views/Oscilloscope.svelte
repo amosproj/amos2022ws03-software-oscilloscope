@@ -7,7 +7,11 @@
   import GeneralButtons from "./GeneralButtons.svelte";
   import Waves from "../components/Waves.svelte";
   import CoordinateSystem from "./CoordinateSystem.svelte";
-  import { INDICATORS_UPDATE_FREQUENCY, MIN_CONTROL_PANEL_BOTTOM_HEIGHT, NUM_CHANNELS } from "../const";
+  import {
+    INDICATORS_UPDATE_FREQUENCY,
+    MIN_CONTROL_PANEL_BOTTOM_HEIGHT,
+    NUM_CHANNELS,
+  } from "../const";
   import { osciEnabled, isGND } from "../stores";
   import { logSocketCloseCode } from "../helper";
   import TextIndicators from "./TextIndicators.svelte";
@@ -67,7 +71,6 @@
         lineIndicatorElement.update(samples);
         textIndicatorElement.update(samples);
       }
-
     }
   };
 
@@ -85,7 +88,11 @@
       <Logo />
     </div>
     <div class="control-panel--top_general">
-      <GeneralButtons {waveElement} {lineIndicatorElement} {textIndicatorElement} />
+      <GeneralButtons
+        {waveElement}
+        {lineIndicatorElement}
+        {textIndicatorElement}
+      />
     </div>
     <div class="indicators--line">
       <LineIndicators bind:this={lineIndicatorElement} />
