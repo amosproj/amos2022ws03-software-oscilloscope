@@ -1,11 +1,6 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
-  import {
-    ColorRGBA,
-    WebglPlot,
-    WebglSquare,
-    WebglThickLine,
-  } from "webgl-plot";
+  import App from "../App.svelte";
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
@@ -23,12 +18,15 @@
     thicknessAdjustment,
     timeSweep,
   } from "../stores";
+  import {
+    OscilloscopeWebGl
+  } from "../OscilloscopeWebGl"
   import { computeDisplayDeltaFromTimeSweep } from "../helper";
 
   export let scalesY;
 
   let canvasElement;
-  let webGLPlot;
+  let oscilloscopeWebGl;
   /**
    * @type {Number[][]}
    */
@@ -43,7 +41,7 @@
   // ----- Svelte lifecycle hooks -----
   onMount(() => {
     resizeCanvas();
-    initializePlot();
+    initializeWebGl();
     resetPlot();
   });
 
@@ -63,10 +61,11 @@
     xArr = new Array(NUM_CHANNELS).fill(0.0);
     xLast = new Array(NUM_CHANNELS).fill(undefined);
     initChannelSamples();
-    webGLPlot.clear();
+    oscilloscopeWebGl.clear();
   };
 
   export const updateBuffer = (samples, startIndex, endIndex) => {
+    console.log("updateBuffer()");
     for (
       let channelIndex = startIndex;
       channelIndex < endIndex;
@@ -94,37 +93,37 @@
 
   // Subscribe to the offsetAdjustment store
   offsetAdjustment.subscribe((newOffsets) => {
-    for (let i = 0; i < NUM_CHANNELS; i++) {
-      let line = lines[i];
-      if (line !== undefined) line.offsetY = newOffsets[i];
-      let head = heads[i];
-      if (head !== undefined) head.offsetY = newOffsets[i];
-    }
+    // for (let i = 0; i < NUM_CHANNELS; i++) {
+    //   let line = lines[i];
+    //   if (line !== undefined) line.offsetY = newOffsets[i];
+    //   let head = heads[i];
+    //   if (head !== undefined) head.offsetY = newOffsets[i];
+    // }
   });
 
   // Subscribe to the channelActivation store
   channelActivated.subscribe((isActive) => {
-    for (let i = 0; i < NUM_CHANNELS; i++) {
-      if (lines[i] !== undefined) lines[i].visible = isActive[i];
-    }
+    // for (let i = 0; i < NUM_CHANNELS; i++) {
+    //   if (lines[i] !== undefined) lines[i].visible = isActive[i];
+    // }
   });
 
   thicknessAdjustment.subscribe((isThick) => {
-    for (let i = 0; i < NUM_CHANNELS; i++) {
-      if (lines[i] !== undefined) {
-        const thickness = isThick[i]
-          ? LINE_THICKNESS_BIG
-          : LINE_THICKNESS_SMALL;
-        lines[i].setThickness(thickness);
-      }
-    }
+    // for (let i = 0; i < NUM_CHANNELS; i++) {
+    //   if (lines[i] !== undefined) {
+    //     const thickness = isThick[i]
+    //       ? LINE_THICKNESS_BIG
+    //       : LINE_THICKNESS_SMALL;
+    //     lines[i].setThickness(thickness);
+    //   }
+    // }
   });
 
   amplitudeAdjustment.subscribe((amplitudes) => {
-    for (let i = 0; i < NUM_CHANNELS; i++) {
-      if (lines[i] !== undefined)
-        lines[i].scaleY = computeScaling(amplitudes[i]);
-    }
+    // for (let i = 0; i < NUM_CHANNELS; i++) {
+    //   if (lines[i] !== undefined)
+    //     lines[i].scaleY = computeScaling(amplitudes[i]);
+    // }
   });
 
   // computes the Scaling of a wave according to the voltage intervals
@@ -133,17 +132,10 @@
   };
 
   const update = () => {
-    for (let i = 0; i < channelSamples.length; i++) {
-      for (let x = 0; x < CANVAS_WIDTH; ++x) {
-        lines[i].setY(x, channelSamples[i][x]);
-      }
-
-      const size = 0.01;
-      let x = (xArr[i] * 2) / CANVAS_WIDTH - 1;
-      let scale = lines[i].scaleY * 5;
-      let y = (channelSamples[i][xLast[i] - 1] * 100 * scale) / CANVAS_HEIGHT;
-      heads[i].setSquare(x - size / 2, y - size, x + size / 2, y + size);
-    }
+    console.log("update()");
+    oscilloscopeWebGl.drawChannels(channelSamples);
+    //draw heads
+    //draw grid?
   };
 
   const resizeCanvas = () => {
@@ -151,35 +143,21 @@
     canvasElement.height = CANVAS_HEIGHT;
   };
 
-  const initializePlot = () => {
-    webGLPlot = new WebglPlot(canvasElement);
-    initializeLines();
-  };
+  const initializeWebGl = () => {
+    let webgl = canvasElement.getContext("webgl2");
 
-  const initializeLines = () => {
-    for (let i = 0; i < NUM_CHANNELS; i++) {
-      const color = new ColorRGBA(
-        LINE_COLORS[i][0] / 255,
-        LINE_COLORS[i][1] / 255,
-        LINE_COLORS[i][2] / 255,
-        1
-      );
-      let line = new WebglThickLine(color, CANVAS_WIDTH, LINE_THICKNESS_SMALL);
-      // same thing arrangeX does, but WebglThickLine does not provide it
-      line.lineSpaceX(-1, 2 / CANVAS_WIDTH);
-      line.scaleY = computeScaling(scalesY[i]);
-      webGLPlot.addThickLine(line);
-      lines.push(line);
+    if (webgl === null) {
+        alert(
+          "Unable to initialize WebGL. Your browser or machine may not support it."
+        );
+        return;
+      }
 
-      let head = new WebglSquare(color);
-      heads.push(head);
-      webGLPlot.addSurface(head);
-    }
+    oscilloscopeWebGl = new OscilloscopeWebGl(webgl);
   };
 
   const newFrame = () => {
     update();
-    webGLPlot.update();
     window.requestAnimationFrame(newFrame);
   };
 </script>
