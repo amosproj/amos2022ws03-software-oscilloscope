@@ -4,7 +4,6 @@
   import { osciEnabled } from "../stores";
   import { Tooltip } from "sveltestrap";
   import {
-    TOOLTIP_BUTTON_OFFOFF_BASE,
     TOOLTIP_BUTTON_OFFOFF_ON,
     TOOLTIP_BUTTON_OFFOFF_OFF,
   } from "../labels";
@@ -33,7 +32,5 @@
   on:click={handleClick}
 />
 <Tooltip target={button} placement="bottom">
-  {TOOLTIP_BUTTON_OFFOFF_BASE}{$osciEnabled
-    ? TOOLTIP_BUTTON_OFFOFF_OFF
-    : TOOLTIP_BUTTON_OFFOFF_ON}
+  {$osciEnabled ? TOOLTIP_BUTTON_OFFOFF_OFF : TOOLTIP_BUTTON_OFFOFF_ON}
 </Tooltip>

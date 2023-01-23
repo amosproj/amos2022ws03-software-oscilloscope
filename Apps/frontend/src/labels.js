@@ -11,9 +11,8 @@ export const LABEL_BUTTON_CANCEL_CHANNEL_CONFIG = "Cancel";
 export const TOOLTIP_BUTTON_GND = "GND";
 export const TOOLTIP_BUTTON_DISTRIBUTE = "Distribute";
 export const TOOLTIP_BUTTON_RESET = "Reset";
-export const TOOLTIP_BUTTON_OFFOFF_BASE = "Turn ";
-export const TOOLTIP_BUTTON_OFFOFF_ON = "on";
-export const TOOLTIP_BUTTON_OFFOFF_OFF = "off";
+export const TOOLTIP_BUTTON_OFFOFF_ON = "Turn on";
+export const TOOLTIP_BUTTON_OFFOFF_OFF = "Turn off";
 
 /* Log messages */
 export const ERR_MSG_COULD_NOT_RETRIEVE_CHANNEL_CONFIG =
