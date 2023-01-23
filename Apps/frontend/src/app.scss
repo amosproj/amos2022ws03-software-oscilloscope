@@ -5,7 +5,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: white;
   background-color: #242424;
 
   font-synthesis: none;
@@ -20,6 +20,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow: auto;
+  color: white !important;
+  background-color: #242424 !important;
 }
 
 #app {
@@ -102,8 +104,13 @@ nav {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #242424;
-    background-color: white;
+    color: #242424 !important;
+    background-color: white !important;
+  }
+
+  body {
+    color: #242424 !important;
+    background-color: white !important;
   }
 
   nav {
