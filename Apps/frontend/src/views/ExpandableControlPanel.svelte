@@ -15,8 +15,8 @@
   <button
     class={clsx(
       { "icon-button": true },
-      { "mui-icon--expand-less": $expandedPanelOpen },
-      { "mui-icon--expand-more": !$expandedPanelOpen }
+      { "icon--expand-less": $expandedPanelOpen },
+      { "icon--expand-more": !$expandedPanelOpen }
     )}
   />
 </button>

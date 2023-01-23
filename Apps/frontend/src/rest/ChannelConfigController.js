@@ -14,7 +14,7 @@ export function getAllChannelConfig() {
       },
     })
     .then((response) => response.data)
-    .catch(function (_) {
+    .catch(function () {
       console.error(ERR_MSG_COULD_NOT_RETRIEVE_CHANNEL_CONFIG);
     });
   return response;

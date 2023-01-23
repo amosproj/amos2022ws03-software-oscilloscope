@@ -1,11 +1,11 @@
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: min(1em, 2vw);
-  line-height: min(1.6em, 2vw);
+  font-size: 16px;
+  line-height: 22px;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: white;
   background-color: #242424;
 
   font-synthesis: none;
@@ -19,11 +19,12 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  overflow: hidden;
+  overflow: auto;
+  color: white !important;
+  background-color: #242424 !important;
 }
 
 #app {
-  width: 100%;
   margin: 0 auto;
   text-align: center;
 }
@@ -52,14 +53,38 @@ input[type="range"] {
   width: 40%;
   appearance: none;
   -webkit-appearance: none;
-  height: 0.2em;
+  background: transparent;
+
+  &::-moz-range-track {
+    background: white;
+    height: 0.2em;
+  }
+
+  &::-webkit-slider-runnable-track {
+    background: white;
+    height: 0.2em;
+  }
+
+  &::-moz-range-thumb {
+    height: calc(0.6vmax + 0.4em);
+    width: calc(0.6vmax + 0.4em);
+    border-radius: 100%;
+    background: #242424;
+    border: 0.5px solid white;
+    cursor: pointer;
+  }
 
   &::-webkit-slider-thumb {
+    appearance: none;
     -webkit-appearance: none;
-    height: calc(0.5vmax + 0.5em);
-    width: calc(0.5vmax + 0.5em);
+    height: calc(0.6vmax + 0.4em);
+    width: calc(0.6vmax + 0.4em);
+    margin-top: calc(
+      (0.2em / 2) - (0.6vmax + 0.4em) / 2
+    ); //track height/2 - thumb height/2
     border-radius: 100%;
-    background: #efefef;
+    background: #242424;
+    border: 0.5px solid white;
     cursor: pointer;
   }
 }
@@ -69,20 +94,49 @@ nav {
   bottom: 0;
   right: 0;
   width: 100%;
-  height: calc(14vmax + 8em);
+  min-height: fit-content;
+  max-height: 80vh;
   box-shadow: 0 0 2em rgba(80, 80, 80, 1);
   background-color: #242424;
   z-index: 3;
+  overflow: auto;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #efefef;
+    color: #242424 !important;
+    background-color: white !important;
+  }
+
+  body {
+    color: #242424 !important;
+    background-color: white !important;
   }
 
   nav {
-    background-color: #efefef;
+    background-color: white;
+  }
+
+  input[type="range"] {
+    &::-moz-range-track {
+      background: #242424;
+      height: 0.2em;
+    }
+
+    &::-webkit-slider-runnable-track {
+      background: #242424;
+      height: 0.2em;
+    }
+
+    &::-moz-range-thumb {
+      background: white;
+      border: 1px solid black;
+    }
+
+    &::-webkit-slider-thumb {
+      background: white;
+      border: 1px solid black;
+    }
   }
 
   .icon-button {
@@ -114,10 +168,9 @@ nav {
     calc(100vh - 1 / 2 * (8vmax + 100vw - 2 * (8vmax + 16vw - 2em)));
   width: 100%;
   height: 100%;
-  overflow: auto;
 }
 
-.slider_label {
+.slider-label {
   display: inline;
 }
 
@@ -165,7 +218,7 @@ nav {
     inset: 0;
 
     & > canvas {
-      border: 0.1vw solid #efefef;
+      border: 0.1vw solid white;
       background-color: black;
     }
   }
@@ -173,6 +226,7 @@ nav {
   &--waves {
     position: absolute;
     margin-top: 0.1vw;
+    margin-left: 0.1vw;
     inset: 0;
   }
 }
@@ -214,7 +268,7 @@ nav {
     grid-column: 1/6;
     grid-row: 3;
     padding: 0.5% 0;
-    padding-top: 12px;
+    padding-top: 0.5%;
 
     &_switch {
       width: 28px;
@@ -224,7 +278,6 @@ nav {
 
     &_expand-accordion {
       width: 100%;
-      padding: 1vh 0;
       display: flex;
       justify-content: center;
       align-content: center;
@@ -244,11 +297,11 @@ nav {
     }
 
     & > table {
-      display: flex;
-      flex-flow: column;
-      height: 100%;
       width: 100%;
-      border-collapse: unset;
+      height: 100%;
+      text-align: center;
+      border-collapse: collapse;
+      table-layout: fixed;
 
       & tr:nth-child(even) {
         background-color: #242424;
@@ -257,41 +310,22 @@ nav {
       & tr:nth-child(odd) {
         background-color: #404040;
       }
-    }
 
-    & > table thead {
-      /* head takes the height it requires, 
-      and it's not scaled when table is resized */
-      flex: 0 0 auto;
-      width: calc(100% - 0.9em);
-    }
+      & > th {
+        vertical-align: middle;
+        font-weight: normal;
+        padding-top: 0.5%;
+      }
 
-    & > table tbody {
-      /* body takes all the remaining available space */
-      flex: 1 1 auto;
-      display: block;
-      overflow-y: scroll;
-    }
+      & > * {
+        padding: 0;
+        margin: 0;
 
-    & > table tbody tr {
-      width: 100%;
-      text-align: center;
-    }
-
-    & > table thead,
-    table tbody tr {
-      display: table;
-      table-layout: fixed;
-    }
-
-    & > tr {
-      padding: 3px;
-    }
-  }
-
-  &--entry {
-    & > input {
-      background-color: #222222;
+        & > * {
+          padding: 0;
+          margin: 0;
+        }
+      }
     }
   }
 }
@@ -315,7 +349,7 @@ nav {
   background-size: 64%;
 
   &--small {
-    padding: 2vmax !important;
+    padding: calc(1.2vmax + 8px) !important;
   }
 
   &--big {
@@ -340,48 +374,49 @@ nav {
 }
 
 /* Icon definitions */
-.mui-icon {
+/* https://fonts.google.com/icons */
+.icon {
   &--on {
-    background-image: url("./assets/mui_play.svg");
+    background-image: url("./assets/icon_play.svg");
   }
 
   &--off {
-    background-image: url("./assets/mui_stop.svg");
+    background-image: url("./assets/icon_stop.svg");
   }
 
   &--reset {
-    background-image: url("./assets/mui_reset.svg");
+    background-image: url("./assets/icon_reset.svg");
   }
 
   &--expand-more {
-    background-image: url("./assets/mui_expand_more.svg");
+    background-image: url("./assets/icon_expand_more.svg");
   }
 
   &--expand-less {
-    background-image: url("./assets/mui_expand_less.svg");
+    background-image: url("./assets/icon_expand_less.svg");
   }
 
   &--close {
-    background-image: url("./assets/mui_close.svg");
+    background-image: url("./assets/icon_close.svg");
   }
 
-  &--drop-down {
-    background-image: url("./assets/mui_drop-down.svg");
+  &--ground {
+    background-image: url("./assets/icon_ground.svg");
   }
 
   &--distribute {
-    background-image: url("./assets/mui_distribute.svg");
+    background-image: url("./assets/icon_distribute.svg");
   }
 
   &--save {
-    background-image: url("./assets/mui_save.svg");
+    background-image: url("./assets/icon_save.svg");
   }
 
   &--publish {
-    background-image: url("./assets/mui_publish.svg");
+    background-image: url("./assets/icon_publish.svg");
   }
 
   &--settings {
-    background-image: url("./assets/mui_settings.svg");
+    background-image: url("./assets/icon_settings.svg");
   }
 }

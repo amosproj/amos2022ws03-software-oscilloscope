@@ -40,7 +40,7 @@ export const MIN_AMPLITUDE = 0.0;
 export const MAX_AMPLITUDE = NUM_INTERVALS_HORIZONTAL / 2;
 export const WAVE_CURSOR_SIZE = 50;
 
-export const MIN_CONTROL_PANEL_BOTTOM_HEIGHT = 280; //px
+export const MIN_CONTROL_PANEL_BOTTOM_HEIGHT = 304; //px
 
 /* FRONTEND CONFIG */
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
