@@ -6,15 +6,15 @@ describe("everything visible on front page", () => {
   });
 
   it("displays btn", () => {
-    cy.get("#managePresets").should("be.visible");
+    cy.get('[data-cy="settings-button"]').should("be.visible");
   });
 
   it("is clickable", () => {
-    cy.get('[data-cy="preset-config-open-popup"]').click();
-    cy.get("#getChannelConfig").should("be.visible");
-    cy.get("#availablePreset").should("be.visible");
-    cy.get("#presetName").should("be.visible");
-    cy.get("#storeChannelConfig").should("be.visible");
-    cy.get("#cancelChannelConfig").should("be.visible");
+    cy.get('[data-cy="settings-button"]').click();
+    cy.get('[data-cy="preset-config-open-popup"]').should("be.visible");
+    cy.get('[data-cy="load-channel-config"]').should("be.visible");
+    cy.get('[data-cy="available-presets-list"]').should("be.visible");
+    cy.get('[data-cy="selected-preset"]').should("be.visible");
+    cy.get('[data-cy="store-channel-config"]').should("be.visible");
   });
 });

@@ -38,6 +38,16 @@ img {
   height: 92%;
 }
 
+input[type="text"] {
+  height: calc(0.5vmax + 1.5em);
+  margin: 1%;
+}
+
+select {
+  height: calc(0.5vmax + 1.5em);
+  margin: 1%;
+}
+
 input[type="range"] {
   width: 40%;
   appearance: none;
@@ -78,6 +88,16 @@ nav {
   .icon-button {
     filter: invert(0) !important;
   }
+
+  .control-panel--bottom > table {
+    & tr:nth-child(even) {
+      background-color: #efefef !important;
+    }
+
+    & tr:nth-child(odd) {
+      background-color: white !important;
+    }
+  }
 }
 
 .wrapper {
@@ -97,6 +117,10 @@ nav {
   overflow: auto;
 }
 
+.slider_label {
+  display: inline;
+}
+
 .logo {
   grid-column: 1;
   grid-row: 1;
@@ -106,6 +130,30 @@ nav {
   grid-column: 1/3;
   grid-row: 2;
   justify-self: end;
+}
+
+.settings {
+  &--close {
+    display: flex;
+  }
+  &--headline {
+    display: inline;
+  }
+  &--headline-section {
+    width: fit-content;
+    margin: 0;
+  }
+  &--list-element {
+    display: table;
+    width: fit-content;
+    & > div {
+      display: table-cell;
+
+      & > div {
+        display: table-cell;
+      }
+    }
+  }
 }
 
 .oscilloscope {
@@ -150,6 +198,7 @@ nav {
     grid-column: 1/6;
     grid-row: 3;
     padding: 0.5% 0;
+    padding-top: 12px;
 
     &_switch {
       width: 28px;
@@ -179,33 +228,57 @@ nav {
     }
 
     & > table {
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+      width: 100%;
+      border-collapse: unset;
+
+      & tr:nth-child(even) {
+        background-color: #242424;
+      }
+
+      & tr:nth-child(odd) {
+        background-color: #404040;
+      }
+    }
+    & > table thead {
+      /* head takes the height it requires, 
+      and it's not scaled when table is resized */
+      flex: 0 0 auto;
+      width: calc(100% - 0.9em);
+    }
+    & > table tbody {
+      /* body takes all the remaining available space */
+      flex: 1 1 auto;
+      display: block;
+      overflow-y: scroll;
+    }
+    & > table tbody tr {
       width: 100%;
       text-align: center;
-      border-collapse: collapse;
+    }
+    & > table thead,
+    table tbody tr {
+      display: table;
       table-layout: fixed;
-
-      & > th {
-        vertical-align: middle;
-        font-weight: normal;
-      }
-
-      & > * {
-        padding: 0;
-        margin: 0;
-        width: auto;
-
-        & > * {
-          padding: 0;
-          margin: 0;
-        }
-      }
+    }
+    & > tr {
+      padding: 3px;
     }
   }
 
   &--entry {
-    & > span {
-      position: absolute;
+    & > input {
+      background-color: #222222;
     }
+  }
+}
+
+.margin {
+  &--small {
+    margin-right: 5px;
+    margin-left: 5px;
   }
 }
 
@@ -224,8 +297,17 @@ nav {
     padding: 2vmax !important;
   }
 
+  &--big {
+    padding: 2.5vmax !important;
+  }
+
   &:hover {
     background-color: rgba(127, 127, 127, 0.1) !important;
+  }
+
+  &:disabled {
+    filter: invert(0.5);
+    cursor: not-allowed;
   }
 }
 
@@ -268,5 +350,17 @@ nav {
 
   &--distribute {
     background-image: url("./assets/mui_distribute.svg");
+  }
+
+  &--save {
+    background-image: url("./assets/mui_save.svg");
+  }
+
+  &--publish {
+    background-image: url("./assets/mui_publish.svg");
+  }
+
+  &--settings {
+    background-image: url("./assets/mui_settings.svg");
   }
 }
