@@ -1,4 +1,4 @@
-import { INDICATOR_DECIMAL_PLACES } from "./const";
+import { TEXT_INDICATORS_DECIMAL_PLACES } from "./const";
 
 /**
  * Returns hex string for array of rgb values.
@@ -9,9 +9,12 @@ import { INDICATOR_DECIMAL_PLACES } from "./const";
 export const rgbArrayToRGBAString = (rgb) =>
   `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
 
-export const roundVoltage = (voltage) =>
-  Math.trunc(voltage * 10 ** INDICATOR_DECIMAL_PLACES) /
-  10 ** INDICATOR_DECIMAL_PLACES;
+export const roundVoltage = (voltage) => {
+  return (
+    Math.trunc(voltage * 10 ** TEXT_INDICATORS_DECIMAL_PLACES) /
+    10 ** TEXT_INDICATORS_DECIMAL_PLACES
+  );
+};
 
 export const logSocketCloseCode = (code) => {
   // See https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1

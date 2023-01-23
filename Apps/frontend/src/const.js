@@ -4,13 +4,9 @@ export const CANVAS_WIDTH = 1000;
 export const CANVAS_HEIGHT = 500;
 export const NUM_INTERVALS_VERTICAL = 20;
 export const NUM_INTERVALS_HORIZONTAL = 10;
-
-export const INDICATOR_MARGIN = 4;
-export const INDICATOR_WIDTH = 8;
-export const INDICATOR_FONT_SIZE = 11;
-export const INDICATOR_DECIMAL_PLACES = 3;
-export const INDICATOR_SECTION_WIDTH = 240;
-export const INDICATOR_ZERO_LINE_COLOR = "#000000";
+export const INDICATORS_UPDATE_FREQUENCY = 1000;
+export const TEXT_INDICATORS_DECIMAL_PLACES = 3;
+export const LINE_INDICATORS_CANVAS_WIDTH = 120;
 
 export const COORDINATE_LINE_COLOR = "#FFFFFF80";
 
@@ -28,6 +24,9 @@ export const LINE_COLORS = [
 ];
 
 export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
+export const LINE_COLORS_WEBGL = LINE_COLORS.map((color) =>
+  color.map((num) => num / 255).concat([1])
+);
 export const LINE_THICKNESS_SMALL = 0.002;
 export const LINE_THICKNESS_BIG = 0.008;
 
