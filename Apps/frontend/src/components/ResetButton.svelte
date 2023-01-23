@@ -4,7 +4,7 @@
   import { TOOLTIP_BUTTON_RESET } from "../labels";
 
   const dispatch = createEventDispatcher();
-  $: url = "../assets/mui_reset.svg";
+  $: url = "../assets/icon_reset.svg";
 
   const handleClick = async () => {
     dispatch("reset", {});
@@ -14,7 +14,7 @@
 
 <button
   bind:this={button}
-  class="icon-button mui-icon--reset"
+  class="icon-button icon--reset"
   on:click={handleClick}
   data-cy="reset-button"
 />

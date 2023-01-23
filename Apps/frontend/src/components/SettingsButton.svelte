@@ -37,7 +37,7 @@
 
 <button
   bind:this={button}
-  class="icon-button mui-icon--settings"
+  class="icon-button icon--settings"
   on:click={showPopup}
   data-cy="settings-button"
 />

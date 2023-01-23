@@ -12,7 +12,7 @@
 
 <button
   bind:this={button}
-  class="icon-button mui-icon--drop-down"
+  class="icon-button icon--ground"
   on:mousedown={async () => {
     handleClick(true);
   }}

@@ -26,8 +26,8 @@
   data-cy="on-off-button"
   class={clsx(
     { "icon-button": true },
-    { "mui-icon--off": $osciEnabled },
-    { "mui-icon--on": !$osciEnabled }
+    { "icon--off": $osciEnabled },
+    { "icon--on": !$osciEnabled }
   )}
   on:click={handleClick}
 />

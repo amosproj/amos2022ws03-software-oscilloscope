@@ -12,6 +12,6 @@ describe("onOffButton", () => {
 
   it("is clickable", () => {
     cy.get('[data-cy="on-off-button"]').click();
-    cy.get('[data-cy="on-off-button"]').should("have.class", "mui-icon--off");
+    cy.get('[data-cy="on-off-button"]').should("have.class", "icon--off");
   });
 });

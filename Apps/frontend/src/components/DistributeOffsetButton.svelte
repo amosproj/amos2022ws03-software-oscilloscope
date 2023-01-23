@@ -13,7 +13,7 @@
 
 <button
   bind:this={button}
-  class="icon-button mui-icon--distribute"
+  class="icon-button icon--distribute"
   on:click={() => {
     let baseOffset = calculateOffset();
     let offsetY = 1 - baseOffset;
