@@ -75,9 +75,6 @@ impl TenChannelSampleGenerator {
         samples.push(self.amplitude * self.saw_signal_no_noise.next());
         samples.push(self.amplitude * self.square_signal_no_noise.next());
 
-        samples.push(self.amplitude * self.square_signal.next());
-        samples.push(self.amplitude * self.sine_signal.next());
-        samples.push(self.amplitude * self.saw_signal.next());
         // remaining channels are set to a constant 0-Signal
         samples.push(0.0);
         samples
