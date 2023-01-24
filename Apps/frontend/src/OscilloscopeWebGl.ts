@@ -44,7 +44,6 @@ export class OscilloscopeWebGl {
 
     for (let i = 0; i < channelSamples.length; i++) {
       let samples = new Float32Array(channelSamples[i]);
-      samples[0] = samples[samples.length - 1];
       this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.channelVertexBuffer);
       this.webgl.bufferData(
         this.webgl.ARRAY_BUFFER,

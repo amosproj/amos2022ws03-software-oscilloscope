@@ -28,7 +28,7 @@ export const channelVertexShader = `#version 300 es
   }
   
   void main() {
-    float x = mod(float(gl_VertexID), float(CANVAS_WIDTH));
+    float x = float(gl_VertexID);
     float y = (aSample * u_amplitude + (SCALE_Y * u_offset));
     float xNDC = x_to_ndc(x);
     float yNDC = y * VOLTS_TO_NDC;
