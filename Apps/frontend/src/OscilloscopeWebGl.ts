@@ -1,16 +1,7 @@
 import { channelFragmentShader, channelVertexShader } from "./shader/shader";
 import { createShaderProgram } from "./shader/shaderHelper";
-import { writable, get } from "svelte/store";
-import {
-  CANVAS_HEIGHT,
-  CANVAS_WIDTH,
-  LINE_COLORS,
-  LINE_COLORS_RGBA,
-  LINE_COLORS_WEBGL,
-  NUM_CHANNELS,
-  NUM_INTERVALS_HORIZONTAL,
-  NUM_INTERVALS_VERTICAL,
-} from "./const";
+import { get } from "svelte/store";
+import { LINE_COLORS_WEBGL } from "./const";
 import { amplitudeAdjustment, offsetAdjustment } from "./stores";
 export class OscilloscopeWebGl {
   private channelProgram: WebGLProgram;
@@ -38,8 +29,6 @@ export class OscilloscopeWebGl {
       channelFragmentShader
     );
     this.channelVertexBuffer = this.webgl.createBuffer() as WebGLBuffer;
-
-    this.webgl.useProgram(this.channelProgram);
   }
 
   clear() {
@@ -48,6 +37,8 @@ export class OscilloscopeWebGl {
   }
 
   drawChannels(channelSamples: number[][]) {
+    this.webgl.useProgram(this.channelProgram);
+
     let samples = new Float32Array(channelSamples.flat());
     this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.channelVertexBuffer);
     this.webgl.bufferData(
@@ -94,8 +85,4 @@ export class OscilloscopeWebGl {
 
     this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
   }
-
-  drawHeads() {}
-
-  drawGrid() {}
 }

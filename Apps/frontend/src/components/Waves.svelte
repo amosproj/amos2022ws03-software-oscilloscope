@@ -1,20 +1,13 @@
 <script>
   import { beforeUpdate, onMount } from "svelte";
-  import App from "../App.svelte";
   import {
     CANVAS_HEIGHT,
     CANVAS_WIDTH,
     NUM_CHANNELS,
-    NUM_INTERVALS_HORIZONTAL,
-    LINE_COLORS,
     WAVE_CURSOR_SIZE,
-    LINE_THICKNESS_SMALL,
-    LINE_THICKNESS_BIG,
   } from "../const";
   import {
-    amplitudeAdjustment,
     channelActivated,
-    offsetAdjustment,
     thicknessAdjustment,
     timeSweep,
   } from "../stores";
@@ -33,8 +26,6 @@
   let channelSamples = Array.from(Array(NUM_CHANNELS), () =>
     new Array(CANVAS_WIDTH).fill(undefined)
   );
-  let lines = [];
-  let heads = [];
   let xArr;
   let xLast;
 
@@ -65,7 +56,6 @@
   };
 
   export const updateBuffer = (samples, startIndex, endIndex) => {
-    console.log("updateBuffer()");
     for (
       let channelIndex = startIndex;
       channelIndex < endIndex;
@@ -91,51 +81,12 @@
     }
   };
 
-  // Subscribe to the offsetAdjustment store
-  offsetAdjustment.subscribe((newOffsets) => {
-    // for (let i = 0; i < NUM_CHANNELS; i++) {
-    //   let line = lines[i];
-    //   if (line !== undefined) line.offsetY = newOffsets[i];
-    //   let head = heads[i];
-    //   if (head !== undefined) head.offsetY = newOffsets[i];
-    // }
-  });
-
-  // Subscribe to the channelActivation store
-  channelActivated.subscribe((isActive) => {
-    // for (let i = 0; i < NUM_CHANNELS; i++) {
-    //   if (lines[i] !== undefined) lines[i].visible = isActive[i];
-    // }
-  });
-
   thicknessAdjustment.subscribe((isThick) => {
-    // for (let i = 0; i < NUM_CHANNELS; i++) {
-    //   if (lines[i] !== undefined) {
-    //     const thickness = isThick[i]
-    //       ? LINE_THICKNESS_BIG
-    //       : LINE_THICKNESS_SMALL;
-    //     lines[i].setThickness(thickness);
-    //   }
-    // }
+    // thick lines not implemented
   });
-
-  amplitudeAdjustment.subscribe((amplitudes) => {
-    // for (let i = 0; i < NUM_CHANNELS; i++) {
-    //   if (lines[i] !== undefined)
-    //     lines[i].scaleY = computeScaling(amplitudes[i]);
-    // }
-  });
-
-  // computes the Scaling of a wave according to the voltage intervals
-  const computeScaling = (amplitude) => {
-    return (1 / (NUM_INTERVALS_HORIZONTAL / 2)) * amplitude;
-  };
 
   const update = () => {
-    console.log("update()");
     oscilloscopeWebGl.drawChannels(channelSamples);
-    //draw heads
-    //draw grid?
   };
 
   const resizeCanvas = () => {
