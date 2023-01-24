@@ -1,4 +1,4 @@
-import { CANVAS_WIDTH, NUM_INTERVALS_HORIZONTAL, NUM_CHANNELS } from "../const";
+import { CANVAS_WIDTH, NUM_INTERVALS_HORIZONTAL } from "../const";
 
 export const channelFragmentShader = `#version 300 es
 precision highp float;
@@ -17,9 +17,9 @@ export const channelVertexShader = `#version 300 es
   #define X_TO_NDC ${2.0 / CANVAS_WIDTH}
   #define CANVAS_WIDTH ${CANVAS_WIDTH}
   #define SCALE_Y ${(NUM_INTERVALS_HORIZONTAL / 2).toFixed(1)}
-  uniform vec4 u_colour[${NUM_CHANNELS}];
-  uniform float u_offset[${NUM_CHANNELS}];
-  uniform float u_amplitude[${NUM_CHANNELS}];
+  uniform vec4 u_colour;
+  uniform float u_offset;
+  uniform float u_amplitude;
   in float aSample;
   out vec4 v_colour;
 
@@ -28,12 +28,11 @@ export const channelVertexShader = `#version 300 es
   }
   
   void main() {
-    int channelIndex = gl_VertexID / CANVAS_WIDTH;
     float x = mod(float(gl_VertexID), float(CANVAS_WIDTH));
-    float y = (aSample * u_amplitude[channelIndex] + (SCALE_Y * u_offset[channelIndex]));
+    float y = (aSample * u_amplitude + (SCALE_Y * u_offset));
     float xNDC = x_to_ndc(x);
     float yNDC = y * VOLTS_TO_NDC;
     gl_Position = vec4(xNDC, yNDC, 0, 1);
-    v_colour = u_colour[channelIndex];
+    v_colour = u_colour;
   }
 `;

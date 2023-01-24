@@ -1,4 +1,7 @@
-import { channelFragmentShader, channelVertexShader } from "./shader/shader";
+import {
+  channelFragmentShader,
+  channelVertexShader,
+} from "./shader/channelShader";
 import { createShaderProgram } from "./shader/shaderHelper";
 import { get } from "svelte/store";
 import { LINE_COLORS_WEBGL } from "./const";
@@ -39,50 +42,52 @@ export class OscilloscopeWebGl {
   drawChannels(channelSamples: number[][]) {
     this.webgl.useProgram(this.channelProgram);
 
-    let samples = new Float32Array(channelSamples.flat());
-    this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.channelVertexBuffer);
-    this.webgl.bufferData(
-      this.webgl.ARRAY_BUFFER,
-      samples,
-      this.webgl.STATIC_DRAW
-    );
+    for (let i = 0; i < channelSamples.length; i++) {
+      let samples = new Float32Array(channelSamples[i]);
+      this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.channelVertexBuffer);
+      this.webgl.bufferData(
+        this.webgl.ARRAY_BUFFER,
+        samples,
+        this.webgl.STATIC_DRAW
+      );
 
-    let sampleAttribute = this.webgl.getAttribLocation(
-      this.channelProgram,
-      "aSample"
-    );
-    this.webgl.vertexAttribPointer(
-      sampleAttribute,
-      1,
-      this.webgl.FLOAT,
-      false,
-      0,
-      0
-    );
-    this.webgl.enableVertexAttribArray(sampleAttribute);
+      let sampleAttribute = this.webgl.getAttribLocation(
+        this.channelProgram,
+        "aSample"
+      );
+      this.webgl.vertexAttribPointer(
+        sampleAttribute,
+        1,
+        this.webgl.FLOAT,
+        false,
+        0,
+        0
+      );
+      this.webgl.enableVertexAttribArray(sampleAttribute);
 
-    let colors = new Float32Array(LINE_COLORS_WEBGL.flat());
-    let colorUniform = this.webgl.getUniformLocation(
-      this.channelProgram,
-      "u_colour"
-    );
+      let colors = new Float32Array(LINE_COLORS_WEBGL[i]);
+      let colorUniform = this.webgl.getUniformLocation(
+        this.channelProgram,
+        "u_colour"
+      );
 
-    this.webgl.uniform4fv(colorUniform, colors);
+      this.webgl.uniform4fv(colorUniform, colors);
 
-    let offsetUniform = this.webgl.getUniformLocation(
-      this.channelProgram,
-      "u_offset"
-    );
-    let channelOffset = new Float32Array(get(offsetAdjustment));
-    this.webgl.uniform1fv(offsetUniform, channelOffset);
+      let offsetUniform = this.webgl.getUniformLocation(
+        this.channelProgram,
+        "u_offset"
+      );
+      let channelOffset = get(offsetAdjustment)[i];
+      this.webgl.uniform1f(offsetUniform, channelOffset);
 
-    let amplitudeUniform = this.webgl.getUniformLocation(
-      this.channelProgram,
-      "u_amplitude"
-    );
-    let channelAmplitudes = new Float32Array(get(amplitudeAdjustment));
-    this.webgl.uniform1fv(amplitudeUniform, channelAmplitudes);
+      let amplitudeUniform = this.webgl.getUniformLocation(
+        this.channelProgram,
+        "u_amplitude"
+      );
+      let channelAmplitude = get(amplitudeAdjustment)[i];
+      this.webgl.uniform1f(amplitudeUniform, channelAmplitude);
 
-    this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
+      this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
+    }
   }
 }
