@@ -418,4 +418,24 @@ nav {
   &--settings {
     background-image: url("./assets/icon_settings.svg");
   }
+
+  &--toggle {
+    background-image: url("./assets/icon_toggle.svg");
+  }
+
+  &--expand {
+    background-image: url("./assets/icon_expand.svg");
+  }
+
+  &--vertical {
+    background-image: url("./assets/icon_vertical.svg");
+  }
+
+  &--horizontal {
+    background-image: url("./assets/icon_horizontal.svg");
+  }
+
+  &--priority {
+    background-image: url("./assets/icon_priority.svg");
+  }
 }
