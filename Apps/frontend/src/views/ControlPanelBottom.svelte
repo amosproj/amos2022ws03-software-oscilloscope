@@ -2,6 +2,7 @@
   import Slider from "../components/Slider.svelte";
   import StartStopSwitch from "../components/StartStopSwitch.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
+  import ControlColumnHeader from "../components/ControlColumnHeader.svelte";
   import {
     MAX_AMPLITUDE,
     MAX_SWEEP_SLIDER_VALUE,
@@ -33,11 +34,11 @@
       Channel
     {/if}
   </th>
-  <th>Start/Stop</th>
-  <th>Thickness</th>
-  <th>Offset</th>
-  <th>Time Sweep</th>
-  <th>Amplitude</th>
+  <th><ControlColumnHeader label="Start/Stop" icon="toggle" /></th>
+  <th><ControlColumnHeader label="Thickness" icon="priority" /></th>
+  <th><ControlColumnHeader label="Offset" icon="vertical" /></th>
+  <th><ControlColumnHeader label="Time Sweep" icon="horizontal" /></th>
+  <th><ControlColumnHeader label="Amplitude" icon="expand" /></th>
   <tr>
     <td> Common </td>
     <td><!--Placeholder--></td>
