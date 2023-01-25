@@ -17,6 +17,13 @@
     offsetAdjustment,
     timeSweep,
   } from "../stores";
+  import {
+    TOOLTIP_CONTROL_HEADER_ONOFF,
+    TOOLTIP_CONTROL_HEADER_THICKNESS,
+    TOOLTIP_CONTROL_HEADER_OFFSET,
+    TOOLTIP_CONTROL_HEADER_TIMESWEEP,
+    TOOLTIP_CONTROL_HEADER_AMPLITUDE
+  } from "../labels";
 
   export let controlPanelBottomHeight = 0;
 </script>
@@ -34,11 +41,11 @@
       Channel
     {/if}
   </th>
-  <th><ControlColumnHeader label="Start/Stop" icon="toggle" /></th>
-  <th><ControlColumnHeader label="Thickness" icon="priority" /></th>
-  <th><ControlColumnHeader label="Offset" icon="vertical" /></th>
-  <th><ControlColumnHeader label="Time Sweep" icon="horizontal" /></th>
-  <th><ControlColumnHeader label="Amplitude" icon="expand" /></th>
+  <th><ControlColumnHeader label="Start/Stop" icon="toggle" tooltip={TOOLTIP_CONTROL_HEADER_ONOFF} /></th>
+  <th><ControlColumnHeader label="Thickness" icon="priority" tooltip={TOOLTIP_CONTROL_HEADER_THICKNESS} /></th>
+  <th><ControlColumnHeader label="Offset" icon="vertical" tooltip={TOOLTIP_CONTROL_HEADER_OFFSET} /></th>
+  <th><ControlColumnHeader label="Time Sweep" icon="horizontal" tooltip={TOOLTIP_CONTROL_HEADER_TIMESWEEP} /></th>
+  <th><ControlColumnHeader label="Amplitude" icon="expand" tooltip={TOOLTIP_CONTROL_HEADER_AMPLITUDE} /></th>
   <tr>
     <td> Common </td>
     <td><!--Placeholder--></td>
