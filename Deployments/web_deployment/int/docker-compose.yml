@@ -74,7 +74,7 @@ services:
       - "traefik.http.routers.sosci-int-backend.middlewares=sosci-backend-stripprefix-int"
       # Main REST API
       - "traefik.http.middlewares.sosci-backend-stripprefix-int-rest.stripprefix.prefixes=/int/backend/rest"
-      - "traefik.http.routers.sosci-int-backend-rest.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/backend/rest`)"
+      - "traefik.http.routers.sosci-int-backend-rest.rule=Host(`amos-sosci.die-degens.eu`) && PathPrefix(`/int/backend/rest`)"
       - "traefik.http.routers.sosci-int-backend-rest.entrypoints=websecure"
       - "traefik.http.routers.sosci-int-backend-rest.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sosci-int-backend-rest.service=sosci-int-backend-rest"

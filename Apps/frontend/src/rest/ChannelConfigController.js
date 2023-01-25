@@ -5,7 +5,7 @@ import {
   ERR_MSG_COULD_NOT_STORE_CHANNEL_CONFIG,
 } from "../labels";
 
-export function getAllChannelConfig(presetName) {
+export function getAllChannelConfig() {
   var response = axios
     .get(REST_ENDPOINT_CONFIG, {
       headers: {
@@ -14,7 +14,7 @@ export function getAllChannelConfig(presetName) {
       },
     })
     .then((response) => response.data)
-    .catch(function (error) {
+    .catch(function () {
       console.error(ERR_MSG_COULD_NOT_RETRIEVE_CHANNEL_CONFIG);
     });
   return response;
