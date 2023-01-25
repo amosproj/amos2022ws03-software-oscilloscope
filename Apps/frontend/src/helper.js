@@ -1,4 +1,4 @@
-import { INDICATOR_DECIMAL_PLACES } from "./const";
+import { TEXT_INDICATORS_DECIMAL_PLACES } from "./const";
 
 /**
  * Returns hex string for array of rgb values.
@@ -9,9 +9,12 @@ import { INDICATOR_DECIMAL_PLACES } from "./const";
 export const rgbArrayToRGBAString = (rgb) =>
   `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
 
-export const roundVoltage = (voltage) =>
-  Math.trunc(voltage * 10 ** INDICATOR_DECIMAL_PLACES) /
-  10 ** INDICATOR_DECIMAL_PLACES;
+export const roundVoltage = (voltage) => {
+  return (
+    Math.trunc(voltage * 10 ** TEXT_INDICATORS_DECIMAL_PLACES) /
+    10 ** TEXT_INDICATORS_DECIMAL_PLACES
+  );
+};
 
 export const logSocketCloseCode = (code) => {
   // See https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
@@ -67,4 +70,23 @@ export const logSocketCloseCode = (code) => {
     default:
       console.log("Socket closed due to unknown reason.");
   }
+};
+
+/**
+ * The function introduces an event handler to check if there is a click
+ * event outside the chosen element.
+ * To attach the handler add `use:clickOutside` to the node properties.
+ */
+export const clickOutside = (element) => {
+  const handleClick = (event) => {
+    if (element && !element.contains(event.target) && !event.defaultPrevented) {
+      element.dispatchEvent(new CustomEvent("click-outside", element));
+    }
+  };
+  document.addEventListener("click", handleClick, true);
+  return {
+    destroy() {
+      document.removeEventListener("click", handleClick, true);
+    },
+  };
 };
