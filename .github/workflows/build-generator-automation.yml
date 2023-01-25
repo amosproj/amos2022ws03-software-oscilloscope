@@ -71,7 +71,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./Apps/generator
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: false
           tags: |
             sosci/generator:${{ github.event.pull_request.title }}
