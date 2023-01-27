@@ -41,14 +41,13 @@ export class OscilloscopeWebGl {
 
   drawChannels(channelSamples: number[][]) {
     this.webgl.useProgram(this.channelProgram);
-
     for (let i = 0; i < channelSamples.length; i++) {
       let samples = new Float32Array(channelSamples[i]);
       this.webgl.bindBuffer(this.webgl.ARRAY_BUFFER, this.channelVertexBuffer);
       this.webgl.bufferData(
         this.webgl.ARRAY_BUFFER,
         samples,
-        this.webgl.STATIC_DRAW
+        this.webgl.DYNAMIC_DRAW
       );
 
       let sampleAttribute = this.webgl.getAttribLocation(
