@@ -25,5 +25,3 @@ jobs:
       - name: Generate code coverage
         working-directory: ./Apps/generator
         run: cargo llvm-cov --fail-under-lines 100
-        with:
-          fail_ci_if_error: true
