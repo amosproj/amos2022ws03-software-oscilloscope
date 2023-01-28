@@ -79,9 +79,7 @@ input[type="range"] {
     -webkit-appearance: none;
     height: calc(0.6vmax + 0.4em);
     width: calc(0.6vmax + 0.4em);
-    margin-top: calc(
-      (0.2em / 2) - (0.6vmax + 0.4em) / 2
-    ); //track height/2 - thumb height/2
+    margin-top: calc((0.2em / 2) - (0.6vmax + 0.4em) / 2); //track height/2 - thumb height/2
     border-radius: 100%;
     background: #242424;
     border: 0.5px solid white;
@@ -142,12 +140,12 @@ nav {
   .icon {
     filter: invert(0) !important;
   }
-  
+
   .icon-button {
     filter: invert(0) !important;
   }
 
-  .control-panel--bottom > table {
+  .control-panel--bottom>table {
     & tr:nth-child(even) {
       background-color: #efefef !important;
     }
@@ -161,15 +159,9 @@ nav {
 .wrapper {
   display: grid;
   grid-template-columns:
-    8vmax
-    calc(16vw - 2em)
-    calc(100vw - 2 * (8vmax + 16vw - 2em))
-    calc(16vw - 2em)
-    8vmax;
+    8vmax calc(16vw - 2em) calc(100vw - 2 * (8vmax + 16vw - 2em)) calc(16vw - 2em) 8vmax;
   grid-template-rows:
-    calc(1 / 2 * (8vmax))
-    calc(1 / 2 * (100vw - 2 * (8vmax + 16vw - 2em)))
-    calc(100vh - 1 / 2 * (8vmax + 100vw - 2 * (8vmax + 16vw - 2em)));
+    calc(1 / 2 * (8vmax)) calc(1 / 2 * (100vw - 2 * (8vmax + 16vw - 2em))) calc(100vh - 1 / 2 * (8vmax + 100vw - 2 * (8vmax + 16vw - 2em)));
   width: 100%;
   height: 100%;
 }
@@ -201,10 +193,10 @@ nav {
     display: table;
     width: fit-content;
 
-    & > div {
+    &>div {
       display: table-cell;
 
-      & > div {
+      &>div {
         display: table-cell;
       }
     }
@@ -220,7 +212,7 @@ nav {
     position: absolute;
     inset: 0;
 
-    & > canvas {
+    &>canvas {
       border: 0.1vw solid white;
       background-color: black;
     }
@@ -292,14 +284,14 @@ nav {
         background-color: rgba(127, 127, 127, 0.1) !important;
       }
 
-      & > button {
+      &>button {
         &:hover {
           background-color: rgba(0, 0, 0, 0) !important;
         }
       }
     }
 
-    & > table {
+    &>table {
       width: 100%;
       height: 100%;
       text-align: center;
@@ -314,17 +306,17 @@ nav {
         background-color: #404040;
       }
 
-      & > th {
+      &>th {
         vertical-align: middle;
         font-weight: normal;
         padding-top: 0.5%;
       }
 
-      & > * {
+      &>* {
         padding: 0;
         margin: 0;
 
-        & > * {
+        &>* {
           padding: 0;
           margin: 0;
         }
@@ -342,6 +334,14 @@ nav {
 
 .icon {
   filter: invert(1);
+  width: 100%;
+  height: 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.control-column-header {
+  cursor: help;
 }
 
 .icon-button {
