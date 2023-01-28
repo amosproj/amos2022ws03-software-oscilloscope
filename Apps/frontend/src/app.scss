@@ -139,6 +139,10 @@ nav {
     }
   }
 
+  .icon {
+    filter: invert(0) !important;
+  }
+  
   .icon-button {
     filter: invert(0) !important;
   }
@@ -334,6 +338,10 @@ nav {
     margin-right: 5px;
     margin-left: 5px;
   }
+}
+
+.icon {
+  filter: invert(1);
 }
 
 .icon-button {
