@@ -41,11 +41,11 @@
       Channel
     {/if}
   </th>
-  <th><ControlColumnHeader label="Start/Stop" icon="toggle" tooltip={TOOLTIP_CONTROL_HEADER_ONOFF} /></th>
-  <th><ControlColumnHeader label="Thickness" icon="priority" tooltip={TOOLTIP_CONTROL_HEADER_THICKNESS} /></th>
-  <th><ControlColumnHeader label="Offset" icon="vertical" tooltip={TOOLTIP_CONTROL_HEADER_OFFSET} /></th>
-  <th><ControlColumnHeader label="Time Sweep" icon="horizontal" tooltip={TOOLTIP_CONTROL_HEADER_TIMESWEEP} /></th>
-  <th><ControlColumnHeader label="Amplitude" icon="expand" tooltip={TOOLTIP_CONTROL_HEADER_AMPLITUDE} /></th>
+  <th><ControlColumnHeader label="Start/Stop" icon="startstop" tooltip={TOOLTIP_CONTROL_HEADER_ONOFF} /></th>
+  <th><ControlColumnHeader label="Thickness" icon="thickness" tooltip={TOOLTIP_CONTROL_HEADER_THICKNESS} /></th>
+  <th><ControlColumnHeader label="Offset" icon="offset" tooltip={TOOLTIP_CONTROL_HEADER_OFFSET} /></th>
+  <th><ControlColumnHeader label="Time Sweep" icon="timesweep" tooltip={TOOLTIP_CONTROL_HEADER_TIMESWEEP} /></th>
+  <th><ControlColumnHeader label="Amplitude" icon="amplitude" tooltip={TOOLTIP_CONTROL_HEADER_AMPLITUDE} /></th>
   <tr>
     <td> Common </td>
     <td><!--Placeholder--></td>
