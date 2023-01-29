@@ -1,0 +1,27 @@
+name: CI Test Docker Generator
+
+on:
+  push:
+    paths:
+      - 'Apps/generator/**.*'
+      - '.github/workflows/test-generator-codecov.yml'
+  pull_request:
+    branches:
+      - "dev"
+      - "int"
+      - "main"
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Rust
+        run: rustup update stable
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
+      - name: Generate code coverage
+        working-directory: ./Apps/generator
+        run: cargo llvm-cov --fail-under-lines 70
