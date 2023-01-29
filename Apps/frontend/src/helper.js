@@ -2,7 +2,7 @@ import {
   INDICATOR_DECIMAL_PLACES,
   DEFAULT_STEP_SIZE,
   MIN_SWEEP,
-  MAX_SWEEP
+  MAX_SWEEP,
 } from "./const";
 
 /**
@@ -77,11 +77,13 @@ export const logSocketCloseCode = (code) => {
 /**
  * time sweep calculation as described here:
  * https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Development-Documentation#time-sweep-calculation
- * @param {number} sliderValue 
- * @returns 
+ * @param {number} sliderValue
+ * @returns
  */
 export function computeDisplayDeltaFromTimeSweep(sliderValue) {
   let timeSweep = sliderValue / 5.0 - 1.0; // in [-1,1]
-  let delta = DEFAULT_STEP_SIZE * (1.0 + timeSweep * (timeSweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
+  let delta =
+    DEFAULT_STEP_SIZE *
+    (1.0 + timeSweep * (timeSweep >= 0.0 ? MAX_SWEEP - 1.0 : 1.0 - MIN_SWEEP));
   return delta;
 }

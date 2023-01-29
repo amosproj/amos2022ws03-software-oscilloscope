@@ -9,7 +9,7 @@
     MIN_CONTROL_PANEL_BOTTOM_HEIGHT,
     MIN_SWEEP_SLIDER_VALUE,
     NUM_CHANNELS,
-    TIME_PER_DIV
+    TIME_PER_DIV,
   } from "../const";
   import {
     amplitudeAdjustment,
@@ -23,7 +23,7 @@
 
   const computeDisplaySpeed = (value) => {
     let delta = computeDisplayDeltaFromTimeSweep(value);
-    return (1000 * TIME_PER_DIV / delta).toFixed(2) + " ms/div";
+    return ((1000 * TIME_PER_DIV) / delta).toFixed(2) + " ms/div";
   };
 </script>
 
