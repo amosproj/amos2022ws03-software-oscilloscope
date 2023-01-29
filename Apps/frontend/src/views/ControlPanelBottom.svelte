@@ -2,6 +2,7 @@
   import Slider from "../components/Slider.svelte";
   import StartStopSwitch from "../components/StartStopSwitch.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
+  import ControlColumnHeader from "../components/ControlColumnHeader.svelte";
   import {
     MAX_AMPLITUDE,
     MAX_SWEEP_SLIDER_VALUE,
@@ -16,31 +17,42 @@
     offsetAdjustment,
     timeSweep,
   } from "../stores";
+  import {
+    TOOLTIP_CONTROL_HEADER_ONOFF,
+    TOOLTIP_CONTROL_HEADER_THICKNESS,
+    TOOLTIP_CONTROL_HEADER_OFFSET,
+    TOOLTIP_CONTROL_HEADER_TIMESWEEP,
+    TOOLTIP_CONTROL_HEADER_AMPLITUDE
+  } from "../labels";
 
   export let controlPanelBottomHeight = 0;
 </script>
 
+<!--This is the control panel that appears below the main control panel. It is only visible when the user clicks on the "Control Panel" button.-->
 <table>
   <th>
     {#if $expandedPanelOpen && controlPanelBottomHeight <= MIN_CONTROL_PANEL_BOTTOM_HEIGHT}
       <button
-        class="icon-button icon-button--small mui-icon--close"
+        class="icon-button icon-button--small icon--close"
         on:click={() => ($expandedPanelOpen = false)}
         data-cy="expanded-control-panel-close-button"
       />
+    {:else}
+      Channel
     {/if}
   </th>
-  <th>Start/Stop</th>
-  <th>Thickness</th>
-  <th>Offset</th>
-  <th>Time Sweep</th>
-  <th>Amplitude</th>
+  <th><ControlColumnHeader label="Start/Stop" icon="startstop" tooltip={TOOLTIP_CONTROL_HEADER_ONOFF} /></th>
+  <th><ControlColumnHeader label="Thickness" icon="thickness" tooltip={TOOLTIP_CONTROL_HEADER_THICKNESS} /></th>
+  <th><ControlColumnHeader label="Offset" icon="offset" tooltip={TOOLTIP_CONTROL_HEADER_OFFSET} /></th>
+  <th><ControlColumnHeader label="Time Sweep" icon="timesweep" tooltip={TOOLTIP_CONTROL_HEADER_TIMESWEEP} /></th>
+  <th><ControlColumnHeader label="Amplitude" icon="amplitude" tooltip={TOOLTIP_CONTROL_HEADER_AMPLITUDE} /></th>
   <tr>
     <td> Common </td>
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td><!--Placeholder--></td>
     <td>
+      <!--Common TimeSweep Slider-->
       <Slider
         className="control-panel--entry"
         onInput={() => {
@@ -58,7 +70,7 @@
   </tr>
   {#each { length: NUM_CHANNELS } as _, index}
     <tr>
-      <td>Ch. {index}</td>
+      <td>Ch. {index + 1}</td>
       <td>
         <StartStopSwitch channel={index} />
       </td>

@@ -54,7 +54,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./Apps/frontend
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           build-args: |
             MODE=production
           push: true
