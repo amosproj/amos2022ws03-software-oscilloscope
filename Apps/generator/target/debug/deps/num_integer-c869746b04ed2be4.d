@@ -1,0 +1,9 @@
+C:\Users\Nicolas Kolbenschlag\Documents\Studium\1 - Master FAU\3. Semester WS202223\AMOS\amos2022ws03-software-oscilloscope\Apps\generator\target\debug\deps\num_integer-c869746b04ed2be4.rmeta: C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\lib.rs C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\roots.rs C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\average.rs
+
+C:\Users\Nicolas Kolbenschlag\Documents\Studium\1 - Master FAU\3. Semester WS202223\AMOS\amos2022ws03-software-oscilloscope\Apps\generator\target\debug\deps\libnum_integer-c869746b04ed2be4.rlib: C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\lib.rs C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\roots.rs C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\average.rs
+
+C:\Users\Nicolas Kolbenschlag\Documents\Studium\1 - Master FAU\3. Semester WS202223\AMOS\amos2022ws03-software-oscilloscope\Apps\generator\target\debug\deps\num_integer-c869746b04ed2be4.d: C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\lib.rs C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\roots.rs C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\average.rs
+
+C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\lib.rs:
+C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\roots.rs:
+C:\Users\Nicolas\ Kolbenschlag\.cargo\registry\src\github.com-1ecc6299db9ec823\num-integer-0.1.45\src\average.rs:
