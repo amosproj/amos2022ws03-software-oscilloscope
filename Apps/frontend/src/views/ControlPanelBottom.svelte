@@ -22,7 +22,7 @@
     TOOLTIP_CONTROL_HEADER_THICKNESS,
     TOOLTIP_CONTROL_HEADER_OFFSET,
     TOOLTIP_CONTROL_HEADER_TIMESWEEP,
-    TOOLTIP_CONTROL_HEADER_AMPLITUDE
+    TOOLTIP_CONTROL_HEADER_AMPLITUDE,
   } from "../labels";
 
   export let controlPanelBottomHeight = 0;
@@ -41,11 +41,41 @@
       Channel
     {/if}
   </th>
-  <th><ControlColumnHeader label="Start/Stop" icon="startstop" tooltip={TOOLTIP_CONTROL_HEADER_ONOFF} /></th>
-  <th><ControlColumnHeader label="Thickness" icon="thickness" tooltip={TOOLTIP_CONTROL_HEADER_THICKNESS} /></th>
-  <th><ControlColumnHeader label="Offset" icon="offset" tooltip={TOOLTIP_CONTROL_HEADER_OFFSET} /></th>
-  <th><ControlColumnHeader label="Time Sweep" icon="timesweep" tooltip={TOOLTIP_CONTROL_HEADER_TIMESWEEP} /></th>
-  <th><ControlColumnHeader label="Amplitude" icon="amplitude" tooltip={TOOLTIP_CONTROL_HEADER_AMPLITUDE} /></th>
+  <th
+    ><ControlColumnHeader
+      label="Start/Stop"
+      icon="startstop"
+      tooltip={TOOLTIP_CONTROL_HEADER_ONOFF}
+    /></th
+  >
+  <th
+    ><ControlColumnHeader
+      label="Thickness"
+      icon="thickness"
+      tooltip={TOOLTIP_CONTROL_HEADER_THICKNESS}
+    /></th
+  >
+  <th
+    ><ControlColumnHeader
+      label="Offset"
+      icon="offset"
+      tooltip={TOOLTIP_CONTROL_HEADER_OFFSET}
+    /></th
+  >
+  <th
+    ><ControlColumnHeader
+      label="Time Sweep"
+      icon="timesweep"
+      tooltip={TOOLTIP_CONTROL_HEADER_TIMESWEEP}
+    /></th
+  >
+  <th
+    ><ControlColumnHeader
+      label="Amplitude"
+      icon="amplitude"
+      tooltip={TOOLTIP_CONTROL_HEADER_AMPLITUDE}
+    /></th
+  >
   <tr>
     <td> Common </td>
     <td><!--Placeholder--></td>
