@@ -102,7 +102,7 @@
         <CoordinateSystem scaleY={Math.max(...scalesY)} />
       </div>
       <div class="oscilloscope--waves">
-        <Waves bind:this={waveElement} {scalesY} />
+        <Waves bind:this={waveElement} />
       </div>
     </div>
     <div class="indicators--text">
