@@ -18,12 +18,4 @@ describe("gndButton", () => {
     cy.get('[data-cy="gnd-button"]').trigger("mouseover");
     cy.get('[data-cy="gnd-button-tooltip"]').should("be.visible");
   });
-  // Stub is not working in the e2e test, createEventDispatcher still
-  // returns the svelte dispatch fn.
-  // it("handles click", () => {
-  // const dispatch = cy.spy().as("dispatch");
-  // cy.stub(svelte, "createEventDispatcher").returns(dispatch);
-  // cy.get('[data-cy="gnd-button"]').click();
-  // cy.get("@dispatch").should("be.called");
-  // });
 });
