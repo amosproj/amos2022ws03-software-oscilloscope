@@ -1,4 +1,12 @@
-/// <reference types="cypress" />
+describe("LineIndicators", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:5173/");
+  });
+
+  it("is visible", () => {
+    cy.get('[data-cy="line-indicators"]').should("be.visible");
+  });
+});
 
 describe("TextIndicators", () => {
   beforeEach(() => {
