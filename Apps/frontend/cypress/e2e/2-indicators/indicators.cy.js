@@ -12,9 +12,11 @@ describe("TextIndicators", () => {
   beforeEach(() => {
     cy.visit("http://localhost:5173/");
   });
+
   it("are visible", () => {
     cy.get('[data-cy="text-indicators"]').should("be.visible");
   });
+
   it("have correct colors", () => {
     let expectedColors = [
       "rgb(230, 0, 73)",
