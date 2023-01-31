@@ -2,6 +2,7 @@
   import Slider from "../components/Slider.svelte";
   import StartStopSwitch from "../components/StartStopSwitch.svelte";
   import ThicknessSwitch from "../components/ThicknessSwitch.svelte";
+  import ControlColumnHeader from "../components/ControlColumnHeader.svelte";
   import {
     MAX_AMPLITUDE,
     MAX_SWEEP_SLIDER_VALUE,
@@ -17,7 +18,15 @@
     offsetAdjustment,
     timeSweep,
   } from "../stores";
+  import {
+    TOOLTIP_CONTROL_HEADER_ONOFF,
+    TOOLTIP_CONTROL_HEADER_THICKNESS,
+    TOOLTIP_CONTROL_HEADER_OFFSET,
+    TOOLTIP_CONTROL_HEADER_TIMESWEEP,
+    TOOLTIP_CONTROL_HEADER_AMPLITUDE,
+  } from "../labels";
   import { computeDisplayDeltaFromTimeSweep } from "../helper";
+
 
   export let controlPanelBottomHeight = 0;
 
@@ -40,11 +49,41 @@
       Channel
     {/if}
   </th>
-  <th>Start/Stop</th>
-  <th>Thickness</th>
-  <th>Offset</th>
-  <th>Time Sweep</th>
-  <th>Amplitude</th>
+  <th
+    ><ControlColumnHeader
+      label="Start/Stop"
+      icon="startstop"
+      tooltip={TOOLTIP_CONTROL_HEADER_ONOFF}
+    /></th
+  >
+  <th
+    ><ControlColumnHeader
+      label="Thickness"
+      icon="thickness"
+      tooltip={TOOLTIP_CONTROL_HEADER_THICKNESS}
+    /></th
+  >
+  <th
+    ><ControlColumnHeader
+      label="Offset"
+      icon="offset"
+      tooltip={TOOLTIP_CONTROL_HEADER_OFFSET}
+    /></th
+  >
+  <th
+    ><ControlColumnHeader
+      label="Time Sweep"
+      icon="timesweep"
+      tooltip={TOOLTIP_CONTROL_HEADER_TIMESWEEP}
+    /></th
+  >
+  <th
+    ><ControlColumnHeader
+      label="Amplitude"
+      icon="amplitude"
+      tooltip={TOOLTIP_CONTROL_HEADER_AMPLITUDE}
+    /></th
+  >
   <tr>
     <td> Common </td>
     <td><!--Placeholder--></td>
