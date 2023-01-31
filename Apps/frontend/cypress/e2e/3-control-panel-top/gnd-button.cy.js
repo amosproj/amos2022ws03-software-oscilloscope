@@ -2,7 +2,7 @@
 
 describe("gndButton", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:5173/", {});
+    cy.visit("http://localhost:5173/");
   });
 
   it("is visible", () => {
