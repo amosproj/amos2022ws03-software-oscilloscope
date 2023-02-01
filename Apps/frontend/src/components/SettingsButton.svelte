@@ -19,6 +19,7 @@
     $presetPopupOpen = true;
     loadAllChannelConfigPresets();
   }
+
   let button;
 </script>
 
@@ -41,6 +42,6 @@
   on:click={showPopup}
   data-cy="settings-button"
 />
-<Tooltip target={button} placement="bottom">
+<Tooltip target={button} placement="bottom" data-cy="settings-button-tooltip">
   {TOOLTIP_BUTTON_SETTINGS}
 </Tooltip>

@@ -13,4 +13,9 @@ describe("gndButton", () => {
   it("is clickable", () => {
     cy.get('[data-cy="gnd-button"]').click();
   });
+
+  it("shows tooltip on hover", () => {
+    cy.get('[data-cy="gnd-button"]').trigger("mouseover");
+    cy.get('[data-cy="gnd-button-tooltip"]').should("be.visible");
+  });
 });

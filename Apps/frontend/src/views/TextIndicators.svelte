@@ -34,7 +34,7 @@
   };
 </script>
 
-<table>
+<table data-cy="text-indicators">
   {#each min as _, i}
     <tr style="color: {LINE_COLORS_RGBA[i]}">
       <td>
