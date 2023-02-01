@@ -152,4 +152,4 @@
 
 <link rel="stylesheet" href="../app.scss" />
 
-<canvas data-cy="indicators" bind:this={canvasElement} />
+<canvas data-cy="line-indicators" bind:this={canvasElement} />
