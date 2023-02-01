@@ -1,9 +1,11 @@
 import { defineConfig } from "cypress";
+import codeCoverage from "@cypress/code-coverage/task.js";
 
 export default defineConfig({
   e2e: {
-    // setupNodeEvents(on, config) {
-    //   // implement node event listeners here
-    // },
+    setupNodeEvents(on, config) {
+      codeCoverage(on, config);
+      return config;
+    },
   },
 });

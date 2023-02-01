@@ -1,13 +1,19 @@
 <script>
+  import { Tooltip } from "sveltestrap";
+  import { TOOLTIP_BUTTON_GND } from "../labels";
+
   import { createEventDispatcher } from "svelte";
+
   const dispatch = createEventDispatcher();
   const handleClick = async (/** @type {boolean} */ down) => {
     dispatch("set-gnd", { down: down });
   };
+  let button;
 </script>
 
 <button
-  class="icon-button mui-icon--drop-down"
+  bind:this={button}
+  class="icon-button icon--ground"
   on:mousedown={async () => {
     handleClick(true);
   }}
@@ -16,3 +22,4 @@
   }}
   data-cy="gnd-button"
 />
+<Tooltip target={button} placement="bottom" data-cy="gnd-button-tooltip">{TOOLTIP_BUTTON_GND}</Tooltip>
