@@ -25,3 +25,7 @@ dist-ssr
 /cypress/fixtures/
 /cypress/screenshots/
 /cypress/videos/
+
+# Code coverage report
+coverage
+.nyc_output

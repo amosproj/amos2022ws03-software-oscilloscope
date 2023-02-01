@@ -5,6 +5,8 @@
   import { getAllChannelConfig } from "../rest/ChannelConfigController";
   import { availableChannelConfigPresets } from "../stores";
   import { clickOutside } from "../helper";
+  import { Tooltip } from "sveltestrap";
+  import { TOOLTIP_BUTTON_SETTINGS } from "../labels";
 
   $: panelHeight = 0;
 
@@ -17,6 +19,8 @@
     $presetPopupOpen = true;
     loadAllChannelConfigPresets();
   }
+
+  let button;
 </script>
 
 {#if $presetPopupOpen}
@@ -32,10 +36,12 @@
   </nav>
 {/if}
 
-<div>
-  <button
-    class="icon-button mui-icon--settings"
-    on:click={showPopup}
-    data-cy="settings-button"
-  />
-</div>
+<button
+  bind:this={button}
+  class="icon-button icon--settings"
+  on:click={showPopup}
+  data-cy="settings-button"
+/>
+<Tooltip target={button} placement="bottom" data-cy="settings-button-tooltip">
+  {TOOLTIP_BUTTON_SETTINGS}
+</Tooltip>
