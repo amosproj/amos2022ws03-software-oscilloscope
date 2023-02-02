@@ -18,6 +18,6 @@
   on:click={handleClick}
   data-cy="reset-button"
 />
-<Tooltip target={button} placement="bottom">
+<Tooltip target={button} placement="bottom" data-cy="reset-button-tooltip">
   {TOOLTIP_BUTTON_RESET}
 </Tooltip>

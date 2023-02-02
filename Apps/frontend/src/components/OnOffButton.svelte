@@ -31,6 +31,6 @@
   )}
   on:click={handleClick}
 />
-<Tooltip target={button} placement="bottom">
+<Tooltip target={button} placement="bottom" data-cy="on-off-button-tooltip">
   {$osciEnabled ? TOOLTIP_BUTTON_OFFOFF_OFF : TOOLTIP_BUTTON_OFFOFF_ON}
 </Tooltip>
