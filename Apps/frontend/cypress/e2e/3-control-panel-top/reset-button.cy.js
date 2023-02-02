@@ -13,4 +13,9 @@ describe("resetButton", () => {
   it("is clickable", () => {
     cy.get('[data-cy="reset-button"]').click();
   });
+
+  it("shows tooltip on hover", () => {
+    cy.get('[data-cy="reset-button"]').trigger("mouseover");
+    cy.get('[data-cy="reset-button-tooltip"]').should("be.visible");
+  });
 });
