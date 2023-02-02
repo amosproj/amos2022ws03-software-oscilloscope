@@ -54,7 +54,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./Apps/frontend
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           build-args: |
             MODE=production
           push: true
@@ -67,27 +67,27 @@ jobs:
       - "build-push"
 
     steps:
-      - 
+      -
         if: github.event.pull_request.base.ref == 'dev'
         name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v2
         env:
-          webhook_url: ${{ secrets.WEBHOOK_URL_DEV }}?VERSION_TAG=nightly
+          webhook_url: ${{ secrets.WEBHOOK_URL_DEV }}?VERSION_TAG=nightly&API_KEY=${{ secrets.FRONTEND_API_KEY }}
           webhook_secret: "none"
           verbose: true
-      - 
+      -
         if: github.event.pull_request.base.ref == 'int'
         name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v2
         env:
-          webhook_url: ${{ secrets.WEBHOOK_URL_INT }}?VERSION_TAG=${{ github.event.pull_request.title }}
+          webhook_url: ${{ secrets.WEBHOOK_URL_INT }}?VERSION_TAG=${{ github.event.pull_request.title }}&API_KEY=${{ secrets.FRONTEND_API_KEY }}
           webhook_secret: "none"
           verbose: true
-      - 
+      -
         if: github.event.pull_request.base.ref == 'main'
         name: Invoke deployment hook
         uses: distributhor/workflow-webhook@v2
         env:
-          webhook_url: ${{ secrets.WEBHOOK_URL_PROD }}?VERSION_TAG=${{ github.event.pull_request.title }}
+          webhook_url: ${{ secrets.WEBHOOK_URL_PROD }}?VERSION_TAG=${{ github.event.pull_request.title }}&API_KEY=${{ secrets.FRONTEND_API_KEY }}
           webhook_secret: "none"
           verbose: true

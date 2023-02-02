@@ -8,7 +8,7 @@ on:
       - 'Apps/backend/**.*'
       - '.github/workflows/build-backend-automation.yml'
   pull_request:
-    branches: 
+    branches:
       - "dev"
       - "int"
       - "main"
@@ -71,8 +71,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./Apps/backend
-          platforms: linux/amd64,linux/arm64
-          push: false
+          platforms: linux/amd64
           tags: |
             sosci/backend:${{ github.event.pull_request.title }}
             sosci/backend:latest
