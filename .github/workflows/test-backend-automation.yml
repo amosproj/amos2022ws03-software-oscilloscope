@@ -14,16 +14,16 @@ on:
 jobs:
   jest-test:
     runs-on: ubuntu-latest
+     defaults:
+      run:
+        working-directory: './Apps/backend'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: NPM Install
         uses: actions/setup-node@v3
         with:
-          working-directory: ./Apps/backend
           node-version: 19
-      - run: npm install
-        working-directory: ./Apps/frontend
+      - name: Execute tests
       - run: npm run test
-        working-directory: ./Apps/frontend
 
