@@ -14,7 +14,7 @@ on:
 jobs:
   jest-test:
     runs-on: ubuntu-latest
-     defaults:
+    defaults:
       run:
         working-directory: './Apps/backend'
     steps:
@@ -25,5 +25,5 @@ jobs:
         with:
           node-version: 19
       - name: Execute tests
-      - run: npm run test
+        run: npm run test
 
