@@ -21,12 +21,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           working-directory: ./Apps/backend
-          # Disable running of tests within install job
-          runTests: false
-          build: npm run build
-      - name: Execute Tests
-        uses: actions/setup-node@v3
-        with:
-          working-directory: ./Apps/backend
-          build: npm run test
+          node-version: 19
+      - run: npm install
+        working-directory: ./Apps/frontend
+      - run: npm run test
+        working-directory: ./Apps/frontend
 
