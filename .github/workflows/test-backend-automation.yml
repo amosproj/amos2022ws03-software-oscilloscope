@@ -1,0 +1,32 @@
+name: CI Test Docker Backend
+
+on:
+  push:
+    paths:
+      - 'Apps/backend/**.*'
+      - '.github/workflows/test-backend-automation.yml'
+  pull_request:
+    branches:
+      - "dev"
+      - "int"
+      - "main"
+
+jobs:
+  jest-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: NPM Install
+        uses: actions/setup-node@v3
+        with:
+          working-directory: ./Apps/backend
+          # Disable running of tests within install job
+          runTests: false
+          build: npm run build
+      - name: Execute Tests
+        uses: actions/setup-node@v3
+        with:
+          working-directory: ./Apps/backend
+          build: npm run test
+

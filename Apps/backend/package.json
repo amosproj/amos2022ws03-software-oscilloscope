@@ -8,6 +8,7 @@
     "dev": "nodemon src/main.js",
     "start": "node src/main.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test-cov": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "lint": "npx eslint ./",
     "lint:fix": "npm run lint -- --fix",
     "prettier": "npx prettier ./",
