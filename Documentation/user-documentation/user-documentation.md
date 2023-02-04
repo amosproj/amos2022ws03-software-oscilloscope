@@ -2,6 +2,7 @@
 
 ## Table of contents
 
+- [Introduction](#introduction)
 - [Getting started](#getting-started)
     - [How to access the frontend and backend?](#how-to-access-the-frontend-and-backend)
     - [How to send samples via UDP?](#how-to-send-samples-via-udp)
@@ -11,6 +12,24 @@
     - [Oscilloscope](#oscilloscope)
     - [Bottom control panel](#bottom-control-panel)
     - [Settings](#settings)
+        - [Presets](#presets)
+
+## Introduction
+
+SOSCI ("Software Oscilloscope") is an open source software oscilloscope that aims to simulate a 10-channel analog
+oscilloscope.
+
+Its main features are:
+
+- Receiving samples over UDP
+- Flexible and dynamic visualization of samples using channel-based configuration:
+    - Toggle channels
+    - Amplitudes
+    - Offsets
+    - Sweep speeds
+- Presets for saving settings for later use
+- A generator for simulating various types of waveforms
+- A docker image for portability
 
 ## Getting started
 
@@ -108,6 +127,16 @@ The bottom control panel provides channel-based settings that influence the repr
 ### Settings
 
 ![frontend-settings.png](frontend-settings.png)
+
+#### Presets
+
+A preset consists of all settings for each channel. These are:
+
+- Amplitudes
+- Offsets
+- Thickness
+- On/Off
+- Sweep Speed
 
 The settings modal provides a form to save and load the current settings.
 
