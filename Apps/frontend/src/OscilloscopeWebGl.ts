@@ -5,11 +5,16 @@ import {
 import { headFragmentShader, headVertexShader } from "./shader/headShader";
 import { createShaderProgram } from "./shader/shaderHelper";
 import { get } from "svelte/store";
-import { LINE_COLORS_WEBGL } from "./const";
+import {
+  LINE_COLORS_WEBGL,
+  LINE_THICKNESS_DELTA,
+  LINE_THICKNESS_DUPLICATES,
+} from "./const";
 import {
   amplitudeAdjustment,
   offsetAdjustment,
   channelActivated,
+  thicknessAdjustment,
 } from "./stores";
 export class OscilloscopeWebGl {
   private channelProgram: WebGLProgram;
@@ -100,6 +105,31 @@ export class OscilloscopeWebGl {
       this.webgl.uniform1f(amplitudeUniform, channelAmplitude);
 
       this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
+
+      // draw twice to make thicker lines
+      if (get(thicknessAdjustment)[i]) {
+        for (let j = -LINE_THICKNESS_DUPLICATES; j < 0; j++) {
+          offsetUniform = this.webgl.getUniformLocation(
+            this.channelProgram,
+            "u_offset"
+          );
+          channelOffset = get(offsetAdjustment)[i] + j * LINE_THICKNESS_DELTA;
+          this.webgl.uniform1f(offsetUniform, channelOffset);
+
+          this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
+        }
+
+        for (let j = 1; j <= LINE_THICKNESS_DUPLICATES; j++) {
+          offsetUniform = this.webgl.getUniformLocation(
+            this.channelProgram,
+            "u_offset"
+          );
+          channelOffset = get(offsetAdjustment)[i] + j * LINE_THICKNESS_DELTA;
+          this.webgl.uniform1f(offsetUniform, channelOffset);
+
+          this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
+        }
+      }
     }
   }
 
