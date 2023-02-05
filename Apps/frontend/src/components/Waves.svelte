@@ -8,16 +8,12 @@
   } from "../const";
   import {
     channelActivated,
-    thicknessAdjustment,
     timeSweep,
   } from "../stores";
   import {
     OscilloscopeWebGl
   } from "../OscilloscopeWebGl"
   import { computeDisplayDeltaFromTimeSweep } from "../helper";
-
-  export let scalesY;
-
   let canvasElement;
   let oscilloscopeWebGl;
   /**
@@ -81,10 +77,6 @@
     }
   };
 
-  thicknessAdjustment.subscribe((isThick) => {
-    // thick lines not implemented
-  });
-
   const update = () => {
     oscilloscopeWebGl.drawChannels(channelSamples);
     oscilloscopeWebGl.drawHeads(xLast, channelSamples);
@@ -99,11 +91,11 @@
     let webgl = canvasElement.getContext("webgl2");
 
     if (webgl === null) {
-        alert(
-          "Unable to initialize WebGL. Your browser or machine may not support it."
-        );
-        return;
-      }
+      alert(
+        "Unable to initialize WebGL. Your browser or machine may not support it."
+      );
+      return;
+    }
 
     oscilloscopeWebGl = new OscilloscopeWebGl(webgl);
   };

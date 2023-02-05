@@ -27,8 +27,6 @@ export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
 export const LINE_COLORS_WEBGL = LINE_COLORS.map((color) =>
   color.map((num) => num / 255).concat([1])
 );
-export const LINE_THICKNESS_DELTA = 0.002;
-export const LINE_THICKNESS_DUPLICATES = 4;
 export const NUM_CHANNELS = 10;
 export const MIN_SWEEP = 0.1; // <= 1
 export const MAX_SWEEP = 2.0; // >= 1

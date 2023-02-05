@@ -82,6 +82,7 @@ export class OscilloscopeWebGl {
       );
       this.webgl.enableVertexAttribArray(sampleAttribute);
 
+      // Colour
       let colors = new Float32Array(LINE_COLORS_WEBGL[i]);
       let colorUniform = this.webgl.getUniformLocation(
         this.channelProgram,
@@ -90,6 +91,7 @@ export class OscilloscopeWebGl {
 
       this.webgl.uniform4fv(colorUniform, colors);
 
+      // Offset
       let offsetUniform = this.webgl.getUniformLocation(
         this.channelProgram,
         "u_offset"
@@ -97,6 +99,7 @@ export class OscilloscopeWebGl {
       let channelOffset = get(offsetAdjustment)[i];
       this.webgl.uniform1f(offsetUniform, channelOffset);
 
+      // Amplitude
       let amplitudeUniform = this.webgl.getUniformLocation(
         this.channelProgram,
         "u_amplitude"
@@ -106,29 +109,31 @@ export class OscilloscopeWebGl {
 
       this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
 
-      // draw twice to make thicker lines
+      // draw twice to make thicker lines -> Thickness
       if (get(thicknessAdjustment)[i]) {
-        for (let j = -LINE_THICKNESS_DUPLICATES; j < 0; j++) {
-          offsetUniform = this.webgl.getUniformLocation(
-            this.channelProgram,
-            "u_offset"
-          );
-          channelOffset = get(offsetAdjustment)[i] + j * LINE_THICKNESS_DELTA;
-          this.webgl.uniform1f(offsetUniform, channelOffset);
+        // First line
+        let thicknessUniform = this.webgl.getUniformLocation(
+          this.channelProgram,
+          "u_thick_line_id"
+        );
+        this.webgl.uniform1i(thicknessUniform, 1);
+        this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
 
-          this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
-        }
+        // Second line
+        thicknessUniform = this.webgl.getUniformLocation(
+          this.channelProgram,
+          "u_thick_line_id"
+        );
+        this.webgl.uniform1i(thicknessUniform, 2);
+        this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
 
-        for (let j = 1; j <= LINE_THICKNESS_DUPLICATES; j++) {
-          offsetUniform = this.webgl.getUniformLocation(
-            this.channelProgram,
-            "u_offset"
-          );
-          channelOffset = get(offsetAdjustment)[i] + j * LINE_THICKNESS_DELTA;
-          this.webgl.uniform1f(offsetUniform, channelOffset);
-
-          this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
-        }
+        // Third line -> "original" line
+        thicknessUniform = this.webgl.getUniformLocation(
+          this.channelProgram,
+          "u_thick_line_id"
+        );
+        this.webgl.uniform1i(thicknessUniform, 0);
+        this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
       }
     }
   }
