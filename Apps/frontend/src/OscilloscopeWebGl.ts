@@ -109,7 +109,7 @@ export class OscilloscopeWebGl {
 
       this.webgl.drawArrays(this.webgl.LINE_STRIP, 0, samples.length);
 
-      // draw twice to make thicker lines -> Thickness
+      // draw three lines to make thicker line -> Thickness
       if (get(thicknessAdjustment)[i]) {
         // First line
         let thicknessUniform = this.webgl.getUniformLocation(
