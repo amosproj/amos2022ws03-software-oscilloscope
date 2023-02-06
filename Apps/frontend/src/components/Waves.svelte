@@ -6,13 +6,8 @@
     NUM_CHANNELS,
     WAVE_CURSOR_SIZE,
   } from "../const";
-  import {
-    channelActivated,
-    timeSweep,
-  } from "../stores";
-  import {
-    OscilloscopeWebGl
-  } from "../OscilloscopeWebGl"
+  import { channelActivated, timeSweep } from "../stores";
+  import { OscilloscopeWebGl } from "../OscilloscopeWebGl";
   import { computeDisplayDeltaFromTimeSweep } from "../helper";
   let canvasElement;
   let oscilloscopeWebGl;
