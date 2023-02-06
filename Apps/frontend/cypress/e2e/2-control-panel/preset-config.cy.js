@@ -25,6 +25,7 @@ describe("everything visible on front page", () => {
 
   it("closes popup on click outside", () => {
     cy.get('[data-cy="settings-button"]').click();
+    cy.get('[data-cy="preset-config-open-popup"]').should("be.visible");
     cy.get('[data-cy="oscilloscope"]').click();
     cy.get('[data-cy="preset-config-open-popup"]').should("not.be.visible");
   });
