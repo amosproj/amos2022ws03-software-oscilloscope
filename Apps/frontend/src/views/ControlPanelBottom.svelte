@@ -27,12 +27,11 @@
   } from "../labels";
   import { computeDisplayDeltaFromTimeSweep } from "../helper";
 
-
   export let controlPanelBottomHeight = 0;
 
   const computeDisplaySpeed = (value) => {
     let delta = computeDisplayDeltaFromTimeSweep(value);
-    return ((1000 * TIME_PER_DIV) / delta).toFixed(2) + " ms/div";
+    return (TIME_PER_DIV / delta).toFixed(2) + " s/div";
   };
 </script>
 

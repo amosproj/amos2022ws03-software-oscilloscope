@@ -22,4 +22,6 @@
   }}
   data-cy="gnd-button"
 />
-<Tooltip target={button} placement="bottom" data-cy="gnd-button-tooltip">{TOOLTIP_BUTTON_GND}</Tooltip>
+<Tooltip target={button} placement="bottom" data-cy="gnd-button-tooltip"
+  >{TOOLTIP_BUTTON_GND}</Tooltip
+>
