@@ -27,8 +27,6 @@ export const LINE_COLORS_RGBA = LINE_COLORS.map(rgbArrayToRGBAString);
 export const LINE_COLORS_WEBGL = LINE_COLORS.map((color) =>
   color.map((num) => num / 255).concat([1])
 );
-export const LINE_THICKNESS_SMALL = 0.002;
-export const LINE_THICKNESS_BIG = 0.008;
 export const NUM_CHANNELS = 10;
 export const MIN_SWEEP = 0.1; // <= 1
 export const MAX_SWEEP = 2.0; // >= 1
@@ -54,8 +52,6 @@ export const REST_ENDPOINT_CONFIG = `${BACKEND_API_URL}/config`;
 
 /* DISPLAY SPEED */
 const EXPECTED_UPDATES_PER_SECOND = 10_000;
-const TIME_PER_UPDATE = 1 / EXPECTED_UPDATES_PER_SECOND;
-const PIXELS_PER_DIV = CANVAS_WIDTH / NUM_INTERVALS_VERTICAL;
 // Change this after functionality for measuring actual updates per second is implemented
 const REAL_UPDATES_PER_SECOND = EXPECTED_UPDATES_PER_SECOND;
 export const TIME_PER_DIV =
