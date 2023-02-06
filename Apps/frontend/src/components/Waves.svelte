@@ -87,6 +87,7 @@
 
   const update = () => {
     oscilloscopeWebGl.drawChannels(channelSamples);
+    oscilloscopeWebGl.drawHeads(xLast, channelSamples);
   };
 
   const resizeCanvas = () => {
