@@ -2,19 +2,22 @@
 
 ## Table of contents
 
-- [Introduction](#introduction)
-- [Getting started](#getting-started)
-    - [How to access the frontend and backend?](#how-to-access-the-frontend-and-backend)
-    - [How to send samples via UDP?](#how-to-send-samples-via-udp)
-- [Using the frontend](#using-the-frontend)
-    - [General](#general)
-    - [Top control panel](#top-control-panel)
-    - [Oscilloscope](#oscilloscope)
-    - [Bottom control panel](#bottom-control-panel)
-    - [Settings](#settings)
-        - [Presets](#presets)
+- [Introduction](#1-introduction)
+    - [Scope](#11-scope)
+    - [Definitions, Abbreviations](#12-definitions-abbreviations)
+    - [References](#13-references)
+- [Getting started](#2-getting-started)
+    - [How to access the frontend and backend?](#21-how-to-access-the-frontend-and-backend)
+    - [How to send samples via UDP?](#22-how-to-send-samples-via-udp)
+- [Using the frontend](#3-using-the-frontend)
+    - [General](#31-general)
+    - [Top control panel](#32-top-control-panel)
+    - [Oscilloscope](#33-oscilloscope)
+    - [Bottom control panel](#34-bottom-control-panel)
+    - [Settings](#35-settings)
+        - [Presets](#351-presets)
 
-## Introduction
+## 1. Introduction
 
 SOSCI ("Software Oscilloscope") is an open source software oscilloscope that aims to simulate a 10-channel analog
 oscilloscope.
@@ -31,16 +34,45 @@ Its main features are:
 - A generator for simulating various types of waveforms
 - A docker image for portability
 
-## Getting started
+### 1.1 Scope
+
+This document contains information about the usage of the SOSCI application.
+It contains an explanation about how to send samples to the application, as well as a list of all frontend components
+and their usage.
+
+It **does not** cover information about the architecture or building process of the Software.
+
+### 1.2 Definitions, Abbreviations
+
+| Abbreviation | Definition                                                                          |
+|--------------|-------------------------------------------------------------------------------------|
+| SOSCI        | Project name, Software Oscilloscope                                                 |
+| Frontend     | The svelte frontend of SOSCI                                                        |
+| Sample       | A number representing a voltage                                                     |
+| Package      | A UDP package of 10 samples                                                         |
+| Plot         | A continuous line that gets drawn from a stream of samples                          |
+| Amplitude    | A number that scales the plot of a sample                                           |
+| Offset       | A number that offsets the plot of a channel vertically                              |
+| Time sweep   | A number that defines what time a plot needs to cross a certain horizontal division |
+
+### 1.3 References
+
+| Reference                                                                                                                       | Description                                                                              |
+|---------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| [Design / Architecture Documentation](https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Design-Documentation) | Contains information about design & architecture details about SOSCI and it's components |
+| User Documentation </br> *This document*                                                                                        | Contains information about how to use SOSCI                                              |
+| [Build Documentation](https://github.com/amosproj/amos2022ws03-software-oscilloscope/wiki/Build-&-Deployment-Documentation)     | Contains information about how to locally build SOSCI and the CICD environment           |
+
+## 2. Getting started
 
 Assuming the frontend, backend and optionally the generator have been built and are running according to the Build
 documentation, here's how to get started using the oscilloscope.
 
-### How to access the frontend and backend?
+### 2.1 How to access the frontend and backend?
 
 The frontend is reachable under [http://localhost:5000](http://localhost:5000).
 
-### How to send samples via UDP?
+### 2.2 How to send samples via UDP?
 
 The backend is reachable via UDP under [udp://localhost:34255](udp://localhost:34255).
 
@@ -49,9 +81,9 @@ as packages of ten voltage values, as described in the design documentation.
 
 <div style="page-break-after: always;"></div>
 
-## Using the frontend
+## 3. Using the frontend
 
-#### General
+### 3.1 General
 
 - Initially, the oscilloscope is turned off. You need to turn it on like described below.
 - There are 10 channels with different colors.
@@ -64,13 +96,13 @@ as packages of ten voltage values, as described in the design documentation.
 
 <div style="page-break-after: always;"></div>
 
-### Top control panel
+### 3.2 Top control panel
 
 In the top left corner, you'll find a control panel for general control of the oscilloscope.
 
 ![frontend-top-control-panel.png](frontend-top-control-panel.png)
 
-#### Controls (from left to right)
+#### 3.2.1 Controls (from left to right)
 
 - **Start/Stop:** Toggle processing all incoming samples.
 - **Reset:** Reset the indicators and the oscilloscop to the initial state and stop processing incoming samples.
@@ -80,11 +112,11 @@ In the top left corner, you'll find a control panel for general control of the o
 
 <div style="page-break-after: always;"></div>
 
-### Oscilloscope
+### 3.3 Oscilloscope
 
 ![frontend-oscilloscope.png](frontend-oscilloscope.png)
 
-#### Components:
+#### 3.3.1 Components:
 
 - **Line indicators:** Show the min and max values of all enabled channels with respect to their indidividual offsets
   and amplitudes.
@@ -94,13 +126,13 @@ In the top left corner, you'll find a control panel for general control of the o
 
 <div style="page-break-after: always;"></div>
 
-### Bottom control panel
+### 3.4 Bottom control panel
 
 ![frontend-bottom-control-panel.png](frontend-bottom-control-panel.png)
 
 The bottom control panel provides channel-based settings that influence the representation of incoming samples.
 
-#### Controls
+#### 3.4.1 Controls
 
 - **Start/Stop:**
     - Toggle processing of a channel's samples.
@@ -124,11 +156,11 @@ The bottom control panel provides channel-based settings that influence the repr
 
 <div style="page-break-after: always;"></div>
 
-### Settings
+### 3.5 Settings
 
 ![frontend-settings.png](frontend-settings.png)
 
-#### Presets
+#### 3.5.1 Presets
 
 A preset consists of all settings for each channel. These are:
 
