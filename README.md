@@ -5,10 +5,11 @@
 This project - SOSCI is a software developed based on an oscilloscopes and its features.
 
 ### Product Vision
-The objective of SOSCI is to enable users of oscilloscope a way to gain access to all the features and possibilities through a software that can be done through a hardware oscilloscope and beyond. Our vision is to create a method that would better everyday life of engineers.
+The goal of SOSCI is to empower oscilloscope users to unlock the full potential of their hardware and beyond. Our vision is to revolutionize the work of engineers with a cutting-edge, web-based application that streamlines their daily tasks.
+
 
 ### Product Mission
-To organize features of an oscilloscope and processing of information and make it possible for the user to access it through a webpage. To continuously raise the level of experience of the customer with use of current technologies and maximize the output of our customer. Using SOSCI application for displaying sensor data on the frontend.
+Our mission is to provide a comprehensive, user-friendly solution for oscilloscope users, enabling them to achieve their goals more efficiently and effectively. We strive to deliver innovative and intuitive software that exceeds industry standards and elevates the user experience. Our commitment to performance drives us to continuously improve our product, and to always put the needs of our customer first.
 
 
 ## Environments

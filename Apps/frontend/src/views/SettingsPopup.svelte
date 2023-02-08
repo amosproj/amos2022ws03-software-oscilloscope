@@ -3,6 +3,7 @@
   import {
     getChannelConfig,
     postChannelConfig,
+    getAllChannelConfig
   } from "../rest/ChannelConfigController";
   import {
     getLiveChannelConfig,
@@ -15,7 +16,6 @@
     LABEL_HEADER_CREATE_CHANNEL_CONFIG,
   } from "../labels";
   import { EVENT_LOADED_CHANNEL_CONFIG } from "../events";
-  import { getAllChannelConfig } from "../rest/ChannelConfigController";
 
   let presetName;
   let selectedPreset;
